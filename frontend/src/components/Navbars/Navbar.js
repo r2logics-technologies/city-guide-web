@@ -143,10 +143,12 @@ function Header(props) {
                     <AiOutlineUser />
                     <span>Profile</span>
                 </DropdownItem>
+                <Link to='/login' className="text-decoration-none">
                 <DropdownItem className="justify-content-evenly d-flex align-items-center">
                     <AiOutlineLogout />
                     <span>Logout</span>
                 </DropdownItem>
+                </Link>
               </DropdownMenu>
             </Dropdown>
             <NavItem className="d-none">
