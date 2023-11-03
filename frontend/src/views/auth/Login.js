@@ -30,7 +30,7 @@ function Login() {
             toast.success(data.message);
           }, 1000);
           sessionStorage.setItem("access_token", JSON.stringify(data.token));
-          localStorage.setItem("user-details", JSON.stringify(data.user));
+          sessionStorage.setItem("user-details", JSON.stringify(data.user));
           setAuth({
             ...auth,
             token: data.token,

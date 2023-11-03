@@ -20,9 +20,9 @@ use App\Http\Controllers\Api\Admin\CountryController;
 //     return $request->user();
 // });
 
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
-Route::group(['middleware' => ['auth:sanctum']], function () {
+Route::post('/auth/register', [AuthController::class, 'register']);
+Route::post('/auth/login', [AuthController::class, 'login']);
+Route::group(['prefix' => '/admin', 'middleware' => ['auth:sanctum']], function () {
 /*Country*/
     Route::resource('countries', CountryController::class);
 /*End Country*/
