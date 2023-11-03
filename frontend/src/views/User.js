@@ -23,7 +23,7 @@ function User() {
           <Col md="4">
             <Card className="card-user">
               <div className="image">
-                <img alt="..." src={require("assets/img/damir-bosnjak.jpg")} />
+                <img alt="..." src={require("assets/img/jan-sendereks.jpg")} />
               </div>
               <CardBody>
                 <div className="author">
@@ -31,7 +31,7 @@ function User() {
                     <img
                       alt="..."
                       className="avatar border-gray"
-                      src={require("assets/img/mike.jpg")}
+                      src={require("assets/img/logo-small.png")}
                     />
                     <h5 className="title">Chet Faker</h5>
                   </a>
@@ -81,7 +81,7 @@ function User() {
                           <img
                             alt="..."
                             className="img-circle img-no-padding img-responsive"
-                            src={require("assets/img/faces/ayo-ogunseinde-2.jpg")}
+                            src={require("assets/img/logo-small.png")}
                           />
                         </div>
                       </Col>
@@ -110,7 +110,7 @@ function User() {
                           <img
                             alt="..."
                             className="img-circle img-no-padding img-responsive"
-                            src={require("assets/img/faces/joe-gardner-2.jpg")}
+                            src={require("assets/img/logo-small.png")}
                           />
                         </div>
                       </Col>
@@ -139,7 +139,7 @@ function User() {
                           <img
                             alt="..."
                             className="img-circle img-no-padding img-responsive"
-                            src={require("assets/img/faces/clem-onojeghuo-2.jpg")}
+                            src={require("assets/img/logo-small.png")}
                           />
                         </div>
                       </Col>

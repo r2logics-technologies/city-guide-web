@@ -6,34 +6,24 @@ import PropTypes from "prop-types";
 
 function Footer(props) {
   return (
-    <footer className={"footer" + (props.default ? " footer-default" : "")}>
+    <footer className={"footer border-top" + (props.default ? " footer-default" : "")}>
       <Container fluid={props.fluid ? true : false}>
         <Row>
-          <nav className="footer-nav">
+          <nav className="footer-nav d-flex justify-content-between align-items-center">
             <ul>
               <li>
-                <a href="https://www.creative-tim.com" target="_blank">
-                  Creative Tim
-                </a>
-              </li>
-              <li>
-                <a href="https://blog.creative-tim.com" target="_blank">
-                  Blog
-                </a>
-              </li>
-              <li>
-                <a href="https://www.creative-tim.com/license" target="_blank">
-                  Licenses
+                <a href="https://r2logics.com/" target="_blank">
+                  R2Logics Technologies Pvt Ltd .
                 </a>
               </li>
             </ul>
-          </nav>
-          <div className="credits ml-auto">
+          <div className="credits ms-auto">
             <div className="copyright">
-              &copy; {1900 + new Date().getYear()}
-              <i className="fa fa-heart heart" /> 
+              &copy; {1900 + new Date().getYear() + "  "}
+              <i className="fa fa-heart heart" />
             </div>
           </div>
+          </nav>
         </Row>
       </Container>
     </footer>

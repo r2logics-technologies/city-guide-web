@@ -13,8 +13,8 @@ import routes from "routes.js";
 var ps;
 
 function Dashboard(props) {
-  const [backgroundColor, setBackgroundColor] = React.useState("black");
-  const [activeColor, setActiveColor] = React.useState("info");
+  const [backgroundColor, setBackgroundColor] = React.useState("white");
+  const [activeColor, setActiveColor] = React.useState("success");
   const mainPanel = React.useRef();
   const location = useLocation();
   React.useEffect(() => {

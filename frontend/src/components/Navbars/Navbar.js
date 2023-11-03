@@ -18,6 +18,7 @@ import {
   Input,
 } from "reactstrap";
 
+import { AiOutlineLogout, AiOutlineUser } from "react-icons/ai";
 import routes from "routes.js";
 
 function Header(props) {
@@ -108,7 +109,7 @@ function Header(props) {
         </NavbarToggler>
         <Collapse isOpen={isOpen} navbar className="justify-content-end">
           <form>
-            <InputGroup className="no-border">
+            <InputGroup className="no-border d-none">
               <Input placeholder="Search..." />
               <InputGroupAddon addonType="append">
                 <InputGroupText>
@@ -118,7 +119,7 @@ function Header(props) {
             </InputGroup>
           </form>
           <Nav navbar>
-            <NavItem>
+            <NavItem className="d-none">
               <Link to="#pablo" className="nav-link btn-magnify">
                 <i className="nc-icon nc-layout-11" />
                 <p>
@@ -132,20 +133,25 @@ function Header(props) {
               toggle={(e) => dropdownToggle(e)}
             >
               <DropdownToggle caret nav>
-                <i className="nc-icon nc-bell-55" />
+                <i className="nc-icon nc-circle-10" />
                 <p>
-                  <span className="d-lg-none d-md-block">Some Actions</span>
+                  <span>Admin</span>
                 </p>
               </DropdownToggle>
               <DropdownMenu right>
-                <DropdownItem tag="a">Action</DropdownItem>
-                <DropdownItem tag="a">Another Action</DropdownItem>
-                <DropdownItem tag="a">Something else here</DropdownItem>
+                <DropdownItem className="justify-content-evenly d-flex align-items-center">
+                    <AiOutlineUser />
+                    <span>Profile</span>
+                </DropdownItem>
+                <DropdownItem className="justify-content-evenly d-flex align-items-center">
+                    <AiOutlineLogout />
+                    <span>Logout</span>
+                </DropdownItem>
               </DropdownMenu>
             </Dropdown>
-            <NavItem>
+            <NavItem className="d-none">
               <Link to="#pablo" className="nav-link btn-rotate">
-                <i className="nc-icon nc-settings-gear-65" />
+                <AiOutlineLogout className="fs-4" />
                 <p>
                   <span className="d-lg-none d-md-block">Account</span>
                 </p>
