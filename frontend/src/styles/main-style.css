@@ -21,3 +21,9 @@ body {
 .mt-6 {
   margin-top: 6rem !important;
 }
+.text-orange {
+  color: #FF725E !important;
+}
+.bg-orange {
+  background-color: #FF725E !important;
+}

@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 //css
 import "./style.css";
-import { GiModernCity } from "react-icons/gi";
 import { useAuth } from "context/auth";
 import { useLocation, useNavigate } from "react-router-dom";
 import api from "utility/api";
@@ -30,7 +29,7 @@ function Login() {
           setTimeout(() => {
             toast.success(data.message);
           }, 1000);
-          localStorage.setItem("access_token", JSON.stringify(data.token));
+          sessionStorage.setItem("access_token", JSON.stringify(data.token));
           localStorage.setItem("user-details", JSON.stringify(data.user));
           setAuth({
             ...auth,
@@ -56,7 +55,7 @@ function Login() {
             <img className="img-fluid" src={loginImg} />
         </div>
         <div className="col-md-6">
-          <h1 className="text-center fw-bolder mb-5 text-danger">
+          <h1 className="text-center fw-bolder mb-5 text-orange">
             Welcome To Login
           </h1>
           <form onSubmit={handleSubmit(onSubmit)} className="mb-5">
@@ -81,7 +80,7 @@ function Login() {
               label="Password"
             />
 
-            <button className="btn w-100 btn-primary" type="submit">
+            <button className="btn w-100 text-white bg-orange" type="submit">
               Login
             </button>
           </form>

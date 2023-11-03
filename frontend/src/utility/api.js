@@ -1,12 +1,12 @@
 import axios from "axios";
-import basePath from "./basePath";
+import apiService from "./apiService";
 import {useLocation } from 'react-router-dom'
 
 class api {
   constructor() {
     this.instance = axios.create({
       withCredentials: false,
-      baseURL: basePath.ledgerUrl,
+      baseURL: apiService.ledgerUrl,
     });
 
     this.instance.interceptors.request.use(
