@@ -52,7 +52,7 @@ class CountryController extends Controller
      */
     public function store(Request $request)
     {
-        $auth = 1;
+        $auth = Auth::user()->id;
         $request['user_id'] = $auth;
         $request['slug'] = Str::slug($request->name);
         $data = $request->all();
@@ -130,8 +130,7 @@ class CountryController extends Controller
     public function update(Request $request, $id)
     {
         $country = Country::find($id);
-        $auth = Auth::user();
-        dd($auth);
+        $auth = Auth::user()->id;
         $request['user_id'] = $auth;
         $request['slug'] = Str::slug($request->name);
         $data = $request->all();

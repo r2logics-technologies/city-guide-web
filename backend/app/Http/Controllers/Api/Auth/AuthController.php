@@ -7,15 +7,23 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Validator;
 
 class AuthController extends Controller
 {
     public function register(Request $request) {
-        $request->validate([
+        $validator = Validator::make($request->all(),[
             'name' => ['required'],
             'email' => ['required', 'email', 'unique:users'],
             'password' => ['required'],
         ]);
+
+        if ($validator->fails()) {
+            return response([
+                'status' => 'error',
+                'validator' => $validator->errors(),
+            ]);
+        }
 
         $data = $request->all();
         $data['password'] = Hash::make($data['password']);
@@ -32,19 +40,26 @@ class AuthController extends Controller
     }
 
     public function login(Request $request) {
-        $request->validate([
+        $validator = Validator::make($request->all(),[
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
 
+        if ($validator->fails()) {
+            return response([
+                'status' => 'error',
+                'validator' => $validator->errors(),
+            ]);
+        }
+
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            $auth = Auth::user();
+            $user = Auth::user();
             $token = $user->createToken('MyApp')->plainTextToken;
             if ($token) {
                 return response([
                     'status' => 'success',
                     'token' => $token,
-                    'user' => $auth,
+                    'user' => $user,
                     'message' => 'User login successfully',
                 ]);
             }
