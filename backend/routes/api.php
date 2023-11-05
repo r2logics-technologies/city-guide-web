@@ -22,8 +22,12 @@ use App\Http\Controllers\Api\Admin\CountryController;
 
 Route::post('/auth/register', [AuthController::class, 'register']);
 Route::post('/auth/login', [AuthController::class, 'login']);
+
+
 Route::group(['prefix' => '/admin', 'middleware' => ['auth:sanctum']], function () {
-/*Country*/
+    //Login Check
+    Route::get('/login-check', [AuthController::class, 'loginCheck']);
+    /*Country*/
     Route::resource('countries', CountryController::class);
-/*End Country*/
+    /*End Country*/
 });

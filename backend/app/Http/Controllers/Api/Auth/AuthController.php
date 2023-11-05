@@ -7,10 +7,11 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\User;
-use Validator;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
+    //register
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -36,7 +37,8 @@ class AuthController extends Controller
             'instagram' => $request->instagram,
         ]);
 
-        $token = $user->createToken('MyApp')->plainTextToken;
+        // Create a token with a 24-hour expiration
+        $token = $user->createToken('myapptoken', ['expires' => now()->addHours(24)])->plainTextToken;
         if ($token) {
             return response([
                 'status' => 'success',
@@ -46,7 +48,7 @@ class AuthController extends Controller
             ]);
         }
     }
-
+    //Login
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -63,7 +65,8 @@ class AuthController extends Controller
 
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $user = Auth::user();
-            $token = $user->createToken('MyApp')->plainTextToken;
+            // Create a token with a 24 hour expiration
+            $token = $user->createToken('myapptoken', ['expires' => now()->addHours(24)])->plainTextToken;
             if ($token) {
                 return response([
                     'status' => 'success',
@@ -78,5 +81,18 @@ class AuthController extends Controller
                 'message' => 'something went wrong',
             ]);
         }
+    }
+    //Login check
+    public function loginCheck()
+    {
+        $auth = Auth::user();
+        if (!$auth) return response([
+            'status' => 'unauthorized',
+            'message' => 'user not available',
+        ]);
+        return response([
+            'status' => 'success',
+            'message' => 'User login successfully',
+        ]);
     }
 }

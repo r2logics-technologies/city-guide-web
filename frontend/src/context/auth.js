@@ -13,8 +13,8 @@ const AuthProvider = ({ children }) => {
   axios.defaults.headers.common["Authorization"] = auth?.token;
 
   useEffect(() => {
-    let access_token = localStorage.getItem("access_token");
-    let user = localStorage.getItem("user-details");
+    let access_token = sessionStorage.getItem("access_token");
+    let user = sessionStorage.getItem("user-details");
     if(user){
       const parseUser = JSON.parse(user);
       const parseToken = JSON.parse(access_token);

@@ -39,7 +39,7 @@ class api {
    */
 
   get(url, options, authOff) {
-    const access_token = localStorage.getItem("access_token");
+    const access_token = sessionStorage.getItem("access_token");
     const headers = authOff
       ? {}
       : {
@@ -55,21 +55,21 @@ class api {
   }
 
   post(url, data, headers) {
-    const access_token = localStorage.getItem("access_token");
+    const access_token = sessionStorage.getItem("access_token");
     const newHeaders = { ...headers };
     newHeaders["Authorization"] = `Bearer ${access_token}`;
     return this.instance.post(url, data, { headers: newHeaders });
   }
 
   put(url, data, headers) {
-    const access_token = localStorage.getItem("access_token");
+    const access_token = sessionStorage.getItem("access_token");
     const newHeaders = { ...headers };
     newHeaders["Authorization"] = `Bearer ${access_token}`;
     return this.instance.put(url, data, { headers: newHeaders });
   }
 
   delete(url, options) {
-    const access_token = localStorage.getItem("access_token");
+    const access_token = sessionStorage.getItem("access_token");
     const headers = {
       Authorization: `Bearer ${access_token}`,
     };
