@@ -20,11 +20,11 @@ root.render(
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/admin/*" element={<AdminLayout />} />
           <Route
             path="/"
-            element={<Navigate to="/admin/dashboard" replace />}
+            element={<Navigate to="/login" replace />}
           />
+          <Route path="/admin/*" element={<AdminLayout />} />
         </Routes>
       </BrowserRouter>
     </React.StrictMode>

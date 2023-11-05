@@ -15,17 +15,19 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->text('avatar')->nullable();
             $table->string('name');
+            $table->string('password')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->string('avatar')->nullable();
-            $table->string('phone_number', 20)->nullable();
+            $table->string('country_code', 10)->default('+91');
+            $table->string('mobile', 20)->nullable();
             $table->string('facebook')->nullable();
             $table->string('instagram')->nullable();
-            $table->integer('is_admin');
+            $table->enum('user_type', ['admin', 'employee', 'customer', 'super_admin',])->default('customer');
+            $table->text('fcm_topics')->nullable()->comment('Comma separated values');
+            $table->enum('status', ['activated', 'deactivated', 'deleted'])->default('activated');
             $table->rememberToken();
-            $table->tinyInteger('status')->default('1')->comment('1 => Active, 0 => Inactive');
             $table->timestamps();
         });
     }

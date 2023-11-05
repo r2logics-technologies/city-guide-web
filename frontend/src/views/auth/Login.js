@@ -55,7 +55,7 @@ function Login() {
             <img className="img-fluid" src={loginImg} />
         </div>
         <div className="col-md-6">
-          <h1 className="text-center fw-bolder mb-5 text-orange">
+          <h1 className="text-center fw-bolder mb-5 text-orange text-griffy">
             Welcome To Login
           </h1>
           <form onSubmit={handleSubmit(onSubmit)} className="mb-5">
@@ -80,7 +80,7 @@ function Login() {
               label="Password"
             />
 
-            <button className="btn w-100 text-white bg-orange" type="submit">
+            <button className="btn w-100 text-capitalize text-white bg-orange" type="submit">
               Login
             </button>
           </form>

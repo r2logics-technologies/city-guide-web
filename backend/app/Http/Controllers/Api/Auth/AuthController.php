@@ -11,8 +11,9 @@ use Validator;
 
 class AuthController extends Controller
 {
-    public function register(Request $request) {
-        $validator = Validator::make($request->all(),[
+    public function register(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
             'name' => ['required'],
             'email' => ['required', 'email', 'unique:users'],
             'password' => ['required'],
@@ -25,22 +26,30 @@ class AuthController extends Controller
             ]);
         }
 
-        $data = $request->all();
-        $data['password'] = Hash::make($data['password']);
-        $user = User::create($data);
+        $user = User::create([
+            'name' => $request->name,
+            'password' => Hash::make($request->password),
+            'email' => $request->email,
+            'country_code' => $request->country_code,
+            'mobile' => $request->mobile,
+            'facebook' => $request->facebook,
+            'instagram' => $request->instagram,
+        ]);
 
         $token = $user->createToken('MyApp')->plainTextToken;
         if ($token) {
             return response([
                 'status' => 'success',
                 'token' => $token,
+                'user' => $user,
                 'message' => 'User registered successfully',
             ]);
         }
     }
 
-    public function login(Request $request) {
-        $validator = Validator::make($request->all(),[
+    public function login(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
@@ -63,12 +72,11 @@ class AuthController extends Controller
                     'message' => 'User login successfully',
                 ]);
             }
-        }else {
+        } else {
             return response([
                 'status' => 'error',
                 'message' => 'something went wrong',
             ]);
         }
-
     }
 }
