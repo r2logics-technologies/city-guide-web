@@ -1,5 +1,5 @@
-import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   Collapse,
   Navbar,
@@ -17,16 +17,50 @@ import {
   InputGroupAddon,
   Input,
 } from "reactstrap";
-
+import toast, { Toaster } from "react-hot-toast";
 import { AiOutlineLogout, AiOutlineUser } from "react-icons/ai";
 import routes from "routes.js";
+import { useAuth } from "context/auth";
+import { Modal } from "antd";
+const { confirm } = Modal;
 
 function Header(props) {
-  const [isOpen, setIsOpen] = React.useState(false);
-  const [dropdownOpen, setDropdownOpen] = React.useState(false);
-  const [color, setColor] = React.useState("transparent");
-  const sidebarToggle = React.useRef();
+  const [auth, setAuth] = useAuth();
+  const [isOpen, setIsOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [color, setColor] = useState("transparent");
+  const sidebarToggle = useRef();
   const location = useLocation();
+
+  //Confirm Logout
+  const showConfirm = () => {
+    confirm({
+      title: "Are you sure?",
+      content: "You Want to Logout the Panel",
+      onOk() {
+        setTimeout(() => {
+          handleLogout();
+        }, 2000);
+      },
+      onCancel() {},
+    });
+  };
+  const navigate = useNavigate();
+  // Logout funtion
+  const handleLogout = () => {
+    sessionStorage.removeItem("access_token");
+    sessionStorage.removeItem("user-details");
+    setAuth({
+      ...auth,
+      user: null,
+      token: "",
+    });
+    setTimeout(() => {
+      toast.success("Logout Successfully.");
+    }, 1000);
+    navigate("/login");
+  };
+
   const toggle = () => {
     if (isOpen) {
       setColor("transparent");
@@ -52,6 +86,7 @@ function Header(props) {
     document.documentElement.classList.toggle("nav-open");
     sidebarToggle.current.classList.toggle("toggled");
   };
+
   // function that adds color dark/transparent to the navbar on resize (this is for the collapse)
   const updateColor = () => {
     if (window.innerWidth < 993 && isOpen) {
@@ -60,10 +95,11 @@ function Header(props) {
       setColor("transparent");
     }
   };
-  React.useEffect(() => {
+
+  useEffect(() => {
     window.addEventListener("resize", updateColor.bind(this));
   });
-  React.useEffect(() => {
+  useEffect(() => {
     if (
       window.innerWidth < 993 &&
       document.documentElement.className.indexOf("nav-open") !== -1
@@ -72,6 +108,7 @@ function Header(props) {
       sidebarToggle.current.classList.toggle("toggled");
     }
   }, [location]);
+
   return (
     // add or remove classes depending if we are on full-screen-maps page or not
     <Navbar
@@ -87,6 +124,7 @@ function Header(props) {
       }
     >
       <Container fluid>
+        <Toaster />
         <div className="navbar-wrapper">
           <div className="navbar-toggle">
             <button
@@ -140,15 +178,16 @@ function Header(props) {
               </DropdownToggle>
               <DropdownMenu right>
                 <DropdownItem className="justify-content-evenly d-flex align-items-center">
-                    <AiOutlineUser />
-                    <span>Profile</span>
+                  <AiOutlineUser />
+                  <span>Profile</span>
                 </DropdownItem>
-                <Link to='/login' className="text-decoration-none">
-                <DropdownItem className="justify-content-evenly d-flex align-items-center">
-                    <AiOutlineLogout />
-                    <span>Logout</span>
+                <DropdownItem
+                  onClick={showConfirm}
+                  className="justify-content-evenly d-flex align-items-center"
+                >
+                  <AiOutlineLogout />
+                  <span>Logout</span>
                 </DropdownItem>
-                </Link>
               </DropdownMenu>
             </Dropdown>
             <NavItem className="d-none">

@@ -20,12 +20,12 @@ function Login() {
   const location = useLocation();
 
   const onSubmit = async (data) => {
-    const url = `/api/v1/auth/login`;
+    const url = `api/auth/login`;
     api
       .post(url, data)
       .then((res) => {
         const data = res.data;
-        if (data.success) {
+        if (data.status === "success") {
           setTimeout(() => {
             toast.success(data.message);
           }, 1000);
@@ -36,14 +36,14 @@ function Login() {
             token: data.token,
             user: data.user,
           });
-          navigate(location.state || "/");
+          navigate(location.state || "/admin/dashboard");
         } else {
-          toast.error(data.message);
+          toast.error("Something went wrong! Please check credentials");
         }
       })
       .catch((err) => {
         console.error(err);
-        toast.error("something wents wrong!");
+        toast.error("Something went wrong! Please check credentials");
       });
   };
 
@@ -52,7 +52,7 @@ function Login() {
       <Toaster />
       <div className="card-glass row p-5 w-75 m-auto mt-6">
         <div className="col-md-6 d-none d-md-block border-end">
-            <img className="img-fluid" src={loginImg} />
+          <img className="img-fluid" src={loginImg} />
         </div>
         <div className="col-md-6">
           <h1 className="text-center fw-bolder mb-5 text-orange text-griffy">
@@ -80,7 +80,10 @@ function Login() {
               label="Password"
             />
 
-            <button className="btn w-100 text-capitalize text-white bg-orange" type="submit">
+            <button
+              className="btn w-100 text-capitalize text-white bg-orange"
+              type="submit"
+            >
               Login
             </button>
           </form>
