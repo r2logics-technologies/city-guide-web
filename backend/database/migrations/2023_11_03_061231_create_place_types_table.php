@@ -18,7 +18,8 @@ class CreatePlaceTypesTable extends Migration
             $table->integer('user_id')->nullable();
             $table->integer('category_id');
             $table->string('name');
-            $table->tinyInteger('status')->default('1')->comment('1 => Active, 0 => Inactive');
+            $table->enum('status', ['pending', 'activated', 'deactivated', 'deleted'])->default('activated');
+            $table->json('details')->nullable();
             $table->timestamps();
         });
     }

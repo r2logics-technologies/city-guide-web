@@ -22,7 +22,8 @@ class CreatePostsTable extends Migration
             $table->longText('content');
             $table->string('thumb');
             $table->string('type', 10);
-            $table->tinyInteger('status')->default('1')->comment('1 => Active, 0 => Inactive');
+            $table->enum('status', ['pending', 'activated', 'deactivated', 'deleted'])->default('activated');
+            $table->json('details')->nullable();
             $table->timestamps();
         });
     }

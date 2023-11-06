@@ -17,7 +17,8 @@ class CreateWishlistsTable extends Migration
             $table->id();
             $table->integer('user_id')->nullable();
             $table->integer('place_id')->nullable();
-            $table->tinyInteger('status')->default('1')->comment('1 => Active, 0 => Inactive');
+            $table->enum('status', ['pending', 'activated', 'deactivated', 'deleted'])->default('activated');
+            $table->json('details')->nullable();
             $table->timestamps();
         });
     }

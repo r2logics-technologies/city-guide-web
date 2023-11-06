@@ -38,7 +38,8 @@ class CreatePlacesTable extends Migration
             $table->string('video');
             $table->integer('booking_type');
             $table->string('link_bookingcom');
-            $table->tinyInteger('status')->default('1')->comment('1 => Active, 0 => Inactive');
+            $table->enum('status', ['pending', 'activated', 'deactivated', 'deleted'])->default('activated');
+            $table->json('details')->nullable();
             $table->timestamps();
         });
     }

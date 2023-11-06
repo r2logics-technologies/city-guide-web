@@ -19,7 +19,8 @@ class CreateSettingsTable extends Migration
             $table->string('name');
             $table->text('val');
             $table->char('type', 20)->default('string');
-            $table->tinyInteger('status')->default('1')->comment('1 => Active, 0 => Inactive');
+            $table->enum('status', ['pending', 'activated', 'deactivated', 'deleted'])->default('activated');
+            $table->json('details')->nullable();
             $table->timestamps();
         });
     }

@@ -18,7 +18,8 @@ class CreateSocialAccountsTable extends Migration
             $table->integer('user_id')->nullable();
             $table->string('provider_user_id');
             $table->string('provider');
-            $table->tinyInteger('status')->default('1')->comment('1 => Active, 0 => Inactive');
+            $table->enum('status', ['pending', 'activated', 'deactivated', 'deleted'])->default('activated');
+            $table->json('details')->nullable();
             $table->timestamps();
         });
     }

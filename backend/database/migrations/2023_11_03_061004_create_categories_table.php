@@ -23,7 +23,8 @@ class CreateCategoriesTable extends Migration
             $table->string('feature_title')->nullable();
             $table->string('icon_map_marker')->nullable();
             $table->string('type')->nullable();
-            $table->tinyInteger('status')->default('1')->comment('1 => Active, 0 => Inactive');
+            $table->enum('status', ['pending', 'activated', 'deactivated', 'deleted'])->default('activated');
+            $table->json('details')->nullable();
             $table->timestamps();
         });
     }

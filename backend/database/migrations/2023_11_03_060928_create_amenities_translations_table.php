@@ -19,7 +19,8 @@ class CreateAmenitiesTranslationsTable extends Migration
             $table->integer('amenities_id')->unsigned();
             $table->string('locale')->index();
             $table->string('name');
-            $table->tinyInteger('status')->default('1')->comment('1 => Active, 0 => Inactive');
+            $table->enum('status', ['pending', 'activated', 'deactivated', 'deleted'])->default('activated');
+            $table->json('details')->nullable();
             $table->timestamps();
         });
     }

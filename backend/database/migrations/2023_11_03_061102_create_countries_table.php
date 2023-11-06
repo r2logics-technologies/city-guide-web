@@ -22,7 +22,8 @@ class CreateCountriesTable extends Migration
             $table->string('seo_title')->nullable();
             $table->string('seo_description')->nullable();
             $table->string('seo_cover_image')->nullable();
-            $table->tinyInteger('status')->default('1')->comment('1 => Active, 0 => Inactive');
+            $table->enum('status', ['pending', 'activated', 'deactivated', 'deleted'])->default('activated');
+            $table->json('details')->nullable();
             $table->timestamps();
         });
     }

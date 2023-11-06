@@ -19,7 +19,8 @@ class CreateReviewsTable extends Migration
             $table->integer('place_id');
             $table->float('score');
             $table->string('comment', 500);
-            $table->tinyInteger('status')->default('1')->comment('1 => Active, 0 => Inactive');
+            $table->enum('status', ['pending', 'activated', 'deactivated', 'deleted'])->default('activated');
+            $table->json('details')->nullable();
             $table->timestamps();
         });
     }

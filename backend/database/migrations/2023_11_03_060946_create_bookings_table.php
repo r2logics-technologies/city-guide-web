@@ -26,7 +26,8 @@ class CreateBookingsTable extends Migration
             $table->string('phone_number');
             $table->string('message', 500);
             $table->integer('type');
-            $table->tinyInteger('status')->default('1')->comment('1 => Active, 0 => Inactive');
+            $table->enum('status', ['pending', 'activated', 'deactivated', 'deleted'])->default('activated');
+            $table->json('details')->nullable();
             $table->timestamps();
         });
     }

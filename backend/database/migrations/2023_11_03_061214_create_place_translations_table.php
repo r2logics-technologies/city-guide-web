@@ -20,7 +20,8 @@ class CreatePlaceTranslationsTable extends Migration
             $table->string('locale')->index();
             $table->string('name');
             $table->longText('description');
-            $table->tinyInteger('status')->default('1')->comment('1 => Active, 0 => Inactive');
+            $table->enum('status', ['pending', 'activated', 'deactivated', 'deleted'])->default('activated');
+            $table->json('details')->nullable();
             $table->timestamps();
         });
     }
