@@ -1,4 +1,5 @@
-import Dashboard from "views/dashboard/Dashboard.js";
+import Dashboard from "views/admin/dashboard/Dashboard.js";
+import Countries from "views/admin/countries/List.js";
 
 var routes = [
   {
@@ -8,13 +9,13 @@ var routes = [
     component: <Dashboard />,
     layout: "/admin",
   },
-  // {
-  //   path: "/icons",
-  //   name: "Icons",
-  //   icon: "nc-icon nc-diamond",
-  //   component: <Icons />,
-  //   layout: "/admin",
-  // },
+  {
+    path: "/countries",
+    name: "Countries",
+    icon: "nc-icon nc-diamond",
+    component: <Countries />,
+    layout: "/admin",
+  },
   // {
   //   path: "/maps",
   //   name: "Maps",
