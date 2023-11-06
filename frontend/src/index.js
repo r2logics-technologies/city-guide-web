@@ -12,6 +12,7 @@ import "./styles/main-style.css";
 import AdminLayout from "layouts/Admin.js";
 import Login from "views/auth/Login";
 import { AuthProvider } from "./context/auth";
+import PrivateRoute from "components/routes/Private";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
@@ -19,12 +20,11 @@ root.render(
     <React.StrictMode>
       <BrowserRouter>
         <Routes>
+          <Route path="/" element={<PrivateRoute />}>
+            <Route path="/admin/*" element={<AdminLayout />} />
+          </Route>
           <Route path="/login" element={<Login />} />
-          <Route
-            path="/"
-            element={<Navigate to="/login" replace />}
-          />
-          <Route path="/admin/*" element={<AdminLayout />} />
+          <Route path="/" element={<Navigate to="/login" replace />} />
         </Routes>
       </BrowserRouter>
     </React.StrictMode>

@@ -1,6 +1,6 @@
 import axios from "axios";
 import apiService from "./apiService";
-import {useLocation } from 'react-router-dom'
+import { useLocation } from "react-router-dom";
 
 class api {
   constructor() {
@@ -39,7 +39,8 @@ class api {
    */
 
   get(url, options, authOff) {
-    const access_token = sessionStorage.getItem("access_token");
+    let access_token = sessionStorage.getItem("access_token");
+    access_token = JSON.parse(access_token);
     const headers = authOff
       ? {}
       : {
@@ -55,21 +56,24 @@ class api {
   }
 
   post(url, data, headers) {
-    const access_token = sessionStorage.getItem("access_token");
+    let access_token = sessionStorage.getItem("access_token");
+    access_token = JSON.parse(access_token);
     const newHeaders = { ...headers };
     newHeaders["Authorization"] = `Bearer ${access_token}`;
     return this.instance.post(url, data, { headers: newHeaders });
   }
 
   put(url, data, headers) {
-    const access_token = sessionStorage.getItem("access_token");
+    let access_token = sessionStorage.getItem("access_token");
+    access_token = JSON.parse(access_token);
     const newHeaders = { ...headers };
     newHeaders["Authorization"] = `Bearer ${access_token}`;
     return this.instance.put(url, data, { headers: newHeaders });
   }
 
   delete(url, options) {
-    const access_token = sessionStorage.getItem("access_token");
+    let access_token = sessionStorage.getItem("access_token");
+    access_token = JSON.parse(access_token);
     const headers = {
       Authorization: `Bearer ${access_token}`,
     };
