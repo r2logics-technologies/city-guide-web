@@ -1,5 +1,6 @@
 import Dashboard from "views/admin/dashboard/Dashboard.js";
 import Countries from "views/admin/countries/Countries.js";
+import Cities from "views/admin/cities/Cities";
 
 var routes = [
   {
@@ -14,6 +15,13 @@ var routes = [
     name: "Countries",
     icon: "nc-icon nc-istanbul",
     component: <Countries />,
+    layout: "/admin",
+  },
+  {
+    path: "/cities",
+    name: "Cities",
+    icon: "nc-icon nc-istanbul",
+    component: <Cities />,
     layout: "/admin",
   },
   // {

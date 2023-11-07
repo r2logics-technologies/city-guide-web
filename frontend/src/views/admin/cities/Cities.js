@@ -21,7 +21,7 @@ import { MDBInput } from "mdb-react-ui-kit";
 import { useForm } from "react-hook-form";
 const { confirm } = antdModal;
 
-function Countries() {
+function Cities() {
   const {
     register,
     handleSubmit,
@@ -235,4 +235,4 @@ function Countries() {
   );
 }
 
-export default Countries;
+export default Cities;
