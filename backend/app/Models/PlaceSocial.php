@@ -5,19 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PlaceType extends Model
+class PlaceSocial extends Model
 {
-    protected $table = 'place_types';
+    protected $table = 'place_socials';
     use HasFactory;
     protected $fillable = [
         'user_id',
-        'category_id',
-        'name',
+        'place_id',
+        'social_type',
+        'social_url',
         'status',
     ];
-
-    public function scopeAllowed($query)
-    {
-        return $query->where('status', '!=', 'deleted');
-    }
 }

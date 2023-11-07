@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Model;
 
 class Place extends Model
@@ -19,15 +20,12 @@ class Place extends Model
         'slug',
         'description',
         'price_range',
-        'amenities',
         'address',
         'lat',
         'lng',
         'email',
         'phone_number',
         'website',
-        'social',
-        'opening_hour',
         'thumb',
         'gallery',
         'video',
@@ -35,4 +33,14 @@ class Place extends Model
         'link_bookingcom',
         'status',
     ];
+
+    public function scopeAllowed($query)
+    {
+        return $query->where('status', '!=', 'deleted');
+    }
+
+    public function deleteThumb()
+    {
+       Storage::delete($this->thumb);
+    }
 }

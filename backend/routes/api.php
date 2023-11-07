@@ -6,6 +6,9 @@ use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Admin\CountryController;
 use App\Http\Controllers\Api\Admin\CityController;
 use App\Http\Controllers\Api\Admin\CategoryController;
+use App\Http\Controllers\Api\Admin\PlaceTypeController;
+use App\Http\Controllers\Api\Admin\AmenitiesController;
+use App\Http\Controllers\Api\Admin\PlacesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,5 +54,26 @@ Route::group(['prefix' => '/admin', 'middleware' => ['auth:sanctum']], function 
         Route::get('/', [CategoryController::class, 'getData']);
         Route::post('/save/update', [CategoryController::class, 'submitData']);
         Route::post('/change/status/{category}', [CategoryController::class, 'changeStatusData']);
+    });
+
+    //Place Type
+    Route::prefix('placetypes')->group(function () {
+        Route::get('/', [PlaceTypeController::class, 'getData']);
+        Route::post('/save/update', [PlaceTypeController::class, 'submitData']);
+        Route::post('/change/status/{placetype}', [PlaceTypeController::class, 'changeStatusData']);
+    });
+
+    //Amenities
+    Route::prefix('amenities')->group(function () {
+        Route::get('/', [AmenitiesController::class, 'getData']);
+        Route::post('/save/update', [AmenitiesController::class, 'submitData']);
+        Route::post('/change/status/{amenities}', [AmenitiesController::class, 'changeStatusData']);
+    });
+
+    //Places
+    Route::prefix('places')->group(function () {
+        Route::get('/', [PlacesController::class, 'getData']);
+        Route::post('/save/update', [PlacesController::class, 'submitData']);
+        Route::post('/change/status/{place}', [PlacesController::class, 'changeStatusData']);
     });
 });
