@@ -28,7 +28,7 @@ var routes = [
   {
     path: "/placetypes",
     name: "Place Types",
-    icon: "nc-icon nc-shop",
+    icon: "nc-icon nc-bank",
     component: <PlaceTypes />,
     layout: "/admin",
   },
