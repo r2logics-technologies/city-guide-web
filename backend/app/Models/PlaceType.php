@@ -20,4 +20,9 @@ class PlaceType extends Model
     {
         return $query->where('status', '!=', 'deleted');
     }
+
+    public function get_category()
+    {
+        return $this->hasOne(Category::class, 'id', 'category_id');
+    }
 }

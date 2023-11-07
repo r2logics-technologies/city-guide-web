@@ -1,6 +1,7 @@
 import Dashboard from "views/admin/dashboard/Dashboard.js";
 import Countries from "views/admin/countries/Countries.js";
 import Cities from "views/admin/cities/Cities";
+import PlaceTypes from "views/admin/placetypes/Types";
 
 var routes = [
   {
@@ -22,6 +23,13 @@ var routes = [
     name: "Cities",
     icon: "nc-icon nc-shop",
     component: <Cities />,
+    layout: "/admin",
+  },
+  {
+    path: "/placetypes",
+    name: "Place Types",
+    icon: "nc-icon nc-shop",
+    component: <PlaceTypes />,
     layout: "/admin",
   },
   // {

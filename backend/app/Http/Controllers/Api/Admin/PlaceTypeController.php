@@ -13,7 +13,7 @@ class PlaceTypeController extends Controller
 {
     public function getData()
     {
-        $placetypes = PlaceType::allowed()->get();
+        $placetypes = PlaceType::with('get_category')->allowed()->get();
         if ($placetypes && count($placetypes) > 0) {
             return response([
                 'status' => 'success',

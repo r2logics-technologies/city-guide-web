@@ -158,7 +158,7 @@ const MapWrapper = () => {
     });
 
     const contentString =
-      '<div class="info-window-content"><h2>Paper Dashboard React</h2>' +
+      '<div className="info-window-content"><h2>Paper Dashboard React</h2>' +
       "<p>A free Admin for React, Reactstrap, and React Hooks.</p></div>";
 
     const infowindow = new google.maps.InfoWindow({

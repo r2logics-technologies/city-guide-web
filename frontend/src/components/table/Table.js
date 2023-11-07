@@ -82,9 +82,9 @@ const Table = ({ data, header }) => {
           </span>
         </div>
       </div>
-      <div class="table-responsive my-2">
+      <div className="table-responsive my-2">
         <table {...getTableProps()} className="table" height={150}>
-          <thead class="table-light">
+          <thead className="table-light">
             {headerGroups.map((headerGroup) => (
               <tr {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map((column) => (
@@ -106,7 +106,7 @@ const Table = ({ data, header }) => {
               </tr>
             ))}
           </thead>
-          <tbody {...getTableBodyProps()} class="table-group-divider">
+          <tbody {...getTableBodyProps()} className="table-group-divider">
             {page.length > 0 ?( page.map((row) => {
               prepareRow(row);
               return (
