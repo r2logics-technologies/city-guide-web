@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\Admin\CountryController;
 use App\Http\Controllers\Api\Admin\CityController;
 use App\Http\Controllers\Api\Admin\CategoryController;
 use App\Http\Controllers\Api\Admin\PlaceTypeController;
+use App\Http\Controllers\Api\Admin\AmenitiesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,5 +60,12 @@ Route::group(['prefix' => '/admin', 'middleware' => ['auth:sanctum']], function 
         Route::get('/', [PlaceTypeController::class, 'getData']);
         Route::post('/save/update', [PlaceTypeController::class, 'submitData']);
         Route::post('/change/status/{placetype}', [PlaceTypeController::class, 'changeStatusData']);
+    });
+
+    //Amenities
+    Route::prefix('amenities')->group(function () {
+        Route::get('/', [AmenitiesController::class, 'getData']);
+        Route::post('/save/update', [AmenitiesController::class, 'submitData']);
+        Route::post('/change/status/{amenities}', [AmenitiesController::class, 'changeStatusData']);
     });
 });
