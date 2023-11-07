@@ -3145,7 +3145,7 @@ License - nucleoapp.com/license/
   bottom: 0;
   width: 260px;
   left: 0;
-  z-index: 1030;
+  z-index: 999;
   border-right: 1px solid #ddd; }
   .sidebar .sidebar-wrapper,
   .off-canvas-sidebar .sidebar-wrapper {

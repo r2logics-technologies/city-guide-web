@@ -36,14 +36,15 @@ function Login() {
             token: data.token,
             user: data.user,
           });
-          navigate(location.state || "/admin/dashboard");
+          console.log(location.state)
+          navigate(location.state != '/' && location.state  || "/admin/dashboard");
         } else {
           toast.error("Something went wrong! Please check credentials");
         }
       })
       .catch((err) => {
         console.error(err);
-        toast.error("Something went wrong! Please check credentials");
+        toast.error("Something went wrong!");
       });
   };
 

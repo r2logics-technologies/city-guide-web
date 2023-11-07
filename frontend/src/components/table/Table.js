@@ -12,9 +12,7 @@ import {
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 const Table = ({ data, header }) => {
-    const columns = useMemo(() => header, []);
-
-  
+  const columns = useMemo(() => header, []);
 
   const {
     getTableProps,
@@ -23,13 +21,12 @@ const Table = ({ data, header }) => {
     page,
     prepareRow,
     setGlobalFilter,
-    state: { globalFilter },
+    state: { globalFilter, pageIndex },
     gotoPage,
     previousPage,
     nextPage,
     canPreviousPage,
     canNextPage,
-    pageIndex,
     pageCount,
   } = useTable(
     {
@@ -64,7 +61,9 @@ const Table = ({ data, header }) => {
                       ) : (
                         <TbSortAscendingLetters />
                       )
-                    ) : ""}
+                    ) : (
+                      ""
+                    )}
                   </div>
                 </th>
               ))}

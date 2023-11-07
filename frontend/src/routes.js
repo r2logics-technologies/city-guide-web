@@ -1,5 +1,5 @@
 import Dashboard from "views/admin/dashboard/Dashboard.js";
-import Countries from "views/admin/countries/List.js";
+import Countries from "views/admin/countries/Countries.js";
 
 var routes = [
   {
