@@ -15,4 +15,9 @@ class PlaceType extends Model
         'name',
         'status',
     ];
+
+    public function scopeAllowed($query)
+    {
+        return $query->where('status', '!=', 'deleted');
+    }
 }
