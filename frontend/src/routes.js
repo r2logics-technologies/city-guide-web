@@ -5,14 +5,14 @@ var routes = [
   {
     path: "/dashboard",
     name: "Dashboard",
-    icon: "nc-icon nc-bank",
+    icon: "nc-icon nc-layout-11",
     component: <Dashboard />,
     layout: "/admin",
   },
   {
     path: "/countries",
     name: "Countries",
-    icon: "nc-icon nc-diamond",
+    icon: "nc-icon nc-istanbul",
     component: <Countries />,
     layout: "/admin",
   },

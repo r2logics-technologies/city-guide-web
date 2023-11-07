@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Admin\CountryResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -10,183 +11,126 @@ use App\Models\Country;
 
 class CountryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function getData()
     {
-        $countries = Country::where('status', 1)->get();
-        if (count($countries)>0) {
+        $countries = Country::allowed()->get();
+        if ($countries && count($countries) > 0) {
             return response([
                 'status' => 'success',
-                'message' => 'countries data is',
-                'countries' => $countries,
-            ]);
-        } else {
-            return response([
-                'status' => 'success',
-                'message' => 'countries not found',
-                'countries' => null,
+                'message' => '',
+                'status_code' => 200,
+                'countries' => CountryResource::collection($countries),
             ]);
         }
-
+        return response([
+            'status' => 'warning',
+            'status_code' => 500,
+            'message' => 'No countries found.',
+            'countries' => null,
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function submitData(Request $request)
     {
-        //
-    }
+        if (!$request->edited && $request->edited == null) {
+            $auth = Auth::user()->id;
+            $request['user_id'] = $auth;
+            $request['slug'] = Str::slug($request->name);
+            $data = $request->all();
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $auth = Auth::user()->id;
-        $request['user_id'] = $auth;
-        $request['slug'] = Str::slug($request->name);
-        $data = $request->all();
-
-        $find_country = Country::where('name', $request->name)->first();
-        if ($find_country) {
-            return response([
-                'status' => 'error',
-                'message' => 'This country already exists',
-            ]);
-        }
-
-        if ($request->hasFile('seo_cover_image')) {
-            $image = $request->seo_cover_image->store('images/seo_cover_image');
-            $data['seo_cover_image'] = $image;
-        }
-
-        $country = Country::create($data);
-
-        if ($country) {
-            return response([
-                'status' => 'success',
-                'message' => 'Country Created successfully',
-            ]);
-        }else {
-            return response([
-                'status' => 'error',
-                'message' => 'something went wrong',
-            ]);
-        }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $country = Country::find($id);
-        if ($country != null) {
-            return response([
-                'status' => 'success',
-                'message' => 'country data is',
-                'country' => $country,
-            ]);
-        } else {
-            return response([
-                'status' => 'success',
-                'message' => 'country not found',
-                'country' => null,
-            ]);
-        }
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $country = Country::find($id);
-        $auth = Auth::user()->id;
-        $request['user_id'] = $auth;
-        $request['slug'] = Str::slug($request->name);
-        $data = $request->all();
-
-        $find_country = Country::where('name', $request->name)->first();
-        if ($find_country) {
-            return response([
-                'status' => 'error',
-                'message' => 'This country already exists',
-            ]);
-        }
-
-        if ($request->hasFile('seo_cover_image')) {
-            $image = $request->seo_cover_image->store('images/seo_cover_image');
-            $data['seo_cover_image'] = $image;
-            if ($country->seo_cover_image) {
-                $country->deleteCoverImage();
+            $find_country = Country::where('name', $request->name)->first();
+            if ($find_country) {
+                return response([
+                    'status' => 'error',
+                    'message' => 'This country already exists',
+                ]);
             }
-        }else{
-            $data['seo_cover_image'] = $country->seo_cover_image;
+
+            if ($request->hasFile('seo_cover_image')) {
+                $image = $request->seo_cover_image->store('images/seo_cover_image');
+                $data['seo_cover_image'] = $image;
+            }
+
+            $create = Country::create($data);
+            return response(
+                [
+                    'status' => 'success',
+                    'country' => new CountryResource($create),
+                    'status_code' => 200,
+                    'message' => 'Successfully added...'
+                ],
+                200
+            );
+        } else {
+            $country = Country::find($request->edited);
+            $auth = Auth::user()->id;
+            $request['user_id'] = $auth;
+            $request['slug'] = Str::slug($request->name);
+            $data = $request->all();
+
+            $find_country = Country::where('name', $request->name)->first();
+            if ($find_country) {
+                return response([
+                    'status' => 'error',
+                    'message' => 'This country already exists',
+                ]);
+            }
+
+            if ($request->hasFile('seo_cover_image')) {
+                $image = $request->seo_cover_image->store('images/seo_cover_image');
+                $data['seo_cover_image'] = $image;
+                if ($country->seo_cover_image) {
+                    $country->deleteCoverImage();
+                }
+            } else {
+                $data['seo_cover_image'] = $country->seo_cover_image;
+            }
+
+            $update = $country->update($data);
+            if ($update) {
+                $update = Country::find($request->edited);
+                return response(
+                    [
+                        'status' => 'success',
+                        'country' => new CountryResource($update),
+                        'status_code' => 200,
+                        'message' => 'Successfully updated...'
+                    ],
+                    200
+                );
+            }
         }
 
-        $country_update = $country->update($data);
-
-        if ($country_update) {
-            return response([
-                'status' => 'success',
-                'message' => 'Country updated successfully',
-            ]);
-        }else {
-            return response([
-                'status' => 'error',
-                'message' => 'something went wrong',
-            ]);
-        }
+        return response([
+            'status' => 'warning',
+            'status_code' => 500,
+            'message' => 'something went wrong...',
+            'country' => null,
+        ], 500);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function changeStatusData(Request $request, Country $country)
     {
-       $delete_country = Country::find($id)->delete();
-        if ($delete_country) {
-            return response([
-                'status' => 'success',
-                'message' => 'Country deleted successfully',
-            ]);
-        }else {
-            return response([
-                'status' => 'error',
-                'message' => 'something went wrong',
-            ]);
+        $message = "";
+        if ($request->status == 'deleted') {
+            $message = "Deleted";
+        } else if ($request->status == 'activated') {
+            $message = "Activated";
+        } else {
+            $message = "Deactivated";
         }
+        $updated =  $country->update(['status' => $request->status]);
+
+        if ($updated) {
+            $country =  Country::find($country->id);
+            return response(['status' => 'success', 'message' => $message, 'country' => new CountryResource($country)], 200);
+        }
+
+        return response([
+            'status' => 'warning',
+            'status_code' => 500,
+            'message' => 'something want wrong. unable to ' . $message,
+
+        ]);
     }
 }

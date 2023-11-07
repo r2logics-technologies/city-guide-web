@@ -19,11 +19,17 @@ class Country extends Model
         'seo_description',
         'seo_cover_image',
         'status',
+        'details',
     ];
 
+    public function scopeAllowed($query)
+    {
+        return $query->where('status', '!=', 'deleted');
+    }
 
     public function deleteCoverImage()
     {
        Storage::delete($this->seo_cover_image);
     }
+
 }

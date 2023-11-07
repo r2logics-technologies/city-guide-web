@@ -27,3 +27,6 @@ body {
 .bg-orange {
   background-color: #FF725E !important;
 }
+.cr-pointer {
+  cursor: pointer !important;
+}

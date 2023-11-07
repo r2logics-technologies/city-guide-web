@@ -20,14 +20,20 @@ use App\Http\Controllers\Api\Admin\CountryController;
 //     return $request->user();
 // });
 
+//register
 Route::post('/auth/register', [AuthController::class, 'register']);
+//login
 Route::post('/auth/login', [AuthController::class, 'login']);
 
 
 Route::group(['prefix' => '/admin', 'middleware' => ['auth:sanctum']], function () {
     //Login Check
     Route::get('/login-check', [AuthController::class, 'loginCheck']);
-    /*Country*/
-    Route::resource('countries', CountryController::class);
-    /*End Country*/
+
+    //Country
+    Route::prefix('countries')->group(function () {
+        Route::get('/', [CountryController::class, 'getData']);
+        Route::post('/save/update', [CountryController::class, 'submitData']);
+        Route::post('/change/status/{country}', [CountryController::class, 'changeStatusData']);
+    });
 });
