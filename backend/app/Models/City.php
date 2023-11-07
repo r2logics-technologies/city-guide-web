@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Model;
 
@@ -35,11 +36,16 @@ class City extends Model
 
     public function deleteThumb()
     {
-       Storage::delete($this->thumb);
+        Storage::delete($this->thumb);
     }
 
     public function deleteBanner()
     {
-       Storage::delete($this->banner);
+        Storage::delete($this->banner);
+    }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
     }
 }

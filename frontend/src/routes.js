@@ -20,7 +20,7 @@ var routes = [
   {
     path: "/cities",
     name: "Cities",
-    icon: "nc-icon nc-istanbul",
+    icon: "nc-icon nc-shop",
     component: <Cities />,
     layout: "/admin",
   },

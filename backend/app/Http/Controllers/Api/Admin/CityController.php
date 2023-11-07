@@ -74,14 +74,6 @@ class CityController extends Controller
             $request['slug'] = Str::slug($request->name);
             $data = $request->all();
 
-            $find_city = City::where('name', $request->name)->first();
-            if ($find_city) {
-                return response([
-                    'status' => 'error',
-                    'message' => 'This city already exists',
-                ]);
-            }
-
             if ($request->hasFile('thumb')) {
                 $image = $request->thumb->store('images/city/thumb');
                 $data['thumb'] = $image;

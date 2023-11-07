@@ -18,12 +18,16 @@ import api from "utility/api";
 import toast, { Toaster } from "react-hot-toast";
 import { Modal as antdModal } from "antd";
 import { MDBInput } from "mdb-react-ui-kit";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
+import { Select } from "antd";
+
+const Option = Select.Option;
 const { confirm } = antdModal;
 
 function Cities() {
   const {
     register,
+    control,
     handleSubmit,
     reset,
     setValue,
@@ -38,10 +42,16 @@ function Cities() {
   };
 
   const [data, setData] = useState([]);
+  const [countries, setCountries] = useState([]);
   const [header, setHeader] = useState([
     {
-      Header: "Name",
+      Header: "City Name",
       accessor: "name",
+      sortType: "alphanumeric",
+    },
+    {
+      Header: "Country Name",
+      accessor: "country_name",
       sortType: "alphanumeric",
     },
     {
@@ -87,11 +97,12 @@ function Cities() {
     handleShowForm();
     setValue("edited", row.original.id);
     setValue("name", row.original.name);
+    setValue("country_id", row.original.country_id);
   };
 
   const statusChange = (id, status) => {
     api
-      .post(`api/admin/countries/change/status/${id}`, { status: status })
+      .post(`api/admin/cities/change/status/${id}`, { status: status })
       .then((res) => {
         const data = res.data;
         if (data.status === "success") {
@@ -124,14 +135,29 @@ function Cities() {
     });
   };
 
-  const fetchData = () => {
+  const fetchCountryData = () => {
     let url = "api/admin/countries";
     api
       .get(url)
       .then((res) => {
         const data = res.data;
         if (data.status === "success") {
-          setData(data.countries);
+          setCountries(data.countries);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  const fetchData = () => {
+    let url = "api/admin/cities";
+    api
+      .get(url)
+      .then((res) => {
+        const data = res.data;
+        if (data.status === "success") {
+          setData(data.cities);
         } else {
           toast.error(data.message);
         }
@@ -144,10 +170,12 @@ function Cities() {
 
   useEffect(() => {
     fetchData();
+    fetchCountryData();
   }, []);
 
   const onSubmit = async (data) => {
-    const url = `api/admin/countries/save/update`;
+    console.log("object", data);
+    const url = `api/admin/cities/save/update`;
     api
       .post(url, data)
       .then((res) => {
@@ -176,9 +204,9 @@ function Cities() {
           <Col md="12">
             <Card>
               <CardHeader className="d-flex justify-content-between align-items-center">
-                <CardTitle tag="h4">Country List </CardTitle>
+                <CardTitle tag="h4">Cities List </CardTitle>
                 <BsIcons.BsPlusCircle
-                  title="add country"
+                  title="add city"
                   onClick={handleShowForm}
                   className="text-success fs-3 cr-pointer"
                 />
@@ -198,12 +226,27 @@ function Cities() {
         fade={true}
         centered={true}
       >
-        <ModalHeader>
-          {getValues("edited") ? "Edit" : "Add"} Country
-        </ModalHeader>
+        <ModalHeader>{getValues("edited") ? "Edit" : "Add"} City</ModalHeader>
         <ModalBody>
           <form onSubmit={handleSubmit(onSubmit)}>
             <input type="hidden" {...register("edited")} />
+            <Controller
+              name="country_id"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  className="w-100"
+                  placeholder="Select a Country"
+                  {...field}
+                >
+                  {countries.map((country) => (
+                    <Option key={country.id} value={country.id}>
+                      {country.name}
+                    </Option>
+                  ))}
+                </Select>
+              )}
+            />
             <small className="float-end text-danger">
               {errors?.name && "Name is required"}
             </small>
@@ -212,7 +255,7 @@ function Cities() {
               type="text"
               {...register("name", { required: true })}
               id="form1Example1"
-              label="Country Name"
+              label="City Name"
             />
             <div className="d-flex border-top mt-2 justify-content-end gap-3">
               <button
