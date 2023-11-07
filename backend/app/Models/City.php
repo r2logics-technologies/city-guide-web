@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Model;
 
 class City extends Model
@@ -26,4 +27,19 @@ class City extends Model
         'priority',
         'status',
     ];
+
+    public function scopeAllowed($query)
+    {
+        return $query->where('status', '!=', 'deleted');
+    }
+
+    public function deleteThumb()
+    {
+       Storage::delete($this->thumb);
+    }
+
+    public function deleteBanner()
+    {
+       Storage::delete($this->banner);
+    }
 }
