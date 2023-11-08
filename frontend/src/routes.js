@@ -1,7 +1,9 @@
 import Dashboard from "views/admin/dashboard/Dashboard.js";
 import Countries from "views/admin/countries/Countries.js";
 import Cities from "views/admin/cities/Cities";
+import Categories from "views/admin/categories/Categories";
 import PlaceTypes from "views/admin/placetypes/Types";
+import Amenities from "views/admin/amenities/Amenities";
 
 var routes = [
   {
@@ -26,10 +28,24 @@ var routes = [
     layout: "/admin",
   },
   {
+    path: "/categories",
+    name: "Categories",
+    icon: "nc-icon nc-bullet-list-67",
+    component: <Categories />,
+    layout: "/admin",
+  },
+  {
     path: "/placetypes",
     name: "Place Types",
     icon: "nc-icon nc-bank",
     component: <PlaceTypes />,
+    layout: "/admin",
+  },
+  {
+    path: "/amenities",
+    name: "Amenities",
+    icon: "nc-icon nc-sun-fog-29",
+    component: <Amenities />,
     layout: "/admin",
   },
   // {

@@ -61,12 +61,12 @@ function Types() {
       Cell: ({ row }) => (
         <>
           {row.original.status === "activated" ? (
-            <BsIcons.BsToggle2Off
+            <BsIcons.BsToggle2On
               className="text-success cr-pointer fs-2"
               onClick={() => handleChangeStatus(row.original.id, "deactivated")}
             />
           ) : (
-            <BsIcons.BsToggle2On
+            <BsIcons.BsToggle2Off
               className="text-danger cr-pointer fs-2"
               onClick={() => handleChangeStatus(row.original.id, "activated")}
             />
@@ -102,7 +102,7 @@ function Types() {
 
   const statusChange = (id, status) => {
     api
-      .post(`api/admin/placetypes/change/status/${id}`, { status: status })
+      .post(`/api/admin/placetypes/change/status/${id}`, { status: status })
       .then((res) => {
         const data = res.data;
         if (data.status === "success") {
@@ -136,7 +136,7 @@ function Types() {
   };
 
   const fetchCategoryData = () => {
-    let url = "api/admin/categories";
+    let url = "/api/admin/categories";
     api
       .get(url)
       .then((res) => {
@@ -151,7 +151,7 @@ function Types() {
   };
 
   const fetchData = () => {
-    let url = "api/admin/placetypes";
+    let url = "/api/admin/placetypes";
     api
       .get(url)
       .then((res) => {
@@ -175,7 +175,7 @@ function Types() {
 
   const onSubmit = async (data) => {
     console.log("object", data);
-    const url = `api/admin/placetypes/save/update`;
+    const url = `/api/admin/placetypes/save/update`;
     api
       .post(url, data)
       .then((res) => {
@@ -226,50 +226,67 @@ function Types() {
         fade={true}
         centered={true}
       >
-        <ModalHeader>{getValues("edited") ? "Edit" : "Add"} Place Type</ModalHeader>
+        <ModalHeader>
+          {getValues("edited") ? "Edit" : "Add"} Place Type
+        </ModalHeader>
         <ModalBody>
           <form onSubmit={handleSubmit(onSubmit)}>
             <input type="hidden" {...register("edited")} />
-            <Controller
-              name="category_id"
-              control={control}
-              render={({ field }) => (
-                <Select
-                  className="w-100"
-                  placeholder="Select a category"
-                  {...field}
-                >
-                  {categories.map((category) => (
-                    <Option key={category.id} value={category.id}>
-                      {category.name}
-                    </Option>
-                  ))}
-                </Select>
-              )}
-            />
-            <small className="float-end text-danger">
-              {errors?.name && "Name is required"}
-            </small>
-            <MDBInput
-              className="my-4"
-              type="text"
-              {...register("name", { required: true })}
-              id="form1Example1"
-              label="City Name"
-            />
-            <div className="d-flex border-top mt-2 justify-content-end gap-3">
+            <div className="my-2">
+              <div className="d-flex justify-content-between">
+                <small className="text-muted required-field">Category</small>
+                <small className="text-danger">
+                  {errors?.category_id && "Category is required"}
+                </small>
+              </div>
+              <Controller
+                name="category_id"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <Select
+                    className="w-100"
+                    placeholder="Select Category"
+                    {...field}
+                  >
+                    {categories.map((category) => (
+                      <Option key={category.id} value={category.id}>
+                        {category.name}
+                      </Option>
+                    ))}
+                  </Select>
+                )}
+              />
+            </div>
+            <div className="my-2">
+              <div className="d-flex justify-content-between">
+                <small className="text-muted required-field">
+                  Place Type Name
+                </small>
+                <small className="text-danger">
+                  {errors?.name && "Place Type Name is required"}
+                </small>
+              </div>
+              <input
+                className="form-control"
+                type="text"
+                {...register("name", { required: true })}
+                placeholder="Enter Place Type Name"
+              />
+            </div>
+            <div className="d-flex border-top mt-4 justify-content-end gap-3">
               <button
                 className="btn btn-outline-primary rounded-pill"
                 type="submit"
               >
                 Submit
               </button>
-              <i
+              <p
                 className="btn btn-outline-danger rounded-pill"
                 onClick={handleShowForm}
               >
                 Cancel
-              </i>
+              </p>
             </div>
           </form>
         </ModalBody>

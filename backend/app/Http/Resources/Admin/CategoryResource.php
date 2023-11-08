@@ -17,6 +17,11 @@ class CategoryResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'slug' => $this->slug,
+            'priority' => $this->priority,
+            'is_feature' => $this->is_feature,
+            'feature_title' => $this->feature_title,
+            'icon_map_marker' => $this->icon_map_marker,
             'status' => $this->status,
         ];
     }

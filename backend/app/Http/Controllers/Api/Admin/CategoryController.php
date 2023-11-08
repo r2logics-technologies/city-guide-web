@@ -38,6 +38,13 @@ class CategoryController extends Controller
             $request['slug'] = Str::slug($request->name);
             $data = $request->all();
 
+            $find_category = Category::where('priority', $request->priority)->first();
+            if ($find_category) {
+                return response([
+                    'status' => 'error',
+                    'message' => 'This priority number is not available',
+                ]);
+            }
             $find_category = Category::where('name', $request->name)->first();
             if ($find_category) {
                 return response([
@@ -47,8 +54,7 @@ class CategoryController extends Controller
             }
 
             if ($request->hasFile('icon_map_marker')) {
-                $image = $request->icon_map_marker->store('images/categories/icon');
-                $data['icon_map_marker'] = $image;
+                $data['icon_map_marker']  = '/storage/' . $request->icon_map_marker->store('images/categories');
             }
 
             $create = Category::create($data);
@@ -68,7 +74,14 @@ class CategoryController extends Controller
             $request['slug'] = Str::slug($request->name);
             $data = $request->all();
 
-            $find_category = Category::where('name', $request->name)->first();
+            $find_category = Category::where('priority', $request->priority)->where('id', '!=', $category->id)->first();
+            if ($find_category) {
+                return response([
+                    'status' => 'error',
+                    'message' => 'This priority number is not available',
+                ]);
+            }
+            $find_category = Category::where('name', $request->name)->where('id', '!=', $category->id)->first();
             if ($find_category) {
                 return response([
                     'status' => 'error',
@@ -77,8 +90,8 @@ class CategoryController extends Controller
             }
 
             if ($request->hasFile('icon_map_marker')) {
-                $image = $request->icon_map_marker->store('images/categories/icon');
-                $data['icon_map_marker'] = $image;
+                $data['icon_map_marker']  = '/storage/' . $request->icon_map_marker->store('images/categories');
+
                 if ($category->icon_map_marker) {
                     $category->deleteIcon();
                 }

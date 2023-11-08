@@ -17,6 +17,9 @@ class CountryResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'seo_title' => $this->seo_title,
+            'seo_description' => $this->seo_description,
+            'seo_cover_image' => $this->seo_cover_image,
             'status' => $this->status,
         ];
     }

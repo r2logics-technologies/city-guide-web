@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   useTable,
   useGlobalFilter,
@@ -9,8 +9,12 @@ import {
   TbSortDescendingLetters,
   TbSortAscendingLetters,
 } from "react-icons/tb";
+import NoData from "components/noData/NoData";
+import TableLoader from "components/spinner/TableLoader";
 
 const Table = ({ data, header }) => {
+  const [loading, setLoading] = useState(true);
+
   const columns = useMemo(() => header, []);
 
   const {
@@ -36,11 +40,54 @@ const Table = ({ data, header }) => {
     useSortBy,
     usePagination
   );
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  }, [data]);
 
   return (
     <div>
-      <div className="d-flex  justify-content-between align-items-center">
-        <div className="col-4">
+      <div className="d-flex row justify-content-between align-items-center">
+        <div className="col d-flex gap-3 align-items-center">
+          <div className={pageCount < 2 ? "d-none" : ""}>
+            <b
+              className="btn btn-outline-dark border-0 rounded-pill"
+              onClick={() => gotoPage(0)}
+              disabled={!canPreviousPage}
+            >
+              {"<<"}
+            </b>
+            <b
+              className="btn btn-outline-dark border-0 rounded-pill"
+              onClick={() => previousPage()}
+              disabled={!canPreviousPage}
+            >
+              {"<"}
+            </b>
+            <b
+              className="btn btn-outline-dark border-0 rounded-pill"
+              onClick={() => nextPage()}
+              disabled={!canNextPage}
+            >
+              {">"}
+            </b>
+            <b
+              className="btn btn-outline-dark border-0 rounded-pill"
+              onClick={() => gotoPage(pageCount - 1)}
+              disabled={!canNextPage}
+            >
+              {">>"}
+            </b>
+            <span>
+              Page{" "}
+              <strong>
+                {pageIndex + 1} of {pageCount}
+              </strong>
+            </span>
+          </div>
+        </div>
+        <div className="col-3">
           <input
             type="search"
             className="form-control"
@@ -48,38 +95,6 @@ const Table = ({ data, header }) => {
             value={globalFilter || ""}
             onChange={(e) => setGlobalFilter(e.target.value)}
           />
-        </div>
-        <div className="col-5 d-flex gap-3 align-items-center">
-          <b
-            className="btn btn-outline-dark border-0 rounded-pill"
-            onClick={() => gotoPage(0)}
-            disabled={!canPreviousPage}
-          >
-            {"<<"}
-          </b>
-          <b
-            className="btn btn-outline-dark border-0 rounded-pill"
-            onClick={() => previousPage()}
-            disabled={!canPreviousPage}
-          >
-            {"<"}
-          </b>
-          <b className="btn btn-outline-dark border-0 rounded-pill" onClick={() => nextPage()} disabled={!canNextPage}>
-            {">"}
-          </b>
-          <b
-            className="btn btn-outline-dark border-0 rounded-pill"
-            onClick={() => gotoPage(pageCount - 1)}
-            disabled={!canNextPage}
-          >
-            {">>"}
-          </b>
-          <span>
-            Page{' '}
-            <strong>
-              {pageIndex + 1} of {pageCount}
-            </strong>
-          </span>
         </div>
       </div>
       <div className="table-responsive my-2">
@@ -107,18 +122,36 @@ const Table = ({ data, header }) => {
             ))}
           </thead>
           <tbody {...getTableBodyProps()} className="table-group-divider">
-            {page.length > 0 ?( page.map((row) => {
-              prepareRow(row);
-              return (
-                <tr {...row.getRowProps()}>
-                  {row.cells.map((cell) => {
-                    return (
-                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                    );
-                  })}
+            {!loading ? (
+              page.length > 0 ? (
+                page.map((row) => {
+                  prepareRow(row);
+                  return (
+                    <tr {...row.getRowProps()}>
+                      {row.cells.map((cell) => {
+                        return (
+                          <td {...cell.getCellProps()}>
+                            {cell.render("Cell")}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  );
+                })
+              ) : (
+                <tr>
+                  <td colSpan={headerGroups[0].headers.length}>
+                    <NoData />
+                  </td>
                 </tr>
-              );
-            })) : (<div className="text-center">No Data.</div>)}
+              )
+            ) : (
+              <tr>
+                <td colSpan={headerGroups[0].headers.length}>
+                  <TableLoader />
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

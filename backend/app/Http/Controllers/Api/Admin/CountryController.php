@@ -37,7 +37,6 @@ class CountryController extends Controller
             $request['user_id'] = $auth;
             $request['slug'] = Str::slug($request->name);
             $data = $request->all();
-
             $find_country = Country::where('name', $request->name)->first();
             if ($find_country) {
                 return response([
@@ -46,11 +45,9 @@ class CountryController extends Controller
                 ]);
             }
 
-            if ($request->hasFile('seo_cover_image')) {
-                $image = $request->seo_cover_image->store('images/seo_cover_image');
-                $data['seo_cover_image'] = $image;
+            if ($request->hasFile('seo_cover_image') && $request->seo_cover_image != null && $request->seo_cover_image != "") {
+                $data['seo_cover_image'] = '/storage/' . $request->seo_cover_image->store('images/seo_cover_image');
             }
-
             $create = Country::create($data);
             return response(
                 [
@@ -68,7 +65,9 @@ class CountryController extends Controller
             $request['slug'] = Str::slug($request->name);
             $data = $request->all();
 
-            $find_country = Country::where('name', $request->name)->first();
+            $find_country = Country::where('name', $request->name)
+                ->where('id', '!=', $country->id)
+                ->first();
             if ($find_country) {
                 return response([
                     'status' => 'error',
@@ -77,8 +76,9 @@ class CountryController extends Controller
             }
 
             if ($request->hasFile('seo_cover_image')) {
-                $image = $request->seo_cover_image->store('images/seo_cover_image');
-                $data['seo_cover_image'] = $image;
+                if ($request->hasFile('seo_cover_image') && $request->seo_cover_image != null && $request->seo_cover_image != "") {
+                    $data['seo_cover_image'] = '/storage/' . $request->seo_cover_image->store('images/seo_cover_image');
+                }
                 if ($country->seo_cover_image) {
                     $country->deleteCoverImage();
                 }

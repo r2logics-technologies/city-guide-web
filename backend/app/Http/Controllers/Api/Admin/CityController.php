@@ -48,13 +48,11 @@ class CityController extends Controller
             }
 
             if ($request->hasFile('thumb')) {
-                $image = $request->thumb->store('images/city/thumb');
-                $data['thumb'] = $image;
+                $data['thumb']  = '/storage/' . $request->thumb->store('images/city/thumb');
             }
 
             if ($request->hasFile('banner')) {
-                $image = $request->banner->store('images/city/banner');
-                $data['banner'] = $image;
+                $data['banner']  = '/storage/' . $request->banner->store('images/city/banner');
             }
 
             $create = City::create($data);
@@ -73,10 +71,16 @@ class CityController extends Controller
             $request['user_id'] = $auth;
             $request['slug'] = Str::slug($request->name);
             $data = $request->all();
-
+            $find_city = City::where('name', $request->name)->where('id', '!=', $city->id)->first();
+            if ($find_city) {
+                return response([
+                    'status' => 'error',
+                    'message' => 'This city already exists',
+                ]);
+            }
             if ($request->hasFile('thumb')) {
-                $image = $request->thumb->store('images/city/thumb');
-                $data['thumb'] = $image;
+                $data['thumb']  = '/storage/' . $request->thumb->store('images/city/thumb');
+
                 if ($city->thumb) {
                     $city->deleteThumb();
                 }
@@ -85,8 +89,8 @@ class CityController extends Controller
             }
 
             if ($request->hasFile('banner')) {
-                $image = $request->banner->store('images/city/banner');
-                $data['banner'] = $image;
+                $data['banner']  = '/storage/' . $request->banner->store('images/city/banner');
+
                 if ($city->banner) {
                     $city->deleteBanner();
                 }

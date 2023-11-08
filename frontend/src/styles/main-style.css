@@ -51,3 +51,20 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+.required-field::after {
+  content: '*';
+  color: red;
+}
+.table-responsive {
+  overflow-y: auto !important; 
+}
+.image-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  bottom: 0;
+  right: 0;
+  cursor: pointer;
+}

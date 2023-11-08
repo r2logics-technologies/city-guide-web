@@ -20,7 +20,7 @@ function Login() {
   const location = useLocation();
 
   const onSubmit = async (data) => {
-    const url = `api/auth/login`;
+    const url = `/api/auth/login`;
     api
       .post(url, data)
       .then((res) => {

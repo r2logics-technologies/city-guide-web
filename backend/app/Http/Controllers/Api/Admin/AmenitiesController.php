@@ -45,9 +45,8 @@ class AmenitiesController extends Controller
                 ]);
             }
 
-            if ($request->hasFile('icon')) {
-                $image = $request->icon->store('images/amenities/icon');
-                $data['icon'] = $image;
+            if ($request->hasFile('icon') && $request->icon != null && $request->icon != "") {
+                $data['icon'] = '/storage/' . $request->icon->store('images/amenities');
             }
 
             $create = Amenities::create($data);
@@ -66,9 +65,16 @@ class AmenitiesController extends Controller
             $request['user_id'] = $auth;
             $data = $request->all();
 
-            if ($request->hasFile('icon')) {
-                $image = $request->icon->store('images/amenities/icon');
-                $data['icon'] = $image;
+            $find_amenities = Amenities::where('name', $request->name)->where('id', '!=', $amenities->id)->first();
+            if ($find_amenities) {
+                return response([
+                    'status' => 'error',
+                    'message' => 'This amenities already exists',
+                ]);
+            }
+
+            if ($request->hasFile('icon') && $request->icon != null && $request->icon != "") {
+                $data['icon'] = '/storage/' . $request->icon->store('images/amenities');
                 if ($amenities->icon) {
                     $amenities->deleteIcon();
                 }

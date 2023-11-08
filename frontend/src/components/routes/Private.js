@@ -12,7 +12,7 @@ export default function PrivateRoute() {
   useEffect(() => {
     const authCheck = () => {
       api
-        .get("api/admin/login-check")
+        .get("/api/admin/login-check")
         .then((res) => {
           if (res.data.status === "success") {
             setOk(true);

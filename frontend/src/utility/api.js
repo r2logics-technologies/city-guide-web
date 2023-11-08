@@ -60,6 +60,7 @@ class api {
     access_token = JSON.parse(access_token);
     const newHeaders = { ...headers };
     newHeaders["Authorization"] = `Bearer ${access_token}`;
+    newHeaders["Content-Type"] = "multipart/form-data";
     return this.instance.post(url, data, { headers: newHeaders });
   }
 
@@ -67,6 +68,7 @@ class api {
     let access_token = sessionStorage.getItem("access_token");
     access_token = JSON.parse(access_token);
     const newHeaders = { ...headers };
+    newHeaders["Content-Type"] = "multipart/form-data";
     newHeaders["Authorization"] = `Bearer ${access_token}`;
     return this.instance.put(url, data, { headers: newHeaders });
   }

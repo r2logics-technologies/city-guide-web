@@ -60,7 +60,13 @@ class PlaceTypeController extends Controller
             $auth = Auth::user()->id;
             $request['user_id'] = $auth;
             $data = $request->all();
-
+            $find_place = PlaceType::where('name', $request->name)->where('id', '!=', $placetype->id)->first();
+            if ($find_place) {
+                return response([
+                    'status' => 'error',
+                    'message' => 'This place type already exists',
+                ]);
+            }
             $update = $placetype->update($data);
             if ($update) {
                 $update = PlaceType::find($request->edited);

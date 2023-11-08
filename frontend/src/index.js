@@ -24,7 +24,7 @@ root.render(
             <Route path="/admin/*" element={<AdminLayout />} />
           </Route>
           <Route path="/login" element={<Login />} />
-          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="/" element={<Navigate to="/admin/dashboard" replace />} />
         </Routes>
       </BrowserRouter>
     </React.StrictMode>

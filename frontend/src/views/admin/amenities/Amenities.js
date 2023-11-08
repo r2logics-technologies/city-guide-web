@@ -12,22 +12,31 @@ import {
 } from "reactstrap";
 
 import Table from "components/table/Table";
+import uploadImg from "../../../assets/img/img-upload.png";
 import * as AiIcons from "react-icons/ai";
 import * as BsIcons from "react-icons/bs";
 import api from "utility/api";
 import toast, { Toaster } from "react-hot-toast";
 import { Modal as antdModal } from "antd";
-import { MDBInput } from "mdb-react-ui-kit";
-import { useForm, Controller } from "react-hook-form";
-import { Select } from "antd";
-
-const Option = Select.Option;
+import { useForm } from "react-hook-form";
+import apiService from "utility/apiService";
 const { confirm } = antdModal;
 
-function Cities() {
+function Amenities() {
+  const [imageUrl, setImageUrl] = useState("");
+
+  const selectImage = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImageUrl(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
   const {
     register,
-    control,
     handleSubmit,
     reset,
     setValue,
@@ -39,19 +48,14 @@ function Cities() {
   const handleShowForm = () => {
     setShowForm(!showForm);
     reset();
+    setImageUrl("");
   };
 
   const [data, setData] = useState([]);
-  const [countries, setCountries] = useState([]);
   const [header, setHeader] = useState([
     {
-      Header: "City Name",
+      Header: "Name",
       accessor: "name",
-      sortType: "alphanumeric",
-    },
-    {
-      Header: "Country Name",
-      accessor: "country_name",
       sortType: "alphanumeric",
     },
     {
@@ -93,16 +97,23 @@ function Cities() {
     },
   ]);
 
+  // Custom function to validate and process the uploaded image
+  const beforeUpload = (file) => {
+    return true;
+  };
+
   const handleEdit = (row) => {
     handleShowForm();
     setValue("edited", row.original.id);
-    setValue("name", row.original.name);
-    setValue("country_id", row.original.country_id);
+    setValue("name", row.original.name != null ? row.original.name : "");
+    if (row.original.icon != null) {
+      setImageUrl(apiService.ledgerUrl + row.original.icon);
+    }
   };
 
   const statusChange = (id, status) => {
     api
-      .post(`/api/admin/cities/change/status/${id}`, { status: status })
+      .post(`/api/admin/amenities/change/status/${id}`, { status: status })
       .then((res) => {
         const data = res.data;
         if (data.status === "success") {
@@ -135,29 +146,14 @@ function Cities() {
     });
   };
 
-  const fetchCountryData = () => {
-    let url = "/api/admin/countries";
-    api
-      .get(url)
-      .then((res) => {
-        const data = res.data;
-        if (data.status === "success") {
-          setCountries(data.countries);
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  };
-
   const fetchData = () => {
-    let url = "/api/admin/cities";
+    let url = "/api/admin/amenities";
     api
       .get(url)
       .then((res) => {
         const data = res.data;
         if (data.status === "success") {
-          setData(data.cities);
+          setData(data.amenities);
         } else {
           toast.error(data.message);
         }
@@ -170,14 +166,16 @@ function Cities() {
 
   useEffect(() => {
     fetchData();
-    fetchCountryData();
   }, []);
 
   const onSubmit = async (data) => {
-    console.log("object", data);
-    const url = `/api/admin/cities/save/update`;
+    const url = `/api/admin/amenities/save/update`;
+    const formData = new FormData();
+    formData.append("edited", data.name != null && data.edited);
+    formData.append("name", data.name != null && data.name);
+    formData.append("icon", data.icon[0] != null && data.icon[0]);
     api
-      .post(url, data)
+      .post(url, formData)
       .then((res) => {
         const data = res.data;
         if (data.status === "success") {
@@ -204,9 +202,9 @@ function Cities() {
           <Col md="12">
             <Card>
               <CardHeader className="d-flex justify-content-between align-items-center">
-                <CardTitle tag="h4">Cities List </CardTitle>
+                <CardTitle tag="h4">Amenities List </CardTitle>
                 <BsIcons.BsPlusCircle
-                  title="add city"
+                  title="add amenities"
                   onClick={handleShowForm}
                   className="text-success fs-3 cr-pointer"
                 />
@@ -222,53 +220,60 @@ function Cities() {
       <Modal
         isOpen={showForm}
         toggle={handleShowForm}
-        size="lg"
+        size="md"
         fade={true}
         centered={true}
       >
-        <ModalHeader>{getValues("edited") ? "Edit" : "Add"} City</ModalHeader>
+        <ModalHeader>
+          {getValues("edited") ? "Edit" : "Add"} Amenitie
+        </ModalHeader>
         <ModalBody>
           <form onSubmit={handleSubmit(onSubmit)}>
             <input type="hidden" {...register("edited")} />
-            <div className="my-2">
-              <div className="d-flex justify-content-between">
-                <small className="text-muted required-field">Country</small>
-                <small className="text-danger">
-                  {errors?.country_id && "Country is required"}
-                </small>
+            <div className="row">
+              <div className="col-12 my-2">
+                <div className="border rounded p-2 text-center position-relative">
+                  {imageUrl ? (
+                    <img
+                      src={imageUrl}
+                      style={{ height: "120px", maxWidth: "100%" }}
+                    />
+                  ) : (
+                    <img
+                      src={uploadImg}
+                      style={{ height: "120px", maxWidth: "100%" }}
+                    />
+                  )}
+                  <input
+                    type="file"
+                    className="image-input"
+                    {...register("icon")}
+                    accept="image/jpeg, image/jpg, image/png, application/pdf"
+                    onChange={selectImage}
+                  />
+                  {!imageUrl && (
+                    <div>
+                      <label className="mt-2">Select Image</label>
+                    </div>
+                  )}
+                </div>
               </div>
-              <Controller
-                name="country_id"
-                control={control}
-                rules={{ required: true }}
-                render={({ field }) => (
-                  <Select
-                    className="w-100"
-                    placeholder="Select Country"
-                    {...field}
-                  >
-                    {countries.map((country) => (
-                      <Option key={country.id} value={country.id}>
-                        {country.name}
-                      </Option>
-                    ))}
-                  </Select>
-                )}
-              />
-            </div>
-            <div className="my-2">
-              <div className="d-flex justify-content-between">
-                <small className="text-muted required-field">City Name</small>
-                <small className="text-danger">
-                  {errors?.name && "City Name is required"}
-                </small>
+              <div className="col-12">
+                <div className="my-2">
+                  <div className="d-flex justify-content-between">
+                    <small className="text-muted required-field">Amenitie Name</small>
+                    <small className="text-danger">
+                      {errors?.name && "Amenitie Name is required"}
+                    </small>
+                  </div>
+                  <input
+                    className="form-control"
+                    type="text"
+                    {...register("name", { required: true })}
+                    placeholder="Enter Amenitie Name"
+                  />
+                </div>
               </div>
-              <input
-                className="form-control"
-                type="text"
-                {...register("name", { required: true })}
-                placeholder="Enter City Name"
-              />
             </div>
             <div className="d-flex border-top mt-4 justify-content-end gap-3">
               <button
@@ -291,4 +296,4 @@ function Cities() {
   );
 }
 
-export default Cities;
+export default Amenities;

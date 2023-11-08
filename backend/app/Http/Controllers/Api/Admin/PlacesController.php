@@ -50,15 +50,14 @@ class PlacesController extends Controller
             }
 
             if ($request->hasFile('thumb')) {
-                $image = $request->thumb->store('images/place/thumb');
-                $data['thumb'] = $image;
+                $data['thumb']  = '/storage/' . $request->thumb->store('images/place/thumb');
             }
 
             $create = Place::create($data);
             if ($create) {
                 if ($request->amenities != '') {
                     foreach ($request->amenities as $key => $value) {
-                        if ($value != null ) {
+                        if ($value != null) {
                             PlaceAmenities::create([
                                 'user_id' => $auth,
                                 'place_id' => $create->id,
@@ -69,7 +68,7 @@ class PlacesController extends Controller
                 }
                 if ($request->placeopen != '') {
                     foreach ($request->placeopen as $key => $open_value) {
-                        if ($open_value != null ) {
+                        if ($open_value != null) {
                             PlaceOpen::create([
                                 'user_id' => $auth,
                                 'place_id' => $create->id,
@@ -81,7 +80,7 @@ class PlacesController extends Controller
                 }
                 if ($request->placesocial != '') {
                     foreach ($request->placesocial as $key => $place_value) {
-                        if ($place_value != null ) {
+                        if ($place_value != null) {
                             PlaceSocial::create([
                                 'user_id' => $auth,
                                 'place_id' => $create->id,
@@ -110,10 +109,16 @@ class PlacesController extends Controller
             $request['user_id'] = $auth;
             $request['slug'] = Str::slug($request->name);
             $data = $request->all();
-
+            $find_place = Place::where('name', $request->name)->where('id', '!=', $place->id)->first();
+            if ($find_place) {
+                return response([
+                    'status' => 'error',
+                    'message' => 'This place already exists',
+                ]);
+            }
             if ($request->hasFile('thumb')) {
-                $image = $request->thumb->store('images/place/thumb');
-                $data['thumb'] = $image;
+                $data['thumb']  = '/storage/' . $request->thumb->store('images/place/thumb');
+
                 if ($place->thumb) {
                     $place->deleteThumb();
                 }
@@ -126,7 +131,7 @@ class PlacesController extends Controller
                 $update = Place::find($request->edited);
                 if ($request->amenities != '') {
                     foreach ($request->amenities as $key => $value) {
-                        if ($value != null ) {
+                        if ($value != null) {
                             PlaceAmenities::create([
                                 'user_id' => $auth,
                                 'place_id' => $place->id,
@@ -137,7 +142,7 @@ class PlacesController extends Controller
                 }
                 if ($request->placeopen != '') {
                     foreach ($request->placeopen as $key => $open_value) {
-                        if ($open_value != null ) {
+                        if ($open_value != null) {
                             PlaceOpen::create([
                                 'user_id' => $auth,
                                 'place_id' => $place->id,
@@ -149,7 +154,7 @@ class PlacesController extends Controller
                 }
                 if ($request->placesocial != '') {
                     foreach ($request->placesocial as $key => $place_value) {
-                        if ($place_value != null ) {
+                        if ($place_value != null) {
                             PlaceSocial::create([
                                 'user_id' => $auth,
                                 'place_id' => $place->id,
