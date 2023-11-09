@@ -21,11 +21,11 @@ class CreateBookingsTable extends Migration
             $table->integer('numbber_of_children');
             $table->date('date');
             $table->time('time');
-            $table->string('name');
-            $table->string('email');
-            $table->string('phone_number');
-            $table->string('message', 500);
-            $table->integer('type');
+            $table->string('name')->nullable();
+            $table->string('email')->nullable();
+            $table->string('phone_number')->nullable();
+            $table->string('message', 500)->nullable();
+            $table->integer('type')->nullable();
             $table->enum('status', ['pending', 'activated', 'deactivated', 'deleted'])->default('activated');
             $table->json('details')->nullable();
             $table->timestamps();

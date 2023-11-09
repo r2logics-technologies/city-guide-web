@@ -48,4 +48,9 @@ class City extends Model
     {
         return $this->belongsTo(Country::class);
     }
+
+    public function get_place()
+    {
+        return $this->hasMany(Place::class, 'city_id', 'id');
+    }
 }
