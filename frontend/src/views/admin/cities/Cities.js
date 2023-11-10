@@ -17,7 +17,6 @@ import * as BsIcons from "react-icons/bs";
 import api from "utility/api";
 import toast, { Toaster } from "react-hot-toast";
 import { Modal as antdModal } from "antd";
-import { MDBInput } from "mdb-react-ui-kit";
 import { useForm, Controller } from "react-hook-form";
 import { Select } from "antd";
 

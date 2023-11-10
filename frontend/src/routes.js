@@ -4,6 +4,9 @@ import Cities from "views/admin/cities/Cities";
 import Categories from "views/admin/categories/Categories";
 import PlaceTypes from "views/admin/placetypes/Types";
 import Amenities from "views/admin/amenities/Amenities";
+import AllPlace from "views/admin/place/AllPlace";
+import EditPlace from "views/admin/place/EditPlace";
+import CreatePlace from "views/admin/place/CreatePlace";
 
 var routes = [
   {
@@ -12,6 +15,7 @@ var routes = [
     icon: "nc-icon nc-layout-11",
     component: <Dashboard />,
     layout: "/admin",
+    show: true,
   },
   {
     path: "/countries",
@@ -19,6 +23,7 @@ var routes = [
     icon: "nc-icon nc-istanbul",
     component: <Countries />,
     layout: "/admin",
+    show: true,
   },
   {
     path: "/cities",
@@ -26,6 +31,7 @@ var routes = [
     icon: "nc-icon nc-shop",
     component: <Cities />,
     layout: "/admin",
+    show: true,
   },
   {
     path: "/categories",
@@ -33,6 +39,7 @@ var routes = [
     icon: "nc-icon nc-bullet-list-67",
     component: <Categories />,
     layout: "/admin",
+    show: true,
   },
   {
     path: "/placetypes",
@@ -40,6 +47,7 @@ var routes = [
     icon: "nc-icon nc-bank",
     component: <PlaceTypes />,
     layout: "/admin",
+    show: true,
   },
   {
     path: "/amenities",
@@ -47,49 +55,29 @@ var routes = [
     icon: "nc-icon nc-sun-fog-29",
     component: <Amenities />,
     layout: "/admin",
+    show: true,
   },
-  // {
-  //   path: "/maps",
-  //   name: "Maps",
-  //   icon: "nc-icon nc-pin-3",
-  //   component: <Maps />,
-  //   layout: "/admin",
-  // },
-  // {
-  //   path: "/notifications",
-  //   name: "Notifications",
-  //   icon: "nc-icon nc-bell-55",
-  //   component: <Notifications />,
-  //   layout: "/admin",
-  // },
-  // {
-  //   path: "/user-page",
-  //   name: "User Profile",
-  //   icon: "nc-icon nc-single-02",
-  //   component: <UserPage />,
-  //   layout: "/admin",
-  // },
-  // {
-  //   path: "/tables",
-  //   name: "Table List",
-  //   icon: "nc-icon nc-tile-56",
-  //   component: <TableList />,
-  //   layout: "/admin",
-  // },
-  // {
-  //   path: "/typography",
-  //   name: "Typography",
-  //   icon: "nc-icon nc-caps-small",
-  //   component: <Typography />,
-  //   layout: "/admin",
-  // },
-  // {
-  //   pro: true,
-  //   path: "/upgrade",
-  //   name: "Upgrade to PRO",
-  //   icon: "nc-icon nc-spaceship",
-  //   component: <UpgradeToPro />,
-  //   layout: "/admin",
-  // },
+  {
+    path: "/all-place",
+    name: "All Place",
+    icon: "nc-icon nc-pin-3",
+    component: <AllPlace />,
+    layout: "/admin",
+    show: true,
+  },
+  {
+    path: "/create-place",
+    name: "Create Place",
+    component: <CreatePlace />,
+    layout: "/admin",
+    show: false,
+  },
+  {
+    path: "/update-place",
+    name: "Update Place",
+    component: <EditPlace />,
+    layout: "/admin",
+    show: false,
+  },
 ];
 export default routes;

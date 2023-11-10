@@ -2183,16 +2183,7 @@ fieldset[disabled] .form-control {
   margin-left: 0;
 }
 
-textarea.form-control {
-  max-width: 100%;
-  max-height: 80px;
-  padding: 10px 10px 0 0;
-  resize: none;
-  border: none;
-  border: 1px solid #e3e3e3;
-  border-radius: 4px;
-  line-height: 2;
-}
+
 
 .has-success.form-group .form-control,
 .has-success.form-group.no-border .form-control,
@@ -2262,9 +2253,7 @@ button,
 input,
 optgroup,
 select,
-textarea {
-  font-family: "Montserrat", "Helvetica Neue", Arial, sans-serif;
-}
+
 
 h1,
 h2,
