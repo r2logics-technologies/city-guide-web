@@ -9,6 +9,8 @@ use App\Http\Controllers\Api\Admin\CategoryController;
 use App\Http\Controllers\Api\Admin\PlaceTypeController;
 use App\Http\Controllers\Api\Admin\AmenitiesController;
 use App\Http\Controllers\Api\Admin\PlacesController;
+use App\Http\Controllers\Api\Website\HomeController;
+use App\Http\Controllers\Api\Website\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,7 +32,7 @@ Route::post('/auth/register', [AuthController::class, 'register']);
 //login
 Route::post('/auth/login', [AuthController::class, 'login']);
 
-
+//Admin
 Route::group(['prefix' => '/admin', 'middleware' => ['auth:sanctum']], function () {
     //Login Check
     Route::get('/login-check', [AuthController::class, 'loginCheck']);
@@ -76,4 +78,25 @@ Route::group(['prefix' => '/admin', 'middleware' => ['auth:sanctum']], function 
         Route::post('/save/update', [PlacesController::class, 'submitData']);
         Route::post('/change/status/{place}', [PlacesController::class, 'changeStatusData']);
     });
+});
+
+//Website
+Route::group(['prefix' => '/website'], function () {
+    Route::get('/', [HomeController::class, 'getData']);
+    Route::post('/search', [HomeController::class, 'searchData']);
+    Route::get('/city/{city}', [HomeController::class, 'cityDetails']);
+    Route::get('/wishlist/{place}', [HomeController::class, 'wishlist'])->middleware(['auth:sanctum']);
+    Route::get('/place/{place}', [HomeController::class, 'placeDetails']);
+    Route::post('/book-place/{place}', [HomeController::class, 'placeBook'])->middleware(['auth:sanctum']);
+});
+
+//User
+Route::group(['prefix' => '/user', 'middleware' => ['auth:sanctum']], function () {
+    Route::get('/', [UserController::class, 'getProfile']);
+    Route::post('/update-profile', [UserController::class, 'updateProfile']);
+    Route::post('/change-password', [UserController::class, 'changePassword']);
+    Route::get('/remove-wishlist/{wishlist}', [UserController::class, 'wishlistRemove']);
+    Route::get('/booking-details/{booking}', [UserController::class, 'bookingDetails']);
+    Route::get('/booking-status/{booking}', [UserController::class, 'changeBookingStatus']);
+    Route::get('/remove-booking/{booking}', [UserController::class, 'bookingRemove']);
 });

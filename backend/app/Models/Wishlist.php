@@ -14,4 +14,9 @@ class Wishlist extends Model
         'place_id',
         'status',
     ];
+
+    public function get_place()
+    {
+        return $this->hasOne(Place::class, 'id', 'place_id');
+    }
 }
