@@ -73,7 +73,7 @@ var routes = [
     show: false,
   },
   {
-    path: "/update-place",
+    path: "/update-place/:id",
     name: "Update Place",
     component: <EditPlace />,
     layout: "/admin",

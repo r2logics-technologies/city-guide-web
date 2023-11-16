@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardTitle,
-  Row,
-  Col,
-} from "reactstrap";
+import { Card, CardHeader, CardBody, CardTitle, Row, Col } from "reactstrap";
 
 import Table from "components/table/Table";
 import * as AiIcons from "react-icons/ai";
@@ -14,10 +7,11 @@ import * as BsIcons from "react-icons/bs";
 import api from "utility/api";
 import toast, { Toaster } from "react-hot-toast";
 import { Modal as antdModal } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const { confirm } = antdModal;
 
 function AllPlace() {
+  const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [header, setHeader] = useState([
     {
@@ -58,7 +52,7 @@ function AllPlace() {
         <div className="d-flex justify-content-start gap-3">
           <AiIcons.AiOutlineEdit
             className="text-info cr-pointer fs-4"
-            onClick={() => handleEdit(row)}
+            onClick={() => handleEdit(row.original.id)}
           />
           <AiIcons.AiOutlineDelete
             className="text-danger cr-pointer fs-4"
@@ -69,7 +63,9 @@ function AllPlace() {
     },
   ]);
 
-  const handleEdit = (row) => {};
+  const handleEdit = (id) => {
+    navigate("/update-place/" + id);
+  };
 
   const statusChange = (id, status) => {
     api

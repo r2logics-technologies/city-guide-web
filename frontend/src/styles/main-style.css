@@ -24,10 +24,10 @@ body {
   margin-top: 6rem !important;
 }
 .text-orange {
-  color: #FF725E !important;
+  color: #ff725e !important;
 }
 .bg-orange {
-  background-color: #FF725E !important;
+  background-color: #ff725e !important;
 }
 .cr-pointer {
   cursor: pointer !important;
@@ -53,11 +53,11 @@ body {
 }
 
 .required-field::after {
-  content: '*';
+  content: "*";
   color: red;
 }
 .table-responsive {
-  overflow-y: auto !important; 
+  overflow-y: auto !important;
 }
 .image-input {
   position: absolute;
@@ -66,5 +66,14 @@ body {
   opacity: 0;
   bottom: 0;
   right: 0;
+  cursor: pointer;
+}
+.img-remove-btn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-size: 2rem;
+  color: red;
+  z-index: 9999 !important;
   cursor: pointer;
 }

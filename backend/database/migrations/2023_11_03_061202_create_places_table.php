@@ -24,6 +24,7 @@ class CreatePlacesTable extends Migration
             $table->string('slug');
             $table->longText('description')->nullable();
             $table->integer('price_range')->nullable();
+            $table->string('amenities')->nullable();
             $table->string('address')->nullable();
             $table->double('lat')->nullable();
             $table->double('lng')->nullable();

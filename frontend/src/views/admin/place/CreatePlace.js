@@ -11,6 +11,19 @@ const Option = Select.Option;
 const { confirm } = antdModal;
 
 function CreatePlace() {
+  const [thumbnailImgUrl, setthumbnailImgUrl] = useState("");
+
+  const selectThumbnailImg = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setthumbnailImgUrl(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const {
     register,
     control,
@@ -36,6 +49,10 @@ function CreatePlace() {
     },
   });
 
+  const removeThumImg = () => {
+    setthumbnailImgUrl("");
+    setValue("thumb", null);
+  };
   const [countriesList, setCountriesList] = useState([]);
   const [citiesList, setCitiesList] = useState([]);
   const [categoriesList, setCategoriesList] = useState([]);
@@ -140,10 +157,67 @@ function CreatePlace() {
   };
 
   const onSubmit = async (data) => {
-    console.log("object", data);
-    const url = `/api/admin/cities/save/update`;
+    console.log(data);
+    const formData = new FormData();
+    formData.append("name", data.name != null && data.name);
+    formData.append("thumb", data.thumb[0] != null && data.thumb[0]);
+    formData.append(
+      "placesocial",
+      data.placesocial != null && JSON.stringify(data.placesocial)
+    );
+    formData.append(
+      "placeopen",
+      data.placeopen != null && JSON.stringify(data.placeopen)
+    );
+    formData.append(
+      "price_range",
+      data.price_range != null && data.price_range
+    );
+    formData.append(
+      "description",
+      data.description != null && data.description
+    );
+    formData.append("address", data.address != null && data.address);
+    formData.append("email", data.email != null && data.email);
+    formData.append(
+      "phone_number",
+      data.phone_number != null && data.phone_number
+    );
+    formData.append("website", data.website != null && data.website);
+    formData.append("video", data.video != null && data.video);
+    formData.append(
+      "booking_type",
+      data.booking_type != null && data.booking_type
+    );
+    formData.append(
+      "link_bookingcom",
+      data.link_bookingcom != null && data.link_bookingcom
+    );
+    formData.append("category", data.category != null && data.category);
+    formData.append("place_type", data.place_type != null && data.place_type);
+    formData.append("country_id", data.country_id != null && data.country_id);
+    formData.append("city_id", data.city_id != null && data.city_id);
+
+    // Fix for amenities field
+    if (data.amenities != null) {
+      const amenitiesArray = data.amenities.map((id) => ({ id:id }));
+      formData.append("amenities", JSON.stringify(amenitiesArray));
+    }
+
+    // Fix for placeopen and placesocial fields
+    formData.append(
+      "placesocial",
+      data.placesocial != null && JSON.stringify(data.placesocial)
+    );
+    formData.append(
+      "placeopen",
+      data.placeopen != null && JSON.stringify(data.placeopen)
+    );
+
+    console.log(formData);
+    const url = `/api/admin/places/save/update`;
     api
-      .post(url, data)
+      .post(url, formData)
       .then((res) => {
         const data = res.data;
         if (data.status === "success") {
@@ -166,8 +240,8 @@ function CreatePlace() {
         <Row>
           <Col md="12">
             <Card>
-              <CardHeader className="d-flex justify-content-between align-items-center">
-                <CardTitle tag="h4">Create Place </CardTitle>
+              <CardHeader className="border-bottom">
+                <CardTitle tag="h3">Create Place </CardTitle>
               </CardHeader>
               <CardBody>
                 <form onSubmit={handleSubmit(onSubmit)}>
@@ -540,26 +614,106 @@ function CreatePlace() {
                     </div>
                   </div>
                   <div className="col-12">
-                    <p className="fs-4 mt-2 mb-0 text-muted">Booking Type</p>
+                    <p className="fs-4 mt-2 mb-0 text-muted">Media</p>
                   </div>
                   <div className="my-2 col-12">
-                    <div className="d-flex justify-content-between">
-                      <small className="text-muted">Booking Type</small>
+                    <small className="text-muted">Thumbnail Image :</small>
+                    <div className="col-md-3 rounded p-2 text-center position-relative">
+                      {thumbnailImgUrl ? (
+                        <>
+                          <BsIcons.BsX
+                            className="img-remove-btn"
+                            onClick={() => {
+                              removeThumImg();
+                            }}
+                          />
+                          <img
+                            src={thumbnailImgUrl}
+                            className="img-fluid img-thumbnail"
+                            style={{ height: "120px", maxWidth: "100%" }}
+                          />
+                        </>
+                      ) : (
+                        <>
+                          <img
+                            src="https://ionicframework.com/docs/img/demos/thumbnail.svg"
+                            className="img-fluid img-thumbnail"
+                            style={{ height: "120px", maxWidth: "100%" }}
+                          />
+                        </>
+                      )}
+                      <input
+                        type="file"
+                        className="image-input"
+                        {...register("thumb")}
+                        accept="image/jpeg, image/jpg, image/png, application/pdf"
+                        onChange={selectThumbnailImg}
+                      />
+                      {!thumbnailImgUrl && (
+                        <div>
+                          <label className="mt-2">Select Thumbnail Image</label>
+                        </div>
+                      )}
                     </div>
+                  </div>
+                  <div className="my-2 col-12">
+                    <small className="text-muted">Video :</small>
                     <input
-                      type="radio"
-                      {...register("booking_type")}
-                      value={'Affiliate Link Booking'}
+                      className="form-control"
+                      type="text"
+                      {...register("video")}
+                      placeholder="YouTube, Vimeo video url"
                     />
                   </div>
-                  <div className="col-12">
+                  <div className="col-12 mt-4">
                     <p className="fs-4 mt-2 mb-0 text-muted">Booking Type</p>
+                  </div>
+                  <div className="my-2 d-flex justify-content-start gap-5">
+                    <div className="d-flex justify-content-start gap-2">
+                      <small className="fs-5 text-muted">Booking Form</small>
+                      <input
+                        type="radio"
+                        {...register("booking_type")}
+                        value={"Booking Form"}
+                      />
+                    </div>
+                    <div className="d-flex justify-content-start gap-2">
+                      <small className="fs-5 text-muted">Contact Form</small>
+                      <input
+                        type="radio"
+                        {...register("booking_type")}
+                        value={"Contact Form"}
+                      />
+                    </div>{" "}
+                    <div className="d-flex justify-content-start gap-2">
+                      <small className="fs-5 text-muted">
+                        Affiliate Link Booking
+                      </small>
+                      <input
+                        type="radio"
+                        {...register("booking_type")}
+                        value={"Affiliate Link Booking"}
+                      />
+                    </div>
+                    <div className="d-flex justify-content-start gap-2">
+                      <small className="fs-5 text-muted">Banner Link</small>
+                      <input
+                        type="radio"
+                        {...register("booking_type")}
+                        value={"Banner Link"}
+                      />
+                    </div>
+                  </div>
+                  <div className="col-12">
+                    <p className="fs-6 mt-2 mb-0 text-muted">
+                      Booking Link(booking.com)
+                    </p>
                   </div>
                   <div className="my-2 col-12">
                     <input
                       className="form-control"
-                      type="number"
-                      {...register("booking_type")}
+                      type="text"
+                      {...register("link_bookingcom")}
                       placeholder="Enter Website"
                     />
                   </div>
