@@ -7,11 +7,12 @@ import * as BsIcons from "react-icons/bs";
 import api from "utility/api";
 import toast, { Toaster } from "react-hot-toast";
 import { Modal as antdModal } from "antd";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 const { confirm } = antdModal;
 
 function AllPlace() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [data, setData] = useState([]);
   const [header, setHeader] = useState([
     {
@@ -64,7 +65,7 @@ function AllPlace() {
   ]);
 
   const handleEdit = (id) => {
-    navigate("/update-place/" + id);
+    navigate("/admin/update-place/" + id);
   };
 
   const statusChange = (id, status) => {

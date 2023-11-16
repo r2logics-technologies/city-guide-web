@@ -6,6 +6,7 @@ import * as BsIcons from "react-icons/bs";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { Select } from "antd";
 import api from "utility/api";
+import { Link } from "react-router-dom";
 
 const Option = Select.Option;
 const { confirm } = antdModal;
@@ -724,9 +725,9 @@ function CreatePlace() {
                     >
                       Submit
                     </button>
-                    <p className="btn btn-outline-danger rounded-pill">
+                    <Link to='/admin/all-place'  className="btn btn-outline-danger rounded-pill">
                       Cancel
-                    </p>
+                    </Link>
                   </div>
                 </form>
               </CardBody>
