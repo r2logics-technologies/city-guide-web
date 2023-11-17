@@ -1,5 +1,6 @@
 import { logo } from 'assets/website/img'
 import React from 'react'
+import { Link, BrowserRouter as Router, Route } from 'react-router-dom'
 
 const Header = () => {
   return (
@@ -29,7 +30,7 @@ const Header = () => {
                                                     <a href="#" title="Demos">All Places</a>
                                                 </li>
                                                 <li>
-                                                    <a href="#" title="Listings">About Us</a>
+                                                    <Link to={'/about-us'}>About Us</Link>
                                                 </li>
                                                 <li>
                                                     <a title="Page" href="#">Contact Us</a>
@@ -41,7 +42,7 @@ const Header = () => {
                                 </div>
                             </div>
                             <div className="site__brand">
-                                <a title="Logo" href="home-restaurant.html" className="site__brand__logo"><img src={logo} alt="Golo" /></a>
+                                <Link to={'/'} className="site__brand__logo"><img src={logo} alt="Golo" /></Link>
                             </div>
                             
                         </div>
@@ -54,15 +55,15 @@ const Header = () => {
                                         <a href="#" title="Demos">All Places</a>
                                     </li>
                                     <li>
-                                        <a href="#" title="Listings">About Us</a>
+                                        <Link to={'/about-us'}>About Us</Link>
                                     </li>
                                     <li>
-                                        <a title="Page" href="#">Contact Us</a>
+                                        <Link to={'/contact-us'}>Contact Us</Link>
                                     </li>
                                 </ul>
                             </nav>
                             <div className="right-header__login">
-                                <a title="Login" className="open-login" href="#">Login</a>
+                                <Link to={'/login'}>Login</Link>
                             </div>
                             <div className="popup popup-form">
                                 <a title="Close" href="#" className="popup__close">
@@ -91,7 +92,7 @@ const Header = () => {
                                             <input type="password" placeholder="Password" value="" name="password" />
                                         </div>
                                         <div className="field-check">
-                                            <label for="accept">
+                                            <label htmlFor="accept">
                                                 <input type="checkbox" id="accept" value="" />
                                                 Accept the <a title="Terms" href="#">Terms</a> and <a title="Privacy Policy" href="#">Privacy Policy</a>
                                                 <span className="checkmark">

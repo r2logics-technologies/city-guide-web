@@ -1,7 +1,30 @@
-import React from 'react'
-import { bg_1 } from 'assets/website/img';
-import { tokyo } from 'assets/website/img';
+import React, { useEffect, useState } from 'react'
+import api from 'utility/api';
+import apiService from 'utility/apiService';
+import { bg_1, tokyo, barca, new_work, paris, amsterdam, singapo, sydney, angeles, bg_app, app_store, google_play, thumb_1, thumb_5, thumb_8 } from 'assets/website/img';
+import { Link } from 'react-router-dom';
 const Home = () => {
+    const [cities, setCities] = useState([]);
+    const fetchData = () => {
+        let url = "/api/website";
+        api
+            .get(url)
+            .then((res) => {
+                const data = res.data;
+                if (data.status === "success") {
+                    setCities(data.cities);
+                } else {
+                    console.log('error', data.message);
+                }
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
     return (
         <div>
             <div id="wrapper">
@@ -53,25 +76,28 @@ const Home = () => {
                             <h2 className="cities__title title offset-item">Popular cities</h2>
                             <div className="cities__content offset-item">
                                 <div className="row">
-                                    <div className="col-lg-3 col-sm-6">
-                                        <div className="cities__item hover__box">
-                                            <div className="cities__thumb hover__box__thumb">
-                                                <a title="London" href="city-details-3.html">
-                                                    <img src={tokyo} alt="Tokyo" />
-                                                </a>
-                                            </div>
-                                            <h4 className="cities__name">Japan</h4>
-                                            <div className="cities__info">
-                                                <h3 className="cities__capital">Tokyo</h3>
-                                                <p className="cities__number">80 places</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-lg-3 col-sm-6">
+                                    {cities?.map((city) => {
+                                        return (
+                                            <div className="col-lg-3 col-sm-6" >
+                                                <div className="cities__item hover__box">
+                                                    <div className="cities__thumb hover__box__thumb">
+                                                        <Link title={city.country_name} to={`/city-details/${city.id}`}>
+                                                            <img src={apiService.ledgerUrl+city.thumb} alt={city.name} />
+                                                        </Link>
+                                                    </div>
+                                                    <h4 className="cities__name">{city.country_name}</h4>
+                                                    <div className="cities__info">
+                                                        <h3 className="cities__capital">{city.name}</h3>
+                                                        <p className="cities__number">{city.total_place} places</p>
+                                                    </div>
+                                                </div>
+                                            </div>)
+                                    })}
+                                    {/* <div className="col-lg-3 col-sm-6">
                                         <div className="cities__item hover__box">
                                             <div className="cities__thumb hover__box__thumb">
                                                 <a title="Barca" href="city-details-3.html">
-                                                    <img src="./../../assets/website/img/barca.jpeg" alt="Barca" />
+                                                    <img src={barca} alt="Barca" />
                                                 </a>
                                             </div>
                                             <h4 className="cities__name">Spain</h4>
@@ -85,7 +111,7 @@ const Home = () => {
                                         <div className="cities__item hover__box">
                                             <div className="cities__thumb hover__box__thumb">
                                                 <a title="New York" href="city-details-3.html">
-                                                    <img src="../../../assets/img/newyork.jpg" alt="New York" />
+                                                    <img src={new_work} alt="New York" />
                                                 </a>
                                             </div>
                                             <h4 className="cities__name">United States</h4>
@@ -99,7 +125,7 @@ const Home = () => {
                                         <div className="cities__item hover__box">
                                             <div className="cities__thumb hover__box__thumb">
                                                 <a title="Paris" href="city-details-3.html">
-                                                    <img src="assets/img/paris.jpg" alt="Paris" />
+                                                    <img src={paris} alt="Paris" />
                                                 </a>
                                             </div>
                                             <h4 className="cities__name">France</h4>
@@ -113,7 +139,7 @@ const Home = () => {
                                         <div className="cities__item hover__box">
                                             <div className="cities__thumb hover__box__thumb">
                                                 <a title="Amsterdam" href="city-details-3.html">
-                                                    <img src="assets/img/amsterdam.jpg" alt="Amsterdam" />
+                                                    <img src={amsterdam} alt="Amsterdam" />
                                                 </a>
                                             </div>
                                             <h4 className="cities__name">Netherlands</h4>
@@ -127,7 +153,7 @@ const Home = () => {
                                         <div className="cities__item hover__box">
                                             <div className="cities__thumb hover__box__thumb">
                                                 <a title="Singapo" href="city-details-3.html">
-                                                    <img src="assets/img/singapo.jpg" alt="Singapo" />
+                                                    <img src={singapo} alt="Singapo" />
                                                 </a>
                                             </div>
                                             <h4 className="cities__name">Singapo</h4>
@@ -141,7 +167,7 @@ const Home = () => {
                                         <div className="cities__item hover__box">
                                             <div className="cities__thumb hover__box__thumb">
                                                 <a title="Sydney" href="city-details-3.html">
-                                                    <img src="assets/img/sydney.jpg" alt="Sydney" />
+                                                    <img src={sydney} alt="Sydney" />
                                                 </a>
                                             </div>
                                             <h4 className="cities__name">Australia</h4>
@@ -155,7 +181,7 @@ const Home = () => {
                                         <div className="cities__item hover__box">
                                             <div className="cities__thumb hover__box__thumb">
                                                 <a title="angeles" href="city-details-3.html">
-                                                    <img src="assets/img/angeles.jpeg" alt="angeles" />
+                                                    <img src={angeles} alt="angeles" />
                                                 </a>
                                             </div>
                                             <h4 className="cities__name">United States</h4>
@@ -164,20 +190,20 @@ const Home = () => {
                                                 <p className="cities__number">44 places</p>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> */}
 
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div className="banner-apps" style={{ backgroundImage: "url(assets/img/bg-app-1.jpg)" }}>
+                    <div className="banner-apps" style={{ backgroundImage: `url(${bg_app})` }}>
                         <div className="container">
                             <div className="banner-apps__content">
                                 <h2 className="banner-apps__title offset-item">Get the App</h2>
                                 <p className="banner-apps__desc offset-item">Download the app and go to travel the world.</p>
                                 <div className="banner-apps__download offset-item">
-                                    <a title="App Store" href="#" className="banner-apps__download__iphone"><img src="assets/img/app-store.png" alt="App Store" /></a>
-                                    <a title="Google Play" href="#" className="banner-apps__download__android"><img src="assets/img/google-play.png" alt="Google Play" /></a>
+                                    <a title="App Store" href="#" className="banner-apps__download__iphone"><img src={app_store} alt="App Store" /></a>
+                                    <a title="Google Play" href="#" className="banner-apps__download__android"><img src={google_play} alt="Google Play" /></a>
                                 </div>
                             </div>
                         </div>
@@ -196,7 +222,7 @@ const Home = () => {
                                     <div className="col-md-4">
                                         <article className="post hover__box">
                                             <div className="post__thumb hover__box__thumb">
-                                                <a title="The 8 Most Affordable Michelin Restaurants in Paris" href="blog-detail.html"><img src="assets/img/thumb-01.jpg" alt="The 8 Most Affordable Michelin Restaurants in Paris" /></a>
+                                                <a title="The 8 Most Affordable Michelin Restaurants in Paris" href="blog-detail.html"><img src={thumb_1} alt="The 8 Most Affordable Michelin Restaurants in Paris" /></a>
                                             </div>
                                             <div className="post__info">
                                                 <ul className="post__category">
@@ -210,7 +236,7 @@ const Home = () => {
                                     <div className="col-md-4">
                                         <article className="post hover__box">
                                             <div className="post__thumb hover__box__thumb">
-                                                <a title="The 7 Best Restaurants to Try Kobe Beef in London" href="blog-detail.html"><img src="assets/img/thumb-05.jpg" alt="The 7 Best Restaurants to Try Kobe Beef in London" /></a>
+                                                <a title="The 7 Best Restaurants to Try Kobe Beef in London" href="blog-detail.html"><img src={thumb_5} alt="The 7 Best Restaurants to Try Kobe Beef in London" /></a>
                                             </div>
                                             <div className="post__info">
                                                 <ul className="post__category">
@@ -224,7 +250,7 @@ const Home = () => {
                                     <div className="col-md-4">
                                         <article className="post hover__box">
                                             <div className="post__thumb hover__box__thumb">
-                                                <a title="The 8 Most Affordable Michelin Restaurants in Paris" href="blog-detail.html"><img src="assets/img/thumb-08.jpg" alt="The 8 Most Affordable Michelin Restaurants in Paris" /></a>
+                                                <a title="The 8 Most Affordable Michelin Restaurants in Paris" href="blog-detail.html"><img src={thumb_8} alt="The 8 Most Affordable Michelin Restaurants in Paris" /></a>
                                             </div>
                                             <div className="post__info">
                                                 <ul className="post__category">

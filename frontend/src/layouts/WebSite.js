@@ -7,13 +7,21 @@ import { Route, Routes } from 'react-router-dom';
 import Home from 'views/website/Home';
 import Header from 'views/website/layouts/Header';
 import Footer from 'views/website/layouts/Footer';
+import About from 'views/website/pages/About';
+import Contact from 'views/website/pages/Contact';
+import Login from 'views/auth/Login';
+import CityDetails from 'views/website/pages/CityDetails';
 
 const WebSite = () => {
   return (
     <div>
       <Header />
       <Routes>
-        <Route exact path='/' Component={Home} />
+        <Route path='/' exact element={<Home />} />
+        <Route path='/city-details/:id' element={<CityDetails />} />
+        <Route path='/about-us' element={<About />} />
+        <Route path='/contact-us' element={<Contact />} />
+        <Route path='/login' element={<Login />} />
       </Routes>
       <Footer />
     </div>

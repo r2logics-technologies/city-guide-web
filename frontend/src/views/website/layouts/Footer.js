@@ -4,7 +4,7 @@ import React from 'react'
 const Footer = () => {
   return (
     <div>
-        <footer id="footer" className="footer">
+        <footer id="footer" className="footer-web">
 			<div className="container">
 				<div className="footer__top">
 					<div className="row">
@@ -72,7 +72,7 @@ const Footer = () => {
 					</div>
 				</div>
 				<div className="footer__bottom">
-					<p className="footer__bottom__copyright">2020 &copy; <a title="Uxper Team" href="#">uxper.co</a>. All rights reserved.</p>
+					<p className="footer__bottom__copyright">2023 &copy; <a title="Uxper Team" href="https://r2logics.com/" target='_blank'>R2Logics</a>. All rights reserved.</p>
 				</div>
 			</div>
 		</footer>
