@@ -6,14 +6,15 @@ import * as BsIcons from "react-icons/bs";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { Select } from "antd";
 import api from "utility/api";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const Option = Select.Option;
 const { confirm } = antdModal;
 
 
 function EditPlace() {
-  
+  const params = useParams();
+    const placeId = params.id;
   const [thumbnailImgUrl, setthumbnailImgUrl] = useState("");
 
   const selectThumbnailImg = (event) => {
@@ -158,6 +159,27 @@ function EditPlace() {
         console.error(err);
       });
   };
+
+
+  const fetchHubData = async () => {
+    try {
+        const response = await api.get(`/${placeId}`);
+        const data = response.data;
+        setValue('hubId', data.moeving_hub_id);
+        if (data.expenses && data.expenses.length > 0) {
+            setValue('expenses', data.expenses);
+        } else {
+            setValue('expenses', [
+                {
+                    expense_type: '',
+                    expense_amount: '',
+                },
+            ]);
+        }
+    } catch (error) {
+        console.log('Error fetching hub data:', error);
+    }
+};
 
   const onSubmit = async (data) => {
     console.log(data);

@@ -1,8 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=AR+One+Sans&family=Comfortaa:wght@300&family=Griffy&family=Indie+Flower&family=Libre+Baskerville:wght@700&family=Pixelify+Sans&family=Poppins:wght@300&display=swap');
 
-body {
+.login-page {
   background: url(../../assets/img/login.jpg) no-repeat ;
   background-size: 100vw 100vh;
+  height: 100vh;
+  position: fixed;
 }
 
 .text-griffy {
