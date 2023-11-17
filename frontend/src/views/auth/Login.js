@@ -51,7 +51,7 @@ function Login() {
   return (
     <div className="container-fluid login-page">
       <Toaster />
-      <div className="card-glass row p-5 w-75 m-auto mt-6">
+      <div className="card-glass row p-5 w-75 m-auto">
         <div className="col-md-6 d-none d-md-block border-end">
           <img className="img-fluid" src={loginImg} />
         </div>

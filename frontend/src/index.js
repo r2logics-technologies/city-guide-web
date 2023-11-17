@@ -13,6 +13,7 @@ import AdminLayout from "layouts/Admin.js";
 import Login from "views/auth/Login";
 import { AuthProvider } from "./context/auth";
 import PrivateRoute from "components/routes/Private";
+import WebSite from "layouts/WebSite";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
@@ -20,8 +21,9 @@ root.render(
     <React.StrictMode>
       <BrowserRouter>
         <Routes>
+          <Route path="/" element={<WebSite />} />
           <Route path="/" element={<PrivateRoute />}>
-            <Route path="/admin/*" element={<AdminLayout />} />
+            <Route exact path="/admin/*" element={<AdminLayout />} />
           </Route>
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<Navigate to="/admin/dashboard" replace />} />
