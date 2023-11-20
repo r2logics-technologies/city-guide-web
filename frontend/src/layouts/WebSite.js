@@ -1,5 +1,6 @@
 import React from 'react'
 import "../assets/website/css/stylesheet.css";
+import "../assets/website/css/fontawesome.css";
 import "../assets/website/css/style.css";
 import "../assets/website/css/responsive.css";
 
@@ -11,6 +12,7 @@ import About from 'views/website/pages/About';
 import Contact from 'views/website/pages/Contact';
 import Login from 'views/auth/Login';
 import CityDetails from 'views/website/pages/CityDetails';
+import PlaceDetails from 'views/website/pages/PlaceDetails';
 
 const WebSite = () => {
   return (
@@ -19,6 +21,7 @@ const WebSite = () => {
       <Routes>
         <Route path='/' exact element={<Home />} />
         <Route path='/city-details/:id' element={<CityDetails />} />
+        <Route path='/place-details/:id' element={<PlaceDetails />} />
         <Route path='/about-us' element={<About />} />
         <Route path='/contact-us' element={<Contact />} />
         <Route path='/login' element={<Login />} />
