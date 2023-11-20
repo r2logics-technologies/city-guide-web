@@ -1,80 +1,87 @@
-import Dashboard from "views/admin/dashboard/Dashboard.js";
-import Countries from "views/admin/countries/Countries.js";
-import Cities from "views/admin/cities/Cities";
-import Categories from "views/admin/categories/Categories";
-import PlaceTypes from "views/admin/placetypes/Types";
-import Amenities from "views/admin/amenities/Amenities";
-import ListPlace from "views/admin/place/ListPlace";
-import FormPlace from "views/admin/place/FormPlace";
+import * as BiIcons from "react-icons/bi";
 
 var routes = [
   {
     path: "/dashboard",
     name: "Dashboard",
-    icon: "nc-icon nc-layout-11",
-    component: <Dashboard />,
-    layout: "/admin",
-    show: true,
+    icon: <BiIcons.BiSolidDashboard className="side-bar-icon" />,
   },
   {
-    path: "/countries",
-    name: "Countries",
-    icon: "nc-icon nc-istanbul",
-    component: <Countries />,
-    layout: "/admin",
-    show: true,
-  },
-  {
-    path: "/cities",
-    name: "Cities",
-    icon: "nc-icon nc-shop",
-    component: <Cities />,
-    layout: "/admin",
-    show: true,
-  },
-  {
-    path: "/categories",
-    name: "Categories",
-    icon: "nc-icon nc-bullet-list-67",
-    component: <Categories />,
-    layout: "/admin",
-    show: true,
-  },
-  {
-    path: "/placetypes",
-    name: "Place Types",
-    icon: "nc-icon nc-bank",
-    component: <PlaceTypes />,
-    layout: "/admin",
-    show: true,
-  },
-  {
-    path: "/amenities",
-    name: "Amenities",
-    icon: "nc-icon nc-sun-fog-29",
-    component: <Amenities />,
-    layout: "/admin",
-    show: true,
-  },
-  {
-    path: "/all-place",
     name: "Place",
-    icon: "nc-icon nc-pin-3",
-    component: <ListPlace />,
-    layout: "/admin",
-    show: true,
+    icon: <BiIcons.BiLocationPlus className="side-bar-icon" />,
+    subMenu: [
+      {
+        path: "/countries",
+        name: "Countries",
+        icon: <BiIcons.BiGlobeAlt className="side-bar-icon" />,
+      },
+      {
+        path: "/cities",
+        name: "Cities",
+        icon: <BiIcons.BiSolidCity className="side-bar-icon" />,
+      },
+      {
+        path: "/categories",
+        name: "Categories",
+        icon: <BiIcons.BiCategoryAlt className="side-bar-icon" />,
+      },
+      {
+        path: "/placetypes",
+        name: "Place Types",
+        icon: <BiIcons.BiPurchaseTag className="side-bar-icon" />,
+      },
+      {
+        path: "/amenities",
+        name: "Amenities",
+        icon: <BiIcons.BiWifi className="side-bar-icon" />,
+      },
+      {
+        path: "/place",
+        name: "All Place",
+        icon: <BiIcons.BiLocationPlus className="side-bar-icon" />,
+      },
+    ],
   },
   {
-    path: "/create-place",
-    component: <FormPlace />,
-    layout: "/admin",
-    show: false,
+    name: "Blog",
+    icon: <BiIcons.BiFoodMenu className="side-bar-icon" />,
+    subMenu: [
+      {
+        path: "/all-posts",
+        name: "All Posts",
+        icon: <BiIcons.BiLayout  className="side-bar-icon" />,
+      },
+      {
+        path: "/blog-categories",
+        name: "Categories",
+        icon: <BiIcons.BiGridAlt className="side-bar-icon" />,
+      },
+    ],
   },
   {
-    path: "/edit-place/:id",
-    component: <FormPlace />,
-    layout: "/admin",
-    show: false,
+    path: "/pages",
+    name: "Pages",
+    icon: <BiIcons.BiLayer className="side-bar-icon" />,
+  },
+  {
+    path: "/bookings",
+    name: "Bookings",
+    icon: <BiIcons.BiCalendarCheck  className="side-bar-icon" />,
+  },
+  {
+    path: "/reviews",
+    name: "Reviews",
+    icon: <BiIcons.BiSolidStarHalf  className="side-bar-icon" />,
+  },
+  {
+    path: "/users",
+    name: "Users",
+    icon: <BiIcons.BiSolidUserDetail className="side-bar-icon" />,
+  },
+  {
+    path: "/settings",
+    name: "Settings",
+    icon: <BiIcons.BiCog className="side-bar-icon" />,
   },
 ];
 export default routes;

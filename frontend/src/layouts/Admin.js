@@ -14,9 +14,19 @@ import Sidebar from "components/Sidebar/Sidebar.js";
 import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
 import routes from "routes.js";
 
+import Dashboard from "views/admin/dashboard/Dashboard.js";
+import Countries from "views/admin/countries/Countries.js";
+import Cities from "views/admin/cities/Cities";
+import Categories from "views/admin/categories/Categories";
+import PlaceTypes from "views/admin/placetypes/Types";
+import Amenities from "views/admin/amenities/Amenities";
+import ListPlace from "views/admin/place/ListPlace";
+import FormPlace from "views/admin/place/FormPlace";
+import Profile from "views/admin/profile/Profile";
+
 var ps;
 
-function Dashboard(props) {
+function AdminLayout(props) {
   const [backgroundColor, setBackgroundColor] = React.useState("white");
   const [activeColor, setActiveColor] = React.useState("success");
   const mainPanel = React.useRef();
@@ -54,16 +64,16 @@ function Dashboard(props) {
       <div className="main-panel" ref={mainPanel}>
         <Navbar {...props} />
         <Routes>
-          {routes.map((prop, key) => {
-            return (
-              <Route
-                path={prop.path}
-                element={prop.component}
-                key={key}
-                exact
-              />
-            );
-          })}
+          <Route path="/dashboard" element={<Dashboard />} exact />
+          <Route path="/profile" element={<Profile />} exact />
+          <Route path="/countries" element={<Countries />} exact />
+          <Route path="/cities" element={<Cities />} exact />
+          <Route path="/categories" element={<Categories />} exact />
+          <Route path="/placetypes" element={<PlaceTypes />} exact />
+          <Route path="/amenities" element={<Amenities />} exact />
+          <Route path="/place" element={<ListPlace />} exact />
+          <Route path="/create-place" element={<FormPlace />} exact />
+          <Route path="/edit-place/:id" element={<FormPlace />} />
         </Routes>
         <Footer fluid />
       </div>
@@ -77,4 +87,4 @@ function Dashboard(props) {
   );
 }
 
-export default Dashboard;
+export default AdminLayout;

@@ -138,7 +138,7 @@ function Header(props) {
               <span className="navbar-toggler-bar bar3" />
             </button>
           </div>
-          <NavbarBrand >{getBrand()}</NavbarBrand>
+          <NavbarBrand>{getBrand()}</NavbarBrand>
         </div>
         <NavbarToggler onClick={toggle}>
           <span className="navbar-toggler-bar navbar-kebab" />
@@ -177,10 +177,12 @@ function Header(props) {
                 </p>
               </DropdownToggle>
               <DropdownMenu right>
-                <DropdownItem className="justify-content-evenly d-flex align-items-center">
-                  <AiOutlineUser />
-                  <span>Profile</span>
-                </DropdownItem>
+                <Link to="/admin/profile">
+                  <DropdownItem className="justify-content-evenly d-flex align-items-center">
+                    <AiOutlineUser />
+                    <span>Profile</span>
+                  </DropdownItem>
+                </Link>
                 <DropdownItem
                   onClick={showConfirm}
                   className="justify-content-evenly d-flex align-items-center"

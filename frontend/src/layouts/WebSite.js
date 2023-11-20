@@ -21,7 +21,6 @@ const WebSite = () => {
         <Route path='/city-details/:id' element={<CityDetails />} />
         <Route path='/about-us' element={<About />} />
         <Route path='/contact-us' element={<Contact />} />
-        <Route path='/login' element={<Login />} />
       </Routes>
       <Footer />
     </div>

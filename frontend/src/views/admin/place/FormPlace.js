@@ -90,7 +90,7 @@ function FormPlace() {
   }, []);
 
   useEffect(() => {
-    fetchPlaceData();
+    if(placeId)fetchPlaceData(placeId);
   }, [placeId]);
 
   const fetchCountriesData = () => {
@@ -163,8 +163,8 @@ function FormPlace() {
         console.error(err);
       });
   };
-  const fetchPlaceData = async () => {
-    let url = `/api/admin/place/${placeId}`;
+  const fetchPlaceData = (id) => {
+    let url = `/api/admin/place/${id}`;
     api
       .get(url)
       .then((res) => {
@@ -215,7 +215,7 @@ function FormPlace() {
       formData.append("edited", placeId);
     }
     formData.append("name", data.name != null && data.name);
-    formData.append("thumb", data.thumb[0] != null && data.thumb[0]);    
+    formData.append("thumb", data.thumb[0] != null && data.thumb[0]);
     formData.append(
       "price_range",
       data.price_range != null && data.price_range

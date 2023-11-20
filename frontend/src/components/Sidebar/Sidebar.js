@@ -5,6 +5,7 @@ import { Nav } from "reactstrap";
 import PerfectScrollbar from "perfect-scrollbar";
 
 import logo from "../../assets/img/admin.png";
+import { ProSidebarProvider, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 
 var ps;
 
@@ -28,6 +29,35 @@ function Sidebar(props) {
       }
     };
   });
+
+  const renderMenuItems = (items) => {
+    return items.map((item, key) => {
+      if (item.subMenu) {
+        return (
+          <SubMenu
+            key={key}
+            title={item.name}
+            className={activeRoute(props.path)}
+            icon={item.icon}
+          >
+            {renderMenuItems(item.subMenu)}
+          </SubMenu>
+        );
+      } else {
+        return (
+          <MenuItem
+            className={activeRoute(item.path)}
+            component={<Link to={"/admin" + item.path} className="link" />}
+            key={key}
+            icon={item.icon}
+          >
+            {item.name}
+          </MenuItem>
+        );
+      }
+    });
+  };
+
   return (
     <div
       className="sidebar"
@@ -45,21 +75,28 @@ function Sidebar(props) {
         </Link>
       </div>
       <div className="sidebar-wrapper" ref={sidebar}>
-        <Nav>
-          {props.routes.map((prop, key) => {
-            return (
-              <li
-                className={prop.show ? activeRoute(prop.path) : " d-none"}
-                key={key}
-              >
-                <NavLink to={prop.layout + prop.path} className="nav-NavLink">
-                  <i className={prop.icon} />
-                  <p>{prop.name}</p>
-                </NavLink>
-              </li>
-            );
-          })}
-        </Nav>
+        <ProSidebarProvider>
+          <Menu iconShape="square">
+            {props.routes.map((item, key) => {
+              return item.subMenu ? (
+                <SubMenu key={key} label={item.name} icon={item.icon}>
+                  {renderMenuItems(item.subMenu)}
+                </SubMenu>
+              ) : (
+                <MenuItem
+                  className={activeRoute(item.path)}
+                  component={
+                    <Link to={"/admin" + item.path} className="link" />
+                  }
+                  key={key}
+                  icon={item.icon}
+                >
+                  {item.name}
+                </MenuItem>
+              );
+            })}
+          </Menu>
+        </ProSidebarProvider>
       </div>
     </div>
   );
