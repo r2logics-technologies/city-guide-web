@@ -4,9 +4,8 @@ import Cities from "views/admin/cities/Cities";
 import Categories from "views/admin/categories/Categories";
 import PlaceTypes from "views/admin/placetypes/Types";
 import Amenities from "views/admin/amenities/Amenities";
-import AllPlace from "views/admin/place/AllPlace";
-import EditPlace from "views/admin/place/EditPlace";
-import CreatePlace from "views/admin/place/CreatePlace";
+import ListPlace from "views/admin/place/ListPlace";
+import FormPlace from "views/admin/place/FormPlace";
 
 var routes = [
   {
@@ -59,23 +58,21 @@ var routes = [
   },
   {
     path: "/all-place",
-    name: "All Place",
+    name: "Place",
     icon: "nc-icon nc-pin-3",
-    component: <AllPlace />,
+    component: <ListPlace />,
     layout: "/admin",
     show: true,
   },
   {
     path: "/create-place",
-    name: "Create Place",
-    component: <CreatePlace />,
+    component: <FormPlace />,
     layout: "/admin",
     show: false,
   },
   {
-    path: "/update-place/:id",
-    name: "Update Place",
-    component: <EditPlace />,
+    path: "/edit-place/:id",
+    component: <FormPlace />,
     layout: "/admin",
     show: false,
   },

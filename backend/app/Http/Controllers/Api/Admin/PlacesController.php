@@ -32,6 +32,25 @@ class PlacesController extends Controller
             'amenities' => null,
         ]);
     }
+    public function getSpecificData($id)
+    {
+        $place = Place::find($id);
+        if ($place) {
+            return response([
+                'status' => 'success',
+                'message' => '',
+                'status_code' => 200,
+                'place' => new PlaceResource($place),
+            ]);
+        }
+
+        return response([
+            'status' => 'warning',
+            'status_code' => 500,
+            'message' => 'No place found.',
+            'amenities' => null,
+        ]);
+    }
 
     public function submitData(Request $request)
     {
@@ -55,7 +74,20 @@ class PlacesController extends Controller
 
             $create = Place::create($data);
             if ($create) {
-                if ($request->amenities != '') {
+                if (is_string($request->amenities)) {
+                    $amenitiesArray = json_decode($request->amenities, true);
+                    if (is_array($amenitiesArray)) {
+                        foreach ($amenitiesArray as $key => $value) {
+                            if ($value != null) {
+                                PlaceAmenities::create([
+                                    'user_id' => $auth,
+                                    'place_id' => $create->id,
+                                    'amenities_id' => $value['id'],
+                                ]);
+                            }
+                        }
+                    }
+                } else {
                     foreach ($request->amenities as $key => $value) {
                         if ($value != null) {
                             PlaceAmenities::create([
@@ -66,7 +98,21 @@ class PlacesController extends Controller
                         }
                     }
                 }
-                if ($request->placeopen != '') {
+                if (is_string($request->placeopen)) {
+                    $placeopenArray = json_decode($request->placeopen, true);
+                    if (is_array($placeopenArray)) {
+                        foreach ($placeopenArray as $key => $open_value) {
+                            if ($open_value != null) {
+                                PlaceOpen::create([
+                                    'user_id' => $auth,
+                                    'place_id' => $create->id,
+                                    'day' => $open_value['day'],
+                                    'time' => $open_value['time'],
+                                ]);
+                            }
+                        }
+                    }
+                } else {
                     foreach ($request->placeopen as $key => $open_value) {
                         if ($open_value != null) {
                             PlaceOpen::create([
@@ -78,7 +124,21 @@ class PlacesController extends Controller
                         }
                     }
                 }
-                if ($request->placesocial != '') {
+                if (is_string($request->placesocial)) {
+                    $placesocialArray = json_decode($request->placesocial, true);
+                    if (is_array($placesocialArray)) {
+                        foreach ($placesocialArray as $key => $place_value) {
+                            if ($place_value != null) {
+                                PlaceSocial::create([
+                                    'user_id' => $auth,
+                                    'place_id' => $create->id,
+                                    'social_type' => $place_value['social_type'],
+                                    'social_url' => $place_value['social_url'],
+                                ]);
+                            }
+                        }
+                    }
+                } else {
                     foreach ($request->placesocial as $key => $place_value) {
                         if ($place_value != null) {
                             PlaceSocial::create([
@@ -129,8 +189,21 @@ class PlacesController extends Controller
             $update = $place->update($data);
             if ($update) {
                 $update = Place::find($request->edited);
-                if ($request->amenities != '') {
-                    foreach ($request->amenities as $key => $value) {
+                if (is_string($request->amenities)) {
+                    $amenitiesArray = json_decode($request->amenities, true);
+                    if (is_array($amenitiesArray)) {
+                        foreach ($amenitiesArray as $key => $value) {
+                            if ($value != null) {
+                                PlaceAmenities::create([
+                                    'user_id' => $auth,
+                                    'place_id' => $place->id,
+                                    'amenities_id' => $value['id'],
+                                ]);
+                            }
+                        }
+                    }
+                } else {
+                    foreach (json_decode($request->amenities, true) as $key => $value) {
                         if ($value != null) {
                             PlaceAmenities::create([
                                 'user_id' => $auth,
@@ -140,7 +213,21 @@ class PlacesController extends Controller
                         }
                     }
                 }
-                if ($request->placeopen != '') {
+                if (is_string($request->placeopen)) {
+                    $placeopenArray = json_decode($request->placeopen, true);
+                    if (is_array($placeopenArray)) {
+                        foreach ($placeopenArray as $key => $open_value) {
+                            if ($open_value != null) {
+                                PlaceOpen::create([
+                                    'user_id' => $auth,
+                                    'place_id' => $place->id,
+                                    'day' => $open_value['day'],
+                                    'time' => $open_value['time'],
+                                ]);
+                            }
+                        }
+                    }
+                } else {
                     foreach ($request->placeopen as $key => $open_value) {
                         if ($open_value != null) {
                             PlaceOpen::create([
@@ -152,7 +239,21 @@ class PlacesController extends Controller
                         }
                     }
                 }
-                if ($request->placesocial != '') {
+                if (is_string($request->placesocial)) {
+                    $placesocialArray = json_decode($request->placesocial, true);
+                    if (is_array($placesocialArray)) {
+                        foreach ($placesocialArray as $key => $place_value) {
+                            if ($place_value != null) {
+                                PlaceSocial::create([
+                                    'user_id' => $auth,
+                                    'place_id' => $place->id,
+                                    'social_type' => $place_value['social_type'],
+                                    'social_url' => $place_value['social_url'],
+                                ]);
+                            }
+                        }
+                    }
+                } else {
                     foreach ($request->placesocial as $key => $place_value) {
                         if ($place_value != null) {
                             PlaceSocial::create([

@@ -73,11 +73,13 @@ Route::group(['prefix' => '/admin', 'middleware' => ['auth:sanctum']], function 
     });
 
     //Places
+    Route::get('/place/{id}', [PlacesController::class, 'getSpecificData']);
     Route::prefix('places')->group(function () {
         Route::get('/', [PlacesController::class, 'getData']);
         Route::post('/save/update', [PlacesController::class, 'submitData']);
         Route::post('/change/status/{place}', [PlacesController::class, 'changeStatusData']);
     });
+
 });
 
 //Website

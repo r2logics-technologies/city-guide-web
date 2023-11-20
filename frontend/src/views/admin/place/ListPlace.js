@@ -10,7 +10,7 @@ import { Modal as antdModal } from "antd";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 const { confirm } = antdModal;
 
-function AllPlace() {
+function ListPlace() {
   const navigate = useNavigate();
   const location = useLocation();
   const [data, setData] = useState([]);
@@ -65,12 +65,12 @@ function AllPlace() {
   ]);
 
   const handleEdit = (id) => {
-    navigate("/admin/update-place/" + id);
+    navigate("/admin/edit-place/" + id);
   };
 
   const statusChange = (id, status) => {
     api
-      .post(`/api/admin/placetypes/change/status/${id}`, { status: status })
+      .post(`/api/admin/places/change/status/${id}`, { status: status })
       .then((res) => {
         const data = res.data;
         if (data.status === "success") {
@@ -152,4 +152,4 @@ function AllPlace() {
   );
 }
 
-export default AllPlace;
+export default ListPlace;

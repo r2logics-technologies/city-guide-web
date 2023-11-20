@@ -7,14 +7,14 @@ import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { Select } from "antd";
 import api from "utility/api";
 import { Link, useParams } from "react-router-dom";
+import apiService from "utility/apiService";
 
 const Option = Select.Option;
 const { confirm } = antdModal;
 
-
-function EditPlace() {
+function FormPlace() {
   const params = useParams();
-    const placeId = params.id;
+  const placeId = params.id;
   const [thumbnailImgUrl, setthumbnailImgUrl] = useState("");
 
   const selectThumbnailImg = (event) => {
@@ -89,6 +89,10 @@ function EditPlace() {
     fetchAmenitiesData();
   }, []);
 
+  useEffect(() => {
+    fetchPlaceData();
+  }, [placeId]);
+
   const fetchCountriesData = () => {
     let url = "/api/admin/countries";
     api
@@ -159,41 +163,59 @@ function EditPlace() {
         console.error(err);
       });
   };
-
-
-  const fetchHubData = async () => {
-    try {
-        const response = await api.get(`/${placeId}`);
-        const data = response.data;
-        setValue('hubId', data.moeving_hub_id);
-        if (data.expenses && data.expenses.length > 0) {
-            setValue('expenses', data.expenses);
+  const fetchPlaceData = async () => {
+    let url = `/api/admin/place/${placeId}`;
+    api
+      .get(url)
+      .then((res) => {
+        const data = res.data;
+        console.log(data);
+        if (data.status === "success") {
+          const place = data.place;
+          setValue("name", place.name);
+          setValue("price_range", place.price_range);
+          setValue("description", place.description);
+          setValue("address", place.address);
+          setValue("email", place.email);
+          setValue("phone_number", place.phone_number);
+          setValue("website", place.website);
+          setValue("video", place.video);
+          setValue("booking_type", place.booking_type);
+          setValue("link_bookingcom", place.link_bookingcom);
+          setValue("category", place.category);
+          setValue("place_type", place.place_type);
+          setValue("country_id", place.country_id);
+          setValue("city_id", place.city_id);
+          if (place.amenities && place.amenities.length > 0) {
+            setValue(
+              "amenities",
+              place.amenities.map((amenity) => String(amenity.amenities_id))
+            );
+          }
+          if (place.placesocials && place.placesocials.length > 0) {
+            setValue("placesocial", place.placesocials);
+          }
+          if (place.placeopens && place.placeopens.length > 0) {
+            setValue("placeopen", place.placeopens);
+          }
+          setthumbnailImgUrl(apiService.ledgerUrl + place.thumb);
         } else {
-            setValue('expenses', [
-                {
-                    expense_type: '',
-                    expense_amount: '',
-                },
-            ]);
+          toast(data.message);
         }
-    } catch (error) {
-        console.log('Error fetching hub data:', error);
-    }
-};
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
 
   const onSubmit = async (data) => {
     console.log(data);
     const formData = new FormData();
+    if (placeId) {
+      formData.append("edited", placeId);
+    }
     formData.append("name", data.name != null && data.name);
-    formData.append("thumb", data.thumb[0] != null && data.thumb[0]);
-    formData.append(
-      "placesocial",
-      data.placesocial != null && JSON.stringify(data.placesocial)
-    );
-    formData.append(
-      "placeopen",
-      data.placeopen != null && JSON.stringify(data.placeopen)
-    );
+    formData.append("thumb", data.thumb[0] != null && data.thumb[0]);    
     formData.append(
       "price_range",
       data.price_range != null && data.price_range
@@ -225,7 +247,7 @@ function EditPlace() {
 
     // Fix for amenities field
     if (data.amenities != null) {
-      const amenitiesArray = data.amenities.map((id) => ({ id:id }));
+      const amenitiesArray = data.amenities.map((id) => ({ id: id }));
       formData.append("amenities", JSON.stringify(amenitiesArray));
     }
 
@@ -266,7 +288,9 @@ function EditPlace() {
           <Col md="12">
             <Card>
               <CardHeader className="border-bottom">
-                <CardTitle tag="h3">Edit Place </CardTitle>
+                <CardTitle tag="h3">
+                  {placeId ? "Edit" : "Create"} Place{" "}
+                </CardTitle>
               </CardHeader>
               <CardBody>
                 <form onSubmit={handleSubmit(onSubmit)}>
@@ -749,7 +773,10 @@ function EditPlace() {
                     >
                       Submit
                     </button>
-                    <Link to='/admin/all-place'  className="btn btn-outline-danger rounded-pill">
+                    <Link
+                      to="/admin/all-place"
+                      className="btn btn-outline-danger rounded-pill"
+                    >
                       Cancel
                     </Link>
                   </div>
@@ -763,4 +790,4 @@ function EditPlace() {
   );
 }
 
-export default EditPlace;
+export default FormPlace;
