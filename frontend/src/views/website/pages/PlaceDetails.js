@@ -25,9 +25,9 @@ const PlaceDetails = () => {
     } = useForm();
 
     const {
-        register:register2,
-        handleSubmit:handleSubmit2,
-        reset:reset2,
+        register: register2,
+        handleSubmit: handleSubmit2,
+        reset: reset2,
     } = useForm();
     const fetchData = () => {
         let url = "/api/website/place/" + id;
@@ -140,7 +140,7 @@ const PlaceDetails = () => {
             <div className="place">
                 <div className="slick-sliders">
                     <div className="slick-slider" data-item="1" data-arrows="true" data-itemscroll="1" data-dots="true" data-infinite="true" data-centermode="true" data-centerpadding="418px" data-tabletitem="1" data-tabletscroll="1" data-tabletpadding="70px" data-mobileitem="1" data-mobilescroll="1" data-mobilepadding="30px">
-                        <div className="place-slider__item bd"><a title="Place Slider Image" href="#"><img src={paris_lager} alt="slider-01" /></a></div>
+                        <div className="place-slider__item bd"><a title="Place Slider Image" href="#"><img src={apiService.ledgerUrl + place.thumb} alt={place.name} /></a></div>
                     </div>
                     <div className="place-share">
                         <a title="Save" href="#" className="add-wishlist" onClick={() => Wishlist(place.id)}>
@@ -160,13 +160,15 @@ const PlaceDetails = () => {
                                 <div className="place__box place__box--npd">
                                     <h1>{place.name}</h1>
                                     <div className="place__meta">
+                                            {place.avg_reviews > 0 &&
                                         <div className="place__reviews reviews">
                                             <span className="place__reviews__number reviews__number">
-                                                4.2
+                                                {place.avg_reviews}
                                                 <i className="la la-star"></i>
                                             </span>
-                                            <span className="place__places-item__count reviews_count">(3 reviews)</span>
+                                            <span className="place__places-item__count reviews_count">({place.total_reviews} reviews)</span>
                                         </div>
+                                            }
                                         <div className="place__currency">$ {place.price_range}</div>
                                         <div className="place__category">
                                             <a title="Restaurant" href="#">{place.place_type}</a>
@@ -210,7 +212,7 @@ const PlaceDetails = () => {
                                             return (
                                                 <li>
                                                     <i className="la la-facebook-f"></i>
-                                                    <a title={social.social_url} href={social.social_url}>{social.social_type}</a>
+                                                    <a title={social.social_url} href={social.social_url} target='_blank'>{social.social_type}</a>
                                                 </li>)
                                         })}
                                     </ul>
@@ -231,6 +233,17 @@ const PlaceDetails = () => {
                                         </tbody>
                                     </table>
                                 </div>
+                                <div class="place__box place-video place-area">
+                                    <h3 className="fs-5">
+                                        Video
+                                    </h3>
+                                    <div class="entry-place-element">
+                                        <div class="entry-thumb-wrap">
+                                            <div class="embed-responsive embed-responsive-16by9 embed-responsive-full">
+                                                <iframe title="How to Japanese Hotel" width="100%" height="450" src={place.video} frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>                        </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div className="place__box place__box--reviews">
                                     <h3 className="place__title--reviews">
                                         Review ({place.total_reviews})
@@ -240,37 +253,37 @@ const PlaceDetails = () => {
                                         </span>
                                     </h3>
                                     <ul className="place__comments">
-                                    {place.reviews?.map((review) => {
+                                        {place.reviews?.map((review) => {
                                             return (
-                                        <li>
-                                            <div className="place__author">
-                                                <div className="place__author__avatar">
-                                                    <a title="Sebastian" href="#"><img src={apiService.ledgerUrl + review.customer.image} alt="" /></a>
-                                                </div>
-                                                <div className="place__author__info">
-                                                    <a title="Sebastian" href="#">{review.customer.name}</a>
-                                                    <div className="place__author__star">
-                                                        <i className="la la-star"></i>
-                                                        <i className="la la-star"></i>
-                                                        <i className="la la-star"></i>
-                                                        <i className="la la-star"></i>
-                                                        <i className="la la-star"></i>
-                                                        <span style={{ width : review.percentage }}>
-                                                            <i className="la la-star"></i>
-                                                            <i className="la la-star"></i>
-                                                            <i className="la la-star"></i>
-                                                            <i className="la la-star"></i>
-                                                            <i className="la la-star"></i>
-                                                        </span>
+                                                <li>
+                                                    <div className="place__author">
+                                                        <div className="place__author__avatar">
+                                                            <a title="Sebastian" href="#"><img src={apiService.ledgerUrl + review.customer.image} alt="" /></a>
+                                                        </div>
+                                                        <div className="place__author__info">
+                                                            <a title="Sebastian" href="#">{review.customer.name}</a>
+                                                            <div className="place__author__star">
+                                                                <i className="la la-star"></i>
+                                                                <i className="la la-star"></i>
+                                                                <i className="la la-star"></i>
+                                                                <i className="la la-star"></i>
+                                                                <i className="la la-star"></i>
+                                                                <span style={{ width: review.percentage }}>
+                                                                    <i className="la la-star"></i>
+                                                                    <i className="la la-star"></i>
+                                                                    <i className="la la-star"></i>
+                                                                    <i className="la la-star"></i>
+                                                                    <i className="la la-star"></i>
+                                                                </span>
+                                                            </div>
+                                                            <span className="time">{review.review_date}</span>
+                                                        </div>
                                                     </div>
-                                                    <span className="time">{review.review_date}</span>
-                                                </div>
-                                            </div>
-                                            <div className="place__comments__content">
-                                                <p>{review.review}</p>
-                                            </div>
-                                        </li>)
-                                    })}
+                                                    <div className="place__comments__content">
+                                                        <p>{review.review}</p>
+                                                    </div>
+                                                </li>)
+                                        })}
                                     </ul>
                                     {auth.token ? (
                                         <div className="review-form" >

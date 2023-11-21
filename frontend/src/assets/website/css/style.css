@@ -2209,10 +2209,10 @@ a.place__comments__reply i {
 .places-item .places-item__thumb img {
 	/* width: 270px;
 	height: 250px; */
-	/* max-width: 270px;
-	min-width: 270px;
+	max-width: 280px;
+	min-width: 280px;
 	max-height: 250px;
-	min-height: 250px; */
+	min-height: 250px;
 	/* border-radius: 15px; */
 	object-fit: cover;
 }

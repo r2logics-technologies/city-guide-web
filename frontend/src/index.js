@@ -15,12 +15,12 @@ root.render(
     <React.StrictMode>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<WebSite />} />
+          <Route path="/*" element={<WebSite />} />
           <Route path="/login" element={<Login />} />
           <Route path="/admin" element={<PrivateRoute />}>
             <Route exact path="/admin/*" element={<AdminLayout />} />
           </Route>
-          <Route path="*" element={<ErrorPage />} />
+          {/* <Route path="*" element={<ErrorPage />} /> */}
         </Routes>
       </BrowserRouter>
     </React.StrictMode>

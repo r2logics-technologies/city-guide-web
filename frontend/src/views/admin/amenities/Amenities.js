@@ -248,7 +248,7 @@ function Amenities() {
                     type="file"
                     className="image-input"
                     {...register("icon")}
-                    accept="image/jpeg, image/jpg, image/png, application/pdf"
+                    accept="image/*, application/pdf"
                     onChange={selectImage}
                   />
                   {!imageUrl && (

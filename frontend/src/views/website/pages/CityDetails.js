@@ -85,7 +85,7 @@ const CityDetails = (props) => {
                     <div className="container">
                         <div className="city-content__tabtitle__tablist">
                             <ul>
-                                <li className="active"><a title="France" href="#france">{city.country_name}</a></li>
+                                <li className="active"><a title="France" href="#france">{city.name}</a></li>
                             </ul>
                         </div>
                         <a className="city-content__tabtitle__button btn btn-mapsview" title="Maps view" href="maps-view.html">
@@ -108,7 +108,7 @@ const CityDetails = (props) => {
                                         <div className="col-md-3 places-item hover__box">
                                             <div className="places-item__thumb hover__box__thumb">
                                             <Link title={place.name} to={`/place-details/${place.id}`}>
-                                                <img src={d_02} alt="" />
+                                                <img src={apiService.ledgerUrl+place.thumb} alt="" />
                                             </Link>
                                             </div>
                                             <a title="Add Wishlist" href="#" onClick={() => Wishlist(place.id)} className="place-item__addwishlist">
