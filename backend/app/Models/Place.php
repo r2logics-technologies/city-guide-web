@@ -84,6 +84,11 @@ class Place extends Model
         return $this->hasMany(PlaceSocial::class, 'place_id', 'id');
     }
 
+    public function place_reviews()
+    {
+        return $this->hasMany(PlaceReview::class, 'place_id', 'id')->where('status', 'activated');
+    }
+
     public function deleteThumb()
     {
        Storage::delete($this->thumb);

@@ -34,6 +34,9 @@ class PlaceResource extends JsonResource
             'amenities' => AmenitiesResource::collection($this->place_amenities),
             'placeopens' => $this->place_open,
             'placesocials' => $this->place_social,
+            'total_reviews' => $this->place_reviews_count,
+            'avg_reviews' => $this->place_reviews->avg('rating'),
+            'reviews' => ReviewResource::collection($this->place_reviews),
             'status' => $this->status,
         ];
     }

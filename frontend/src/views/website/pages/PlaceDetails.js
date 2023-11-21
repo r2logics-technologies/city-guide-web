@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
+import * as FaIcons from 'react-icons/fa';
+import ReactStars from "react-rating-stars-component";
 import api from 'utility/api';
 import apiService from 'utility/apiService';
 import { useAuth } from "context/auth";
 import { useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
-import { paris_lager, wf, card, cld, smk } from 'assets/website/img';
+import { paris_lager } from 'assets/website/img';
 
 const PlaceDetails = () => {
     const navigate = useNavigate();
     const { id } = useParams();
     const [auth, setAuth] = useAuth();
     const [place, setPlace] = useState([]);
+    const [rating, setRating] = useState([]);
     const {
         register,
         handleSubmit,
@@ -19,6 +22,12 @@ const PlaceDetails = () => {
         setValue,
         getValues,
         formState: { errors },
+    } = useForm();
+
+    const {
+        register:register2,
+        handleSubmit:handleSubmit2,
+        reset:reset2,
     } = useForm();
     const fetchData = () => {
         let url = "/api/website/place/" + id;
@@ -38,35 +47,39 @@ const PlaceDetails = () => {
     };
 
     const Wishlist = (itemId) => {
-        console.log('first', itemId);
         AddWishlist(itemId);
     };
 
     const AddWishlist = (id) => {
         api
-          .get(`/api/website/wishlist/${id}`)
-          .then((res) => {
-            const data = res.data;
-            if (data.status === "success") {
-                setTimeout(() => {
-                    toast.success(data.message);
-                }, 1000);
-            } else {
-              console.log('error')
-            }
-          })
-          .catch((err) => {
-            console.error(err);
-            if (err.response.status == 401) {
-                navigate("/login", { replace: true });
-            }
-        });
+            .get(`/api/website/wishlist/${id}`)
+            .then((res) => {
+                const data = res.data;
+                if (data.status === "success") {
+                    setTimeout(() => {
+                        toast.success(data.message);
+                    }, 1000);
+                } else {
+                    console.log('error')
+                }
+            })
+            .catch((err) => {
+                console.error(err);
+                if (err.response.status == 401) {
+                    navigate("/login", { replace: true });
+                }
+            });
     };
 
+    const auth_user = auth.user;
 
     useEffect(() => {
         fetchData();
     }, []);
+
+    const ratingChanged = (newRating) => {
+        setRating(newRating);
+    };
 
     const onSubmit = async (data) => {
         // console.log('place', place.id);
@@ -77,23 +90,49 @@ const PlaceDetails = () => {
         formData.append("booking_date", data.booking_date != null && data.booking_date);
         formData.append("booking_time", data.booking_time != null && data.booking_time);
         api
-          .post(url, formData)
-          .then((res) => {
-            const data = res.data;
-            if (data.status === "success") {
-                setTimeout(() => {
-                    toast.success(data.message);
-                }, 1000);
-                reset();
-            } else {
-              toast.error(data.message);
-            }
-          })
-          .catch((err) => {
-            console.error(err);
-            toast.error("Something went wrong!");
-          });
-      };
+            .post(url, formData)
+            .then((res) => {
+                const data = res.data;
+                if (data.status === "success") {
+                    setTimeout(() => {
+                        toast.success(data.message);
+                    }, 1000);
+                    reset();
+                } else {
+                    toast.error(data.message);
+                }
+            })
+            .catch((err) => {
+                console.error(err);
+                toast.error("Something went wrong!");
+            });
+    };
+
+    const onReview = async (data) => {
+        const url = `/api/website/review-place/${place.id}`;
+        const formData = new FormData();
+        formData.append("rating", rating);
+        formData.append("review", data.review);
+        api
+            .post(url, formData)
+            .then((res) => {
+                const data = res.data;
+                if (data.status === "success") {
+                    setTimeout(() => {
+                        toast.success(data.message);
+                    }, 1000);
+                    reset2();
+                    ratingChanged(0);
+                    setRating('');
+                } else {
+                    toast.error(data.message);
+                }
+            })
+            .catch((err) => {
+                console.error(err);
+                toast.error("Something went wrong!");
+            });
+    };
 
     return (
         <div className='site-main single single-02'>
@@ -194,27 +233,29 @@ const PlaceDetails = () => {
                                 </div>
                                 <div className="place__box place__box--reviews">
                                     <h3 className="place__title--reviews">
-                                        Review (3)
+                                        Review ({place.total_reviews})
                                         <span className="place__reviews__number">
-                                            4.2
+                                            {place.avg_reviews}
                                             <i className="la la-star"></i>
                                         </span>
                                     </h3>
                                     <ul className="place__comments">
+                                    {place.reviews?.map((review) => {
+                                            return (
                                         <li>
                                             <div className="place__author">
                                                 <div className="place__author__avatar">
-                                                    <a title="Sebastian" href="#"><img src="images/avatars/male-4.jpg" alt="" /></a>
+                                                    <a title="Sebastian" href="#"><img src={apiService.ledgerUrl + review.customer.image} alt="" /></a>
                                                 </div>
                                                 <div className="place__author__info">
-                                                    <a title="Sebastian" href="#">Sebastian</a>
+                                                    <a title="Sebastian" href="#">{review.customer.name}</a>
                                                     <div className="place__author__star">
                                                         <i className="la la-star"></i>
                                                         <i className="la la-star"></i>
                                                         <i className="la la-star"></i>
                                                         <i className="la la-star"></i>
                                                         <i className="la la-star"></i>
-                                                        <span style={{ width: "72%" }}>
+                                                        <span style={{ width : review.percentage }}>
                                                             <i className="la la-star"></i>
                                                             <i className="la la-star"></i>
                                                             <i className="la la-star"></i>
@@ -222,69 +263,43 @@ const PlaceDetails = () => {
                                                             <i className="la la-star"></i>
                                                         </span>
                                                     </div>
-                                                    <span className="time">October 1, 2019</span>
+                                                    <span className="time">{review.review_date}</span>
                                                 </div>
                                             </div>
                                             <div className="place__comments__content">
-                                                <p>Went there last Saturday for the first time to watch my favorite djs (Kungs, Sam Feldet and Watermat) and really had a great experience. The atmosphere is amazing and I am going next week.</p>
+                                                <p>{review.review}</p>
                                             </div>
-                                        </li>
-                                        <li>
-                                            <div className="place__author">
-                                                <div className="place__author__avatar">
-                                                    <a title="Nitithorn" href="#"><img src="images/avatars/female-4.jpg" alt="" /></a>
-                                                </div>
-                                                <div className="place__author__info">
-                                                    <a title="Nitithorn" href="#">Nitithorn</a>
-                                                    <div className="place__author__star">
-                                                        <i className="la la-star"></i>
-                                                        <i className="la la-star"></i>
-                                                        <i className="la la-star"></i>
-                                                        <i className="la la-star"></i>
-                                                        <i className="la la-star"></i>
-                                                        <span style={{ width: "72%" }}>
-                                                            <i className="la la-star"></i>
-                                                            <i className="la la-star"></i>
-                                                            <i className="la la-star"></i>
-                                                            <i className="la la-star"></i>
-                                                            <i className="la la-star"></i>
-                                                        </span>
-                                                    </div>
-                                                    <span className="time">October 1, 2019</span>
-                                                </div>
-                                            </div>
-                                            <div className="place__comments__content">
-                                                <p>Went there last Saturday for the first time to watch my favorite djs (Kungs, Sam Feldet and Watermat) and really had a great experience.</p>
-                                            </div>
-                                        </li>
+                                        </li>)
+                                    })}
                                     </ul>
                                     {auth.token ? (
                                         <div className="review-form" >
                                             <h3>Write a review</h3>
-                                            <form action="#">
+                                            <form onSubmit={handleSubmit2(onReview)}>
                                                 <div className="rate">
                                                     <span>Rate This Place</span>
                                                     <div className="stars">
-                                                        <a href="#" title="star-1">
-                                                            <i className="la la-star"></i>
-                                                        </a>
-                                                        <a href="#" title="star-2">
-                                                            <i className="la la-star"></i>
-                                                        </a>
-                                                        <a href="#" title="star-3">
-                                                            <i className="la la-star"></i>
-                                                        </a>
-                                                        <a href="#" title="star-4">
-                                                            <i className="la la-star"></i>
-                                                        </a>
-                                                        <a href="#" title="star-5">
-                                                            <i className="la la-star"></i>
-                                                        </a>
+                                                        <ReactStars
+                                                            size={20}
+                                                            isHalf={true}
+                                                            value={0}
+                                                            onChange={ratingChanged}
+                                                            emptyIcon={
+                                                                <FaIcons.FaRegStar className='text-secondary' />
+                                                            }
+                                                            halfIcon={
+                                                                <FaIcons.FaStarHalfAlt className='text-warning' />
+                                                            }
+                                                            filledIcon={
+                                                                <FaIcons.FaStar className='text-warning' />
+                                                            }
+                                                            activeColor="#ffd700"
+                                                        />
                                                     </div>
                                                 </div>
                                                 <div className="field-textarea">
-                                                    <img className="author-avatar" src="images/avatars/male-1.jpg" alt="" />
-                                                    <textarea name="review_text" placeholder="Write a review"></textarea>
+                                                    <img className="author-avatar" src={apiService.ledgerUrl + auth_user.avatar} alt="" />
+                                                    <textarea {...register2("review")} placeholder="Write a review"></textarea>
                                                 </div>
                                                 <div className="field-submit">
                                                     <input type="submit" className="btn" value="Submit" name="submit" />

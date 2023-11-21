@@ -5357,9 +5357,9 @@ a.place__comments__reply i {
 	fill: #dddddd;
 }
 
-.review-form .stars:hover svg>* {
+/* .review-form .stars:hover svg>* {
 	fill: #23d3d3;
-}
+} */
 
 .review-form .stars.selected a.active svg>* {
 	fill: #23d3d3;

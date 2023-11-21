@@ -12,6 +12,7 @@ use App\Models\City;
 use App\Models\Place;
 use App\Models\Wishlist;
 use App\Models\Booking;
+use App\Models\PlaceReview;
 use DB;
 
 class HomeController extends Controller
@@ -127,7 +128,7 @@ class HomeController extends Controller
 
     public function placeDetails($id)
     {
-        $place = Place::with(['get_category','get_country','get_city','get_type','place_amenities.get_amenities','place_open','place_social'])->find($id);
+        $place = Place::with(['get_category','get_country','get_city','get_type','place_amenities.get_amenities','place_open','place_social','place_reviews.get_customer'])->withCount('place_reviews')->find($id);
 
         if ($place) {
             return response([
@@ -173,6 +174,49 @@ class HomeController extends Controller
                 return response([
                     'status' => 'success',
                     'message' => 'Place booked successfully',
+                    'status_code' => 200,
+                ]);
+            }else{
+                return response([
+                    'status' => 'warning',
+                    'status_code' => 500,
+                    'message' => 'something went wrong...',
+                ]);
+            }
+        }
+        return response([
+            'status' => 'warning',
+            'status_code' => 500,
+            'message' => 'Not found any place',
+        ]);
+    }
+
+    public function placeReview(Request $req, $id)
+    {
+        $auth = Auth::user()->id;
+        $place = Place::find($id);
+
+        $find_place = PlaceReview::where('place_id', $place->id)->where('user_id', $auth)->first();
+        if ($find_place) {
+            return response([
+                'status' => 'warning',
+                'status_code' => 500,
+                'message' => 'This place already reviewed',
+            ]);
+        }
+
+        if ($place) {
+
+            $booking = PlaceReview::create([
+                'user_id' => $auth,
+                'place_id' => $place->id,
+                'rating' => $req->rating,
+                'review' => $req->review
+            ]);
+            if ($booking) {
+                return response([
+                    'status' => 'success',
+                    'message' => 'Place review send successfully',
                     'status_code' => 200,
                 ]);
             }else{
