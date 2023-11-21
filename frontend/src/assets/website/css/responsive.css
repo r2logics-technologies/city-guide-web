@@ -247,10 +247,7 @@
 		background-position: center right -480px;
     	background-size: cover;
 	}
-	.sidebar,
-	.intro__meta{
-		margin-top: 30px;
-	}
+	
 	.intro__meta .col-md-4:first-child .intro__meta__item{
 		border-left: 0;
 	}
@@ -419,10 +416,7 @@
 		opacity: 1;
 		visibility: visible;
 	}
-	.sidebar,
-	.intro__meta{
-		margin-top: 30px;
-	}
+
 	.widget-reservation-mini.open {
 	    bottom: 0;
 	    transition: all 0.3s;

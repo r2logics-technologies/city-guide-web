@@ -7,7 +7,6 @@ import Login from "views/auth/Login";
 import { AuthProvider } from "./context/auth";
 import PrivateRoute from "components/routes/Private";
 import WebSite from "layouts/WebSite";
-import ErrorPage from "components/error-page/ErrorPage";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
@@ -20,7 +19,6 @@ root.render(
           <Route path="/admin" element={<PrivateRoute />}>
             <Route exact path="/admin/*" element={<AdminLayout />} />
           </Route>
-          {/* <Route path="*" element={<ErrorPage />} /> */}
         </Routes>
       </BrowserRouter>
     </React.StrictMode>

@@ -24,8 +24,22 @@ function Profile() {
   );
   const [auth, setAuth] = useAuth();
 
+  const {
+    register: register1,
+    handleSubmit: handleSubmit1,
+    setValue: setValue1,
+  } = useForm();
+
+  const {
+    register: register2,
+    handleSubmit: handleSubmit2,
+    reset: reset2,
+    formState: { errors: errors2 },
+  } = useForm();
+
   const handleShowForm = () => {
     setShowForm(!showForm);
+    reset2();
   };
   const selectThumbnailImg = (event) => {
     const file = event.target.files[0];
@@ -38,16 +52,9 @@ function Profile() {
     }
   };
 
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm();
-
   const removeThumImg = () => {
     setAvatarUrl("");
-    setValue("avatar", null);
+    setValue1("avatar", null);
   };
 
   useEffect(() => {
@@ -58,15 +65,15 @@ function Profile() {
     if (auth.user?.avatar) {
       setDefaultUser(apiService.ledgerUrl + auth.user?.avatar);
     }
-    setValue("avatar", auth.user?.avatar);
-    setValue("name", auth.user?.name);
-    setValue("email", auth.user?.email);
-    setValue("mobile", auth.user?.mobile);
-    setValue("facebook", auth.user?.facebook);
-    setValue("instagram", auth.user?.instagram);
+    setValue1("avatar", auth.user?.avatar);
+    setValue1("name", auth.user?.name);
+    setValue1("email", auth.user?.email);
+    setValue1("mobile", auth.user?.mobile);
+    setValue1("facebook", auth.user?.facebook);
+    setValue1("instagram", auth.user?.instagram);
   };
 
-  const onSubmit = async (data) => {
+  const onSubmit = (data) => {
     setLoading(true);
     const formData = new FormData();
     formData.append("avatar", data.avatar[0] != null && data.avatar[0]);
@@ -93,6 +100,26 @@ function Profile() {
       .catch((err) => {
         console.error(err);
         toast.error("Something went wrong!");
+      });
+  };
+  const onSubmitPassword = (data) => {
+    const url = `/api/user/change-password`;
+    api
+      .post(url, data)
+      .then((res) => {
+        const data = res.data;
+        if (data.status === "success") {
+          setTimeout(() => {
+            toast.success(data.message);
+            handleShowForm();
+          }, 1000);
+        } else {
+          toast.error(data.message);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        toast.error(err.response.data.message);
       });
   };
 
@@ -122,7 +149,7 @@ function Profile() {
               </div>
             )}
           </div>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit1(onSubmit)}>
             <div className="row card-body">
               <div className="pt-5 col-md-4">
                 <div className="text-center position-relative">
@@ -156,7 +183,7 @@ function Profile() {
                     type="file"
                     className="image-input"
                     disabled={!editProfile}
-                    {...register("avatar")}
+                    {...register1("avatar")}
                     accept="image/jpeg, image/jpg, image/png, application/pdf"
                     onChange={selectThumbnailImg}
                   />
@@ -169,10 +196,10 @@ function Profile() {
                     <input
                       className={`form-control-sm form-control${
                         !editProfile && "-plaintext"
-                      } w-75 ms-2`}
+                      } w-50 ms-2`}
                       readOnly={!editProfile}
                       type="text"
-                      {...register("name")}
+                      {...register1("name")}
                       placeholder="What the name of place"
                     />
                   </div>
@@ -183,10 +210,10 @@ function Profile() {
                     <input
                       className={`form-control-sm form-control${
                         !editProfile && "-plaintext"
-                      } w-75 ms-2`}
+                      } w-50 ms-2`}
                       readOnly={!editProfile}
                       type="email"
-                      {...register("email")}
+                      {...register1("email")}
                       placeholder="Enter Email"
                     />
                   </div>
@@ -197,10 +224,10 @@ function Profile() {
                     <input
                       className={`form-control-sm form-control${
                         !editProfile && "-plaintext"
-                      } w-75 ms-2`}
+                      } w-50 ms-2`}
                       readOnly={!editProfile}
                       type="number"
-                      {...register("mobile")}
+                      {...register1("mobile")}
                       placeholder="Enter Mobile Number"
                     />
                   </div>
@@ -211,10 +238,10 @@ function Profile() {
                     <input
                       className={`form-control-sm form-control${
                         !editProfile && "-plaintext"
-                      } w-75 ms-2`}
+                      } w-50 ms-2`}
                       readOnly={!editProfile}
                       type="text"
-                      {...register("facebook")}
+                      {...register1("facebook")}
                       placeholder="Enter Facebook link"
                     />
                   </div>
@@ -225,15 +252,15 @@ function Profile() {
                     <input
                       className={`form-control-sm form-control${
                         !editProfile && "-plaintext"
-                      } w-75 ms-2`}
+                      } w-50 ms-2`}
                       readOnly={!editProfile}
                       type="text"
-                      {...register("instagram")}
+                      {...register1("instagram")}
                       placeholder="Enter Instagram link"
                     />
                   </div>
                 </div>
-              </div>
+              </div>             
               {editProfile && (
                 <div className="d-flex border-top mt-4 justify-content-end gap-2">
                   <button
@@ -276,7 +303,7 @@ function Profile() {
       >
         <ModalHeader>Change Password</ModalHeader>
         <ModalBody>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit2(onSubmitPassword)}>
             <div className="row">
               <div className="col-12">
                 <div className="my-2">
@@ -285,13 +312,13 @@ function Profile() {
                       Old Password
                     </small>
                     <small className="text-danger">
-                      {errors?.old_password && "Old Password is required"}
+                      {errors2?.old_password && "Old Password is required"}
                     </small>
                   </div>
                   <input
                     className="form-control"
                     type="password"
-                    {...register("old_password", { required: true })}
+                    {...register2("old_password", { required: true })}
                     placeholder="Enter Old Password"
                   />
                 </div>
@@ -303,13 +330,13 @@ function Profile() {
                       New Password
                     </small>
                     <small className="text-danger">
-                      {errors?.new_password && "New Password is required"}
+                      {errors2?.new_password && "New Password is required"}
                     </small>
                   </div>
                   <input
                     className="form-control"
                     type="password"
-                    {...register("new_password", { required: true })}
+                    {...register2("new_password", { required: true })}
                     placeholder="Enter New Password"
                   />
                 </div>

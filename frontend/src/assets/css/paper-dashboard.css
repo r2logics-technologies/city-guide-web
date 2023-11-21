@@ -6255,25 +6255,6 @@ License - nucleoapp.com/license/
     top: 7px;
     transition: opacity 150ms ease-in;
   }
-  .sidebar .sidebar-wrapper li.active > a:not([data-toggle="collapse"]):after,
-  .sidebar
-    .sidebar-wrapper
-    li.active
-    > [data-toggle="collapse"]
-    + div
-    .nav
-    li:after {
-    border-right: 17px solid #f4f3ef;
-    border-top: 17px solid transparent;
-    border-bottom: 17px solid transparent;
-    content: "";
-    display: inline-block;
-    position: absolute;
-    right: -17px;
-    opacity: 1;
-    top: 7px;
-    transition: opacity 150ms ease-in;
-  }
   .sidebar
     .sidebar-wrapper
     li.active
