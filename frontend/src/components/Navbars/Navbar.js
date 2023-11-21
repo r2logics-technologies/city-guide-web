@@ -177,12 +177,10 @@ function Header(props) {
                 </p>
               </DropdownToggle>
               <DropdownMenu right>
-                <Link to="/admin/profile">
-                  <DropdownItem className="justify-content-evenly d-flex align-items-center">
-                    <AiOutlineUser />
-                    <span>Profile</span>
-                  </DropdownItem>
-                </Link>
+                <DropdownItem className="justify-content-evenly d-flex align-items-center" onClick={()=>{navigate("/admin/profile")}}>
+                  <AiOutlineUser />
+                  <span>Profile</span>
+                </DropdownItem>
                 <DropdownItem
                   onClick={showConfirm}
                   className="justify-content-evenly d-flex align-items-center"

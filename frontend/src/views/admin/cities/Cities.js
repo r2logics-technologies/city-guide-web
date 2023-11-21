@@ -19,11 +19,25 @@ import toast, { Toaster } from "react-hot-toast";
 import { Modal as antdModal } from "antd";
 import { useForm, Controller } from "react-hook-form";
 import { Select } from "antd";
-
+import uploadImg from "../../../assets/img/img-upload.png";
+import apiService from "utility/apiService";
 const Option = Select.Option;
 const { confirm } = antdModal;
 
 function Cities() {
+  const [imageUrl, setImageUrl] = useState("");
+
+  const selectImage = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImageUrl(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const {
     register,
     control,
@@ -38,6 +52,7 @@ function Cities() {
   const handleShowForm = () => {
     setShowForm(!showForm);
     reset();
+    setImageUrl("");
   };
 
   const [data, setData] = useState([]);
@@ -97,6 +112,9 @@ function Cities() {
     setValue("edited", row.original.id);
     setValue("name", row.original.name);
     setValue("country_id", row.original.country_id);
+    if (row.original?.thumb != null) {
+      setImageUrl(apiService.ledgerUrl + row.original?.thumb);
+    }
   };
 
   const statusChange = (id, status) => {
@@ -173,10 +191,14 @@ function Cities() {
   }, []);
 
   const onSubmit = async (data) => {
-    console.log("object", data);
     const url = `/api/admin/cities/save/update`;
+    const formData = new FormData();
+    formData.append("edited", data.edited != null && data.edited);
+    formData.append("country_id", data.country_id != null && data.country_id);
+    formData.append("name", data.name != null && data.name);
+    formData.append("thumb", data.thumb[0] != null && data.thumb[0]);
     api
-      .post(url, data)
+      .post(url, formData)
       .then((res) => {
         const data = res.data;
         if (data.status === "success") {
@@ -221,7 +243,7 @@ function Cities() {
       <Modal
         isOpen={showForm}
         toggle={handleShowForm}
-        size="lg"
+        size="md"
         fade={true}
         centered={true}
       >
@@ -229,6 +251,33 @@ function Cities() {
         <ModalBody>
           <form onSubmit={handleSubmit(onSubmit)}>
             <input type="hidden" {...register("edited")} />
+            <div className="col-12 my-2">
+              <div className="border rounded p-2 text-center position-relative">
+                {imageUrl ? (
+                  <img
+                    src={imageUrl}
+                    style={{ height: "120px", maxWidth: "100%" }}
+                  />
+                ) : (
+                  <img
+                    src={uploadImg}
+                    style={{ height: "120px", maxWidth: "100%" }}
+                  />
+                )}
+                <input
+                  type="file"
+                  className="image-input"
+                  {...register("thumb")}
+                  accept="image/jpeg, image/jpg, image/png, application/pdf"
+                  onChange={selectImage}
+                />
+                {!imageUrl && (
+                  <div>
+                    <label className="mt-2">Select Image</label>
+                  </div>
+                )}
+              </div>
+            </div>
             <div className="my-2">
               <div className="d-flex justify-content-between">
                 <small className="text-muted required-field">Country</small>

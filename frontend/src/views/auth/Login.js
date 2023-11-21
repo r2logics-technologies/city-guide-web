@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { MDBInput } from "mdb-react-ui-kit";
 import { useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
@@ -8,8 +8,11 @@ import { useAuth } from "context/auth";
 import { useLocation, useNavigate } from "react-router-dom";
 import api from "utility/api";
 import loginImg from "../../assets/img/login.svg";
+import { LoadingOutlined } from "@ant-design/icons";
+import { Spin } from "antd";
 
 function Login() {
+  const [loading, setLoading] = useState(false);
   const [auth, setAuth] = useAuth();
   const {
     register,
@@ -20,6 +23,7 @@ function Login() {
   const location = useLocation();
 
   const onSubmit = async (data) => {
+    setLoading(true);
     const url = `/api/auth/login`;
     api
       .post(url, data)
@@ -36,8 +40,10 @@ function Login() {
             token: data.token,
             user: data.user,
           });
-          console.log(location.state)
-          navigate(location.state != '/' && location.state  || "/admin/dashboard");
+          setLoading(false);
+          navigate(
+            (location.state != "/" && location.state) || "/admin/dashboard"
+          );
         } else {
           toast.error("Something went wrong! Please check credentials");
         }
@@ -85,7 +91,17 @@ function Login() {
               className="btn w-100 text-capitalize text-white bg-orange"
               type="submit"
             >
-              Login
+              Login{" "}
+              {loading && (
+                <Spin
+                  indicator={
+                    <LoadingOutlined
+                      style={{ fontSize: "1rem", color: "white" }}
+                      spin
+                    />
+                  }
+                />
+              )}
             </button>
           </form>
         </div>

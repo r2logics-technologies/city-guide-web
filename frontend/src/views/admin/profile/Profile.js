@@ -1,26 +1,38 @@
 import React, { useEffect, useState } from "react";
-import { Card, CardHeader, CardBody, CardTitle, Row, Col } from "reactstrap";
 import toast, { Toaster } from "react-hot-toast";
 import { Modal as antdModal } from "antd";
 import * as BsIcons from "react-icons/bs";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { Select } from "antd";
 import api from "utility/api";
-import { Link, useParams } from "react-router-dom";
 import apiService from "utility/apiService";
-
+import { useAuth } from "context/auth";
+import { LoadingOutlined } from "@ant-design/icons";
+import { Spin } from "antd";
+import { Modal, ModalHeader, ModalBody } from "reactstrap";
 const Option = Select.Option;
 const { confirm } = antdModal;
 
 function Profile() {
-  const [thumbnailImgUrl, setthumbnailImgUrl] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [editProfile, setEditProfile] = useState(false);
+  const [avatarUrl, setAvatarUrl] = useState("");
+  const [showForm, setShowForm] = useState();
 
+  const [defaultUser, setDefaultUser] = useState(
+    "assets/img/default-avatar.png"
+  );
+  const [auth, setAuth] = useAuth();
+
+  const handleShowForm = () => {
+    setShowForm(!showForm);
+  };
   const selectThumbnailImg = (event) => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
-        setthumbnailImgUrl(reader.result);
+        setAvatarUrl(reader.result);
       };
       reader.readAsDataURL(file);
     }
@@ -28,47 +40,42 @@ function Profile() {
 
   const {
     register,
-    control,
     handleSubmit,
-    reset,
     setValue,
-    getValues,
     formState: { errors },
   } = useForm();
 
   const removeThumImg = () => {
-    setthumbnailImgUrl("");
-    setValue("thumb", null);
+    setAvatarUrl("");
+    setValue("avatar", null);
   };
 
   useEffect(() => {
     fetchProfileData();
-  }, []);
+  }, [auth]);
 
   const fetchProfileData = () => {
-    let url = `/api/user`;
-    api
-      .get(url)
-      .then((res) => {
-        const data = res.data;
-        console.log(data);
-        if (data.status === "success") {
-          const user = data.user;
-          setValue("name", user.name);
-        } else {
-          toast(data.message);
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    if (auth.user?.avatar) {
+      setDefaultUser(apiService.ledgerUrl + auth.user?.avatar);
+    }
+    setValue("avatar", auth.user?.avatar);
+    setValue("name", auth.user?.name);
+    setValue("email", auth.user?.email);
+    setValue("mobile", auth.user?.mobile);
+    setValue("facebook", auth.user?.facebook);
+    setValue("instagram", auth.user?.instagram);
   };
 
   const onSubmit = async (data) => {
-    console.log(data);
+    setLoading(true);
     const formData = new FormData();
-    formData.append("city_id", data.city_id != null && data.city_id);
-    const url = `/api/admin/places/save/update`;
+    formData.append("avatar", data.avatar[0] != null && data.avatar[0]);
+    formData.append("name", data.name != null && data.name);
+    formData.append("email", data.email != null && data.email);
+    formData.append("mobile", data.mobile != null && data.mobile);
+    formData.append("facebook", data.facebook != null && data.facebook);
+    formData.append("instagram", data.instagram != null && data.instagram);
+    const url = `/api/user/update-profile`;
     api
       .post(url, formData)
       .then((res) => {
@@ -76,6 +83,8 @@ function Profile() {
         if (data.status === "success") {
           setTimeout(() => {
             toast.success(data.message);
+            setEditProfile(false);
+            setLoading(false);
           }, 1000);
         } else {
           toast.error(data.message);
@@ -86,138 +95,243 @@ function Profile() {
         toast.error("Something went wrong!");
       });
   };
+
   return (
     <>
       <Toaster />
       <div className="content">
-        <Row>
-          <Col md="12">
-            <div className="card">
-              <CardHeader className="border-bottom">
-                <CardTitle tag="h3">Profile</CardTitle>
-              </CardHeader>
-              <CardBody>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                  <div className="row">
-                    <div className="my-2 col-12">
-                      <div className="w-50 mx-auto rounded p-2 text-center position-relative">
-                        {thumbnailImgUrl ? (
-                          <>
-                            <BsIcons.BsX
-                              className="img-remove-btn"
-                              onClick={() => {
-                                removeThumImg();
-                              }}
-                            />
-                            <img
-                              src={thumbnailImgUrl}
-                              className="img-fluid img-thumbnail"
-                              style={{ height: "180px", maxWidth: "100%" }}
-                            />
-                          </>
-                        ) : (
-                          <>
-                            <img
-                              src="https://ionicframework.com/docs/img/demos/thumbnail.svg"
-                              className="img-fluid img-thumbnail"
-                              style={{ height: "120px", maxWidth: "100%" }}
-                            />
-                          </>
-                        )}
-                        <input
-                          type="file"
-                          className="image-input"
-                          {...register("thumb")}
-                          accept="image/jpeg, image/jpg, image/png, application/pdf"
-                          onChange={selectThumbnailImg}
-                        />
-                      </div>
-                    </div>
-                    <div className="my-2 col-md-12">
-                      <div className="d-flex justify-content-between">
-                        <small className="text-muted">Name</small>
-                      </div>
-                      <input
-                        className="form-control"
-                        type="text"
-                        {...register("name")}
-                        placeholder="What the name of place"
+        <div className="card">
+          <div className="card-header border-bottom d-flex justify-content-between">
+            <p className="text-muted fs-4">Profile</p>
+            {!editProfile && (
+              <div className="d-flex">
+                <p
+                  className="btn btn-outline-success mx-4 rounded-pill"
+                  onClick={() => {
+                    setEditProfile(!editProfile);
+                  }}
+                >
+                  Update Profile
+                </p>
+                <p
+                  className="btn btn-outline-primary mx-4 rounded-pill"
+                  onClick={handleShowForm}
+                >
+                  Change Password
+                </p>
+              </div>
+            )}
+          </div>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="row card-body">
+              <div className="pt-5 col-md-4">
+                <div className="text-center position-relative">
+                  {avatarUrl ? (
+                    <>
+                      <BsIcons.BsX
+                        className="img-remove-btn"
+                        onClick={() => {
+                          removeThumImg();
+                        }}
                       />
-                    </div>
-
-                    <div className="my-2 col-md-12">
-                      <div className="d-flex justify-content-between">
-                        <small className="text-muted">Email</small>
-                        <small className="text-danger">
-                          {errors?.email && "Email is required"}
-                        </small>
-                      </div>
-                      <input
-                        className="form-control"
-                        type="email"
-                        {...register("email", { required: true })}
-                        placeholder="Enter Email"
+                      <img
+                        src={avatarUrl}
+                        className="rounded"
+                        style={{ height: "120px", maxWidth: "100%" }}
                       />
-                    </div>
-                    <div className="my-2 col-md-12">
-                      <div className="d-flex justify-content-between">
-                        <small className="text-muted">Phone Number</small>
-                        <small className="text-danger">
-                          {errors?.phone_number && "Phone Number is required"}
-                        </small>
-                      </div>
-                      <input
-                        className="form-control"
-                        type="number"
-                        {...register("phone_number", { required: true })}
-                        placeholder="Enter Phone Number"
+                    </>
+                  ) : (
+                    <>
+                      {editProfile && (
+                        <BsIcons.BsPencil className="position-absolute top-0 end-0" />
+                      )}
+                      <img
+                        className="rounded"
+                        src={defaultUser}
+                        style={{ height: "120px", maxWidth: "100%" }}
                       />
-                    </div>
-                    <div className="my-2 col-md-12">
-                      <div className="d-flex justify-content-between">
-                        <small className="text-muted">Website</small>
-                        <small className="text-danger">
-                          {errors?.website && "Website is required"}
-                        </small>
-                      </div>
-                      <input
-                        className="form-control"
-                        type="number"
-                        {...register("website", { required: true })}
-                        placeholder="Enter Website"
-                      />
-                    </div>
-
-                    <div className="my-2 col-12">
-                      <small className="text-muted">Video</small>
-                      <input
-                        className="form-control"
-                        type="text"
-                        {...register("video")}
-                        placeholder="YouTube, Vimeo video url"
-                      />
-                    </div>
-                    <div className="d-flex border-top mt-4 justify-content-end gap-3">
-                      <button
-                        className="btn btn-outline-primary rounded-pill"
-                        type="submit"
-                      >
-                        Submit
-                      </button>
-                      <Link
-                        to="/admin/all-place"
-                        className="btn btn-outline-danger rounded-pill"
-                      >
-                        Cancel
-                      </Link>
-                    </div>
+                    </>
+                  )}
+                  <input
+                    type="file"
+                    className="image-input"
+                    disabled={!editProfile}
+                    {...register("avatar")}
+                    accept="image/jpeg, image/jpg, image/png, application/pdf"
+                    onChange={selectThumbnailImg}
+                  />
+                </div>
+              </div>
+              <div className=" mt-3 col-md-8 border-start">
+                <div className="m-2">
+                  <div className="d-flex justify-content-start align-items-baseline">
+                    <label>Name :</label>
+                    <input
+                      className={`form-control-sm form-control${
+                        !editProfile && "-plaintext"
+                      } w-75 ms-2`}
+                      readOnly={!editProfile}
+                      type="text"
+                      {...register("name")}
+                      placeholder="What the name of place"
+                    />
                   </div>
-                </form>
-              </CardBody>
+                </div>
+                <div className="m-2">
+                  <div className="d-flex justify-content-start align-items-baseline">
+                    <label>Email :</label>
+                    <input
+                      className={`form-control-sm form-control${
+                        !editProfile && "-plaintext"
+                      } w-75 ms-2`}
+                      readOnly={!editProfile}
+                      type="email"
+                      {...register("email")}
+                      placeholder="Enter Email"
+                    />
+                  </div>
+                </div>
+                <div className="m-2">
+                  <div className="d-flex justify-content-start align-items-baseline">
+                    <label>Mobile Number :</label>
+                    <input
+                      className={`form-control-sm form-control${
+                        !editProfile && "-plaintext"
+                      } w-75 ms-2`}
+                      readOnly={!editProfile}
+                      type="number"
+                      {...register("mobile")}
+                      placeholder="Enter Mobile Number"
+                    />
+                  </div>
+                </div>
+                <div className="m-2">
+                  <div className="d-flex justify-content-start align-items-baseline">
+                    <label>Facebook :</label>
+                    <input
+                      className={`form-control-sm form-control${
+                        !editProfile && "-plaintext"
+                      } w-75 ms-2`}
+                      readOnly={!editProfile}
+                      type="text"
+                      {...register("facebook")}
+                      placeholder="Enter Facebook link"
+                    />
+                  </div>
+                </div>
+                <div className="m-2">
+                  <div className="d-flex justify-content-start align-items-baseline">
+                    <label>Instagram :</label>
+                    <input
+                      className={`form-control-sm form-control${
+                        !editProfile && "-plaintext"
+                      } w-75 ms-2`}
+                      readOnly={!editProfile}
+                      type="text"
+                      {...register("instagram")}
+                      placeholder="Enter Instagram link"
+                    />
+                  </div>
+                </div>
+              </div>
+              {editProfile && (
+                <div className="d-flex border-top mt-4 justify-content-end gap-2">
+                  <button
+                    className="btn btn-outline-primary rounded-pill"
+                    type="submit"
+                  >
+                    Submit{" "}
+                    {loading && (
+                      <Spin
+                        indicator={
+                          <LoadingOutlined
+                            style={{ fontSize: "1rem", color: "white" }}
+                            spin
+                          />
+                        }
+                      />
+                    )}
+                  </button>
+                  <p
+                    className="btn btn-outline-warning rounded-pill"
+                    onClick={() => {
+                      setEditProfile(!editProfile);
+                    }}
+                  >
+                    Cancel
+                  </p>
+                </div>
+              )}
             </div>
-          </Col>
-        </Row>
+          </form>
+        </div>
       </div>
+      {/* Form Modal */}
+      <Modal
+        isOpen={showForm}
+        toggle={handleShowForm}
+        size="md"
+        fade={true}
+        centered={true}
+      >
+        <ModalHeader>Change Password</ModalHeader>
+        <ModalBody>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="row">
+              <div className="col-12">
+                <div className="my-2">
+                  <div className="d-flex justify-content-between">
+                    <small className="text-muted required-field">
+                      Old Password
+                    </small>
+                    <small className="text-danger">
+                      {errors?.old_password && "Old Password is required"}
+                    </small>
+                  </div>
+                  <input
+                    className="form-control"
+                    type="password"
+                    {...register("old_password", { required: true })}
+                    placeholder="Enter Old Password"
+                  />
+                </div>
+              </div>
+              <div className="col-12">
+                <div className="my-2">
+                  <div className="d-flex justify-content-between">
+                    <small className="text-muted required-field">
+                      New Password
+                    </small>
+                    <small className="text-danger">
+                      {errors?.new_password && "New Password is required"}
+                    </small>
+                  </div>
+                  <input
+                    className="form-control"
+                    type="password"
+                    {...register("new_password", { required: true })}
+                    placeholder="Enter New Password"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="d-flex border-top mt-4 justify-content-end gap-3">
+              <button
+                className="btn btn-outline-primary rounded-pill"
+                type="submit"
+              >
+                Submit
+              </button>
+              <p
+                className="btn btn-outline-danger rounded-pill"
+                onClick={handleShowForm}
+              >
+                Cancel
+              </p>
+            </div>
+          </form>
+        </ModalBody>
+      </Modal>
     </>
   );
 }

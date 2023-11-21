@@ -171,7 +171,7 @@ function Amenities() {
   const onSubmit = async (data) => {
     const url = `/api/admin/amenities/save/update`;
     const formData = new FormData();
-    formData.append("edited", data.name != null && data.edited);
+    formData.append("edited", data.edited != null && data.edited);
     formData.append("name", data.name != null && data.name);
     formData.append("icon", data.icon[0] != null && data.icon[0]);
     api
