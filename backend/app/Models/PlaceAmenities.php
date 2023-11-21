@@ -15,4 +15,9 @@ class PlaceAmenities extends Model
         'amenities_id',
         'status',
     ];
+
+    public function get_amenities()
+    {
+        return $this->hasOne(Amenities::class, 'id', 'amenities_id');
+    }
 }

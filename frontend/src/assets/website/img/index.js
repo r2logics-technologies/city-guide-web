@@ -19,3 +19,7 @@ export {default as about_img} from './about-img.jpg';
 export {default as paris_lager} from './paris-lager.jpg';
 export {default as d_02} from './02.jpg';
 export {default as d_07} from './07.jpg';
+export {default as wf} from './wf.svg';
+export {default as card} from './card.svg';
+export {default as cld} from './cld.svg';
+export {default as smk} from './smk.svg';

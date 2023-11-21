@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import api from 'utility/api';
 import apiService from 'utility/apiService';
+import toast, { Toaster } from "react-hot-toast";
 import { paris_lager,d_02,d_07,new_work,tokyo,barca,singapo } from 'assets/website/img'
 
 const CityDetails = (props) => {
+    const navigate = useNavigate();
     const { id } = useParams();
     const [city, setCity] = useState([]);
+    // const [wishlist, setWishlist] = useState([]);
     const fetchData = () => {
         let url = "/api/website/city/"+id;
         api
@@ -24,11 +27,38 @@ const CityDetails = (props) => {
             });
     };
 
+    const Wishlist = (itemId) => {
+        console.log('first', itemId);
+        AddWishlist(itemId);
+    };
+
+    const AddWishlist = (id) => {
+        api
+          .get(`/api/website/wishlist/${id}`)
+          .then((res) => {
+            const data = res.data;
+            if (data.status === "success") {
+                setTimeout(() => {
+                    toast.success(data.message);
+                }, 1000);
+            } else {
+              console.log('error')
+            }
+          })
+          .catch((err) => {
+            console.error(err);
+            if (err.response.status == 401) {
+                navigate("/login", { replace: true });
+            }
+          });
+      };
+
     useEffect(() => {
         fetchData();
     }, []);
     return (
         <div>
+            <Toaster />
             <div className="page-title" style={{ backgroundImage: `url(${apiService.ledgerUrl+city.banner})` }}>
                 <div className="container">
                     <div className="page-title__content">
@@ -55,7 +85,7 @@ const CityDetails = (props) => {
                     <div className="container">
                         <div className="city-content__tabtitle__tablist">
                             <ul>
-                                <li className="active"><a title="France" href="#france">France</a></li>
+                                <li className="active"><a title="France" href="#france">{city.country_name}</a></li>
                             </ul>
                         </div>
                         <a className="city-content__tabtitle__button btn btn-mapsview" title="Maps view" href="maps-view.html">
@@ -77,17 +107,22 @@ const CityDetails = (props) => {
                                         return (
                                         <div className="col-md-3 places-item hover__box">
                                             <div className="places-item__thumb hover__box__thumb">
-                                                <a title="barca" href="04_place-details-1.html"><img src={d_02} alt="" /></a>
+                                            <Link title={place.name} to={`/place-details/${place.id}`}>
+                                                <img src={d_02} alt="" />
+                                            </Link>
                                             </div>
-                                            <a title="Add Wishlist" href="#" className="place-item__addwishlist">
+                                            <a title="Add Wishlist" href="#" onClick={() => Wishlist(place.id)} className="place-item__addwishlist">
                                                 <i className="la la-bookmark la-24"></i>
                                             </a>
                                             <div className="places-item__info">
                                                 <div className="places-item__category">
-                                                    <a title="Restaurants" href="#">Restaurants</a>
-                                                    <a title="Bakeries" href="#">Bakeries</a>
+                                                    <a title="Restaurants" href="#">{place.get_category.name}</a>
                                                 </div>
-                                                <h3><a title="Tartine Manufactory" href="04_place-details-1.html">{place.name}</a></h3>
+                                                <h3>
+                                                    <Link title={place.name} to={`/place-details/${place.id}`}>
+                                                        {place.name}
+                                                    </Link>
+                                                </h3>
                                                 <div className="places-item__meta">
                                                     <div className="places-item__reviews">
                                                         <span className="places-item__number">
@@ -106,7 +141,7 @@ const CityDetails = (props) => {
                     </div>
                 </div>
             </div>
-            <div className="other-city banner-dark">
+            {/* <div className="other-city banner-dark">
                 <div className="container">
                     <h2 className="title title--while">Explorer Other Cities</h2>
                     <div className="other-city__content">
@@ -170,7 +205,7 @@ const CityDetails = (props) => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> */}
         </div>
     )
 }

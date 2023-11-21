@@ -5138,7 +5138,7 @@ a.place__comments__reply i {
 	transition: all 0.3s;
 }
 
-.single .place__box-overview .place__desc:after {
+/* .single .place__box-overview .place__desc:after {
 	content: '';
 	position: absolute;
 	object-fit: contain;
@@ -5152,7 +5152,7 @@ a.place__comments__reply i {
 	opacity: 1;
 	visibility: visible;
 	transition: all 0.3s;
-}
+} */
 
 .single .place__box-overview .place__desc.open {
 	height: 100%;

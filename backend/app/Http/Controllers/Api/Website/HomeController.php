@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\Website;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\CityResource;
-use App\Http\Resources\Admin\PlaceResource;
+use App\Http\Resources\Website\PlaceResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -64,7 +64,7 @@ class HomeController extends Controller
 
     public function cityDetails($id)
     {
-        $city = City::with('get_place')->find($id);
+        $city = City::with('get_place.get_category')->find($id);
 
         if ($city) {
             return response([
@@ -85,7 +85,7 @@ class HomeController extends Controller
     public function wishlist($id)
     {
         $auth = Auth::user()->id;
-        $place = Place::find($id);
+        $place = Place::with(['get_category','get_country','get_city','get_type','place_amenities','place_open','place_social'])->find($id);
 
         $find_wishlist = Wishlist::where('place_id', $place->id)->where('user_id', $auth)->first();
         if ($find_wishlist) {
@@ -127,7 +127,7 @@ class HomeController extends Controller
 
     public function placeDetails($id)
     {
-        $place = Place::find($id);
+        $place = Place::with(['get_category','get_country','get_city','get_type','place_amenities.get_amenities','place_open','place_social'])->find($id);
 
         if ($place) {
             return response([
@@ -164,10 +164,10 @@ class HomeController extends Controller
             $booking = Booking::create([
                 'user_id' => $auth,
                 'place_id' => $place->id,
-                'numbber_of_adult' => $req->numbber_of_adult,
-                'numbber_of_children' => $req->numbber_of_children,
-                'date' => $req->date,
-                'time' => $req->time
+                'numbber_of_adult' => $req->total_adults,
+                'numbber_of_children' => $req->total_childs,
+                'date' => $req->booking_date,
+                'time' => $req->booking_time
             ]);
             if ($booking) {
                 return response([
