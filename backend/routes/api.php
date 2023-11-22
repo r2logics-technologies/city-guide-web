@@ -88,6 +88,7 @@ Route::group(['prefix' => '/website'], function () {
     Route::post('/search', [HomeController::class, 'searchData']);
     Route::get('/city/{city}', [HomeController::class, 'cityDetails']);
     Route::get('/wishlist/{place}', [HomeController::class, 'wishlist'])->middleware(['auth:sanctum']);
+    Route::get('/places', [HomeController::class, 'allPlaces']);
     Route::get('/place/{place}', [HomeController::class, 'placeDetails']);
     Route::post('/book-place/{place}', [HomeController::class, 'placeBook'])->middleware(['auth:sanctum']);
     Route::post('/review-place/{place}', [HomeController::class, 'placeReview'])->middleware(['auth:sanctum']);

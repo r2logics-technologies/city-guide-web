@@ -23,3 +23,4 @@ export {default as wf} from './wf.svg';
 export {default as card} from './card.svg';
 export {default as cld} from './cld.svg';
 export {default as smk} from './smk.svg';
+export {default as no_place} from './no-place.png';

@@ -9024,9 +9024,9 @@ a.place__comments__reply i {
 	font-family: "Jost" !important;
 }
 
-.archive-city.layout-02 .archive-filter {
+/* .archive-city.layout-02 .archive-filter {
 	display: none;
-}
+} */
 
 .archive-city.layout-02 .col-left.no-maps .place-item {
 	-ms-flex: 0 0 25%;
@@ -10251,7 +10251,7 @@ a.place__comments__reply i {
 	vertical-align: middle;
 	align-items: center;
 	position: relative;
-	display: flex;
+	display: block;
 	background-color: #fff;
 	box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
 	vertical-align: middle;
@@ -10321,12 +10321,12 @@ a.place__comments__reply i {
 	-webkit-box-flex: 0;
 	-ms-flex: 0 0 55%;
 	flex: 0 0 55%;
-	max-width: 55%;
+	/* max-width: 55%; */
 	position: relative;
 	-webkit-box-flex: 0;
 	-ms-flex: 0 0 55%;
 	flex: 0 0 55%;
-	max-width: 55%;
+	/* max-width: 55%; */
 	position: relative;
 }
 
@@ -10414,20 +10414,19 @@ a.place__comments__reply i {
 	left: 0;
 	right: 0;
 	border-radius: 5px;
-	-webkit-backface-visibility: hidden;
-	-moz-backface-visibility: hidden;
 	-webkit-transform: translate3d(0, 0, 0);
 	-moz-transform: translate3d(0, 0, 0);
 	box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.1);
 	background-color: #ffffff;
 	text-align: left;
 	z-index: 99;
-	display: none;
 }
 
 .site-banner__search.layout-02 .search-suggestions ul {
 	padding: 7px 0;
 	padding: 7px 0;
+	padding-bottom: 0;
+	margin: 0;
 }
 
 .site-banner__search.layout-02 .search-suggestions li {

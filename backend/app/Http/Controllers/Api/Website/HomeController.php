@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api\Website;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\CityResource;
 use App\Http\Resources\Website\PlaceResource;
+use App\Http\Resources\Website\AllPlacesResource;
+use App\Http\Resources\Website\SearchResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -43,15 +45,16 @@ class HomeController extends Controller
         ->where('countries.name', 'like', '%'.$req->search.'%')
         ->orWhere('cities.name', 'like', '%'.$req->search.'%')
         ->orWhere('places.name', 'like', '%'.$req->search.'%')
-        ->select('places.name as place_name','countries.name as country_name')
+        ->select('places.name as place_name','places.id as place_id','countries.name as country_name')
         ->get();
 
         if ($searches && count($searches) > 0) {
             return response([
                 'status' => 'success',
+                'total_place' => count($searches),
                 'message' => '',
                 'status_code' => 200,
-                'searches' => $searches,
+                'searches' => SearchResource::collection($searches),
             ]);
         }
         return response([
@@ -117,6 +120,27 @@ class HomeController extends Controller
                     'place' => null,
                 ], 500);
             }
+        }
+        return response([
+            'status' => 'warning',
+            'status_code' => 500,
+            'message' => 'No place found.',
+            'place' => null,
+        ]);
+    }
+
+    public function allPlaces()
+    {
+        $places = Place::with(['get_category','get_country','get_city','get_type'])->withCount('place_reviews')->get();
+
+        if ($places) {
+            return response([
+                'status' => 'success',
+                'message' => '',
+                'status_code' => 200,
+                'total_place' => count($places),
+                'places' => AllPlacesResource::collection($places),
+            ]);
         }
         return response([
             'status' => 'warning',
