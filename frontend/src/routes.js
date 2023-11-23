@@ -26,7 +26,7 @@ var routes = [
         icon: <BiIcons.BiCategoryAlt className="side-bar-icon" />,
       },
       {
-        path: "/placetypes",
+        path: "/type-place",
         name: "Place Types",
         icon: <BiIcons.BiPurchaseTag className="side-bar-icon" />,
       },
@@ -47,12 +47,12 @@ var routes = [
     icon: <BiIcons.BiFoodMenu className="side-bar-icon" />,
     subMenu: [
       {
-        path: "/all-posts",
+        path: "/blog",
         name: "All Posts",
         icon: <BiIcons.BiLayout  className="side-bar-icon" />,
       },
       {
-        path: "/blog-categories",
+        path: "/categories-blog",
         name: "Categories",
         icon: <BiIcons.BiGridAlt className="side-bar-icon" />,
       },

@@ -23,6 +23,14 @@ import Amenities from "views/admin/amenities/Amenities";
 import ListPlace from "views/admin/place/ListPlace";
 import FormPlace from "views/admin/place/FormPlace";
 import Profile from "views/admin/profile/Profile";
+import BlogCategories from "views/admin/blog-categories/BlogCategories";
+import ListBlog from "views/admin/blog/ListBlog";
+import FormBlog from "views/admin/blog/FormBlog";
+import Pages from "views/admin/pages/Pages";
+import Bookings from "views/admin/bookings/Bookings";
+import Reviews from "views/admin/reviews/Reviews";
+import Users from "views/admin/users/Users";
+import Settings from "views/admin/settings/Settings";
 
 var ps;
 
@@ -64,16 +72,34 @@ function AdminLayout(props) {
       <div className="main-panel" ref={mainPanel}>
         <Navbar {...props} />
         <Routes>
+          {/* Dashboard */}
           <Route path="/dashboard" element={<Dashboard />} exact />
-          <Route path="/profile" element={<Profile />} exact />
-          <Route path="/countries" element={<Countries />} exact />
-          <Route path="/cities" element={<Cities />} exact />
-          <Route path="/categories" element={<Categories />} exact />
-          <Route path="/placetypes" element={<PlaceTypes />} exact />
-          <Route path="/amenities" element={<Amenities />} exact />
-          <Route path="/place" element={<ListPlace />} exact />
-          <Route path="/create-place" element={<FormPlace />} exact />
+          {/* profile  */}
+          <Route path="/profile" element={<Profile />} />
+          {/* Place  */}
+          <Route path="/countries" element={<Countries />} />
+          <Route path="/cities" element={<Cities />} />
+          <Route path="/categories" element={<Categories />} />          
+          <Route path="/amenities" element={<Amenities />} />
+          <Route path="/type-place" element={<PlaceTypes />} />
+          <Route path="/place" element={<ListPlace />} />
+          <Route path="/create-place" element={<FormPlace />} />
           <Route path="/edit-place/:id" element={<FormPlace />} />
+          {/* Blogs */}
+          <Route path="/categories-blog" element={<BlogCategories />} />
+          <Route path="/blog" element={<ListBlog />} />
+          <Route path="/create-blog" element={<FormBlog />} />
+          <Route path="/edit-blog/:id" element={<FormBlog />} />
+          {/* Pages */}
+          <Route path="/pages" element={<Pages />} />
+          {/* Bookings */}
+          <Route path="/bookings" element={<Bookings />} />
+          {/* Reviews */}
+          <Route path="/reviews" element={<Reviews />} />
+          {/* Users */}
+          <Route path="/users" element={<Users />} />
+          {/* Settings */}
+          <Route path="/settings" element={<Settings />} />
         </Routes>
         <Footer fluid />
       </div>

@@ -51,7 +51,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
+    public function scopeAllowed($query)
+    {
+        return $query->where('status', '!=', 'deleted');
+    }
     public function deleteImage()
     {
        Storage::delete($this->avatar);

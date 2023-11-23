@@ -29,7 +29,7 @@ class PlacesController extends Controller
             'status' => 'warning',
             'status_code' => 500,
             'message' => 'No places found.',
-            'amenities' => null,
+            'places' => null,
         ]);
     }
     public function getSpecificData($id)

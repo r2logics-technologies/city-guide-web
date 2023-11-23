@@ -168,7 +168,8 @@ class HomeController extends Controller
                 'numbber_of_adult' => $req->total_adults,
                 'numbber_of_children' => $req->total_childs,
                 'date' => $req->booking_date,
-                'time' => $req->booking_time
+                'time' => $req->booking_time,
+                'message' => $req->message
             ]);
             if ($booking) {
                 return response([

@@ -5,15 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Review extends Model
+class PostCategory extends Model
 {
-    protected $table = 'reviews';
     use HasFactory;
     protected $fillable = [
-        'user_id',
-        'place_id',
-        'score',
-        'comment',
-        'status',
+        'name', 'status', 'details'
     ];
+    public function scopeAllowed($query)
+    {
+        return $query->where('status', '!=', 'deleted');
+    }
+
+
+
 }

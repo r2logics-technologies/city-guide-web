@@ -8,7 +8,12 @@ use App\Http\Controllers\Api\Admin\CityController;
 use App\Http\Controllers\Api\Admin\CategoryController;
 use App\Http\Controllers\Api\Admin\PlaceTypeController;
 use App\Http\Controllers\Api\Admin\AmenitiesController;
+use App\Http\Controllers\Api\Admin\BookingController;
 use App\Http\Controllers\Api\Admin\PlacesController;
+use App\Http\Controllers\Api\Admin\PostsController;
+use App\Http\Controllers\Api\Admin\PagesController;
+use App\Http\Controllers\Api\Admin\ReviewsController;
+use App\Http\Controllers\Api\Admin\UsersController;
 use App\Http\Controllers\Api\Website\HomeController;
 use App\Http\Controllers\Api\Website\UserController;
 
@@ -78,6 +83,44 @@ Route::group(['prefix' => '/admin', 'middleware' => ['auth:sanctum']], function 
         Route::get('/', [PlacesController::class, 'getData']);
         Route::post('/save/update', [PlacesController::class, 'submitData']);
         Route::post('/change/status/{place}', [PlacesController::class, 'changeStatusData']);
+    });
+
+    //Post
+    Route::get('/post/{id}', [PostsController::class, 'getSpecificData']);
+    Route::prefix('posts')->group(function () {
+        Route::get('/', [PostsController::class, 'getPosts']);
+        Route::post('/save/update', [PostsController::class, 'submitData']);
+        Route::post('/change/status/{post}', [PostsController::class, 'changeStatusData']);
+        //category
+        Route::prefix('categories')->group(function () {
+            Route::get('/', [PostsController::class, 'getCategories']);
+            Route::post('/save/update', [PostsController::class, 'submitCategory']);
+            Route::post('/change/status/{PostCategory}', [PostsController::class, 'changeStatusCategory']);
+        });
+    });
+
+    //Pages
+    Route::prefix('pages')->group(function () {
+        Route::get('/', [PagesController::class, 'getData']);
+        Route::post('/save/update', [PagesController::class, 'submitData']);
+        Route::post('/change/status/{page}', [PagesController::class, 'changeStatusData']);
+    });
+
+    //Bookings
+    Route::prefix('bookings')->group(function () {
+        Route::get('/', [BookingController::class, 'getData']);
+        Route::post('/change/status/{booking}', [BookingController::class, 'changeStatusData']);
+    });
+    //reviews
+    Route::prefix('reviews')->group(function () {
+        Route::get('/', [ReviewsController::class, 'getData']);
+        Route::post('/change/status/{review}', [ReviewsController::class, 'changeStatusData']);
+    });
+    //users
+    Route::prefix('users')->group(function () {
+        Route::get('/', [UsersController::class, 'getData']);
+        Route::post('/change/type/{user}', [UsersController::class, 'changeUserType']);
+        Route::post('/change/status/{user}', [UsersController::class, 'changeStatusData']);
     });
 
 });

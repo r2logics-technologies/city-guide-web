@@ -10,6 +10,7 @@ import { useAuth } from "context/auth";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
 import { Modal, ModalHeader, ModalBody } from "reactstrap";
+import avatarImg from "assets/img/default-avatar.png";
 const Option = Select.Option;
 const { confirm } = antdModal;
 
@@ -19,9 +20,7 @@ function Profile() {
   const [avatarUrl, setAvatarUrl] = useState("");
   const [showForm, setShowForm] = useState();
 
-  const [defaultUser, setDefaultUser] = useState(
-    "assets/img/default-avatar.png"
-  );
+  const [defaultUser, setDefaultUser] = useState(avatarImg);
   const [auth, setAuth] = useAuth();
 
   const {
@@ -260,7 +259,7 @@ function Profile() {
                     />
                   </div>
                 </div>
-              </div>             
+              </div>
               {editProfile && (
                 <div className="d-flex border-top mt-4 justify-content-end gap-2">
                   <button
