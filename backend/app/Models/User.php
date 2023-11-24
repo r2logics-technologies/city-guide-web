@@ -28,6 +28,7 @@ class User extends Authenticatable
         'mobile',
         'facebook',
         'instagram',
+        'address',
         'user_type',
         'fcm_topics',
         'status',
@@ -58,5 +59,15 @@ class User extends Authenticatable
     public function deleteImage()
     {
        Storage::delete($this->avatar);
+    }
+
+    public function get_bookings()
+    {
+        return $this->hasMany(Booking::class, 'user_id', 'id')->where('status', 'activated');
+    }
+
+    public function get_wishlists()
+    {
+        return $this->hasMany(Wishlist::class, 'user_id', 'id')->where('status', 'activated');
     }
 }

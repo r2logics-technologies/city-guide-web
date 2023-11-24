@@ -1,10 +1,71 @@
 import React, { useEffect, useState } from 'react'
 import api from 'utility/api';
 import apiService from 'utility/apiService';
-import { bg_1, tokyo, barca, new_work, paris, amsterdam, singapo, sydney, angeles, bg_app, app_store, google_play, thumb_1, thumb_5, thumb_8 } from 'assets/website/img';
-import { Link } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { bg_1, bg_app, app_store, google_play, thumb_1, thumb_5, thumb_8 } from 'assets/website/img';
+import { Link, useNavigate } from 'react-router-dom';
 const Home = () => {
     const [cities, setCities] = useState([]);
+    const [isSuggestionsVisible, setSuggestionsVisible] = useState(false);
+    const [selectedText, setSelectedText] = useState('');
+    const [searches, setSearch] = useState([]);
+    const navigate = useNavigate();
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors },
+    } = useForm();
+
+    // const handleFocus = () => {
+    //     setSuggestionsVisible(true);
+    // };
+
+    // const handleBlur = () => {
+    //     setSuggestionsVisible(false);
+    // };
+
+    const handleInputChange = (e) => {
+        const value = e.target.value;
+        setSelectedText(value);
+        const inputValueLength = value.length;
+        if (inputValueLength >= 3) {
+            setSuggestionsVisible(true);
+            onSearch(value);
+        }else{
+            setSuggestionsVisible(false);
+        }
+    };
+
+    const onSearch = async (data) => {
+        const url = `/api/website/search`;
+        const formData = new FormData();
+        formData.append("search", data);
+        api
+            .post(url, formData)
+            .then((res) => {
+                const data = res.data;
+                if (data.status === "success") {
+                    setSearch(data.searches);
+                } else {
+                    setSuggestionsVisible(false);
+                }
+            })
+            .catch((err) => {
+                console.error(err);
+                console.log("Something went wrong!");
+            });
+    };
+
+    const SearchSubmit = async (data) => {
+        try {
+            const searchURL = `/search?q=${encodeURIComponent(data.search)}`;
+            navigate(searchURL);
+        } catch (error) {
+            console.error('Error during redirection:', error);
+        }
+    };
+
     const fetchData = () => {
         let url = "/api/website";
         api
@@ -33,41 +94,45 @@ const Home = () => {
                         <div className="container">
                             <div className="site-banner__content">
                                 <h1 className="site-banner__title">Explore the world</h1>
-                                <form action="#" className="site-banner__search layout-02">
+                                <form onSubmit={handleSubmit(SearchSubmit)} className="site-banner__search layout-02">
                                     <div className="field-input">
                                         <label htmlFor="s">Find</label>
-                                        <input className="site-banner__search__input open-suggestion" id="s" type="text" name="s" placeholder="Ex: fastfood, beer" autoComplete="off" />
-                                        <div className="search-suggestions name-suggestions">
-                                            <ul>
-                                                <li><a href="#"><i className="las la-utensils"></i><span>Restaurant</span></a></li>
-                                                <li><a href="#"><i className="las la-spa"></i><span>Beauty</span></a></li>
-                                                <li><a href="#"><i className="las la-dumbbell"></i><span>Fitness</span></a></li>
-                                                <li><a href="#"><i className="las la-cocktail"></i><span>Nightlight</span></a></li>
-                                                <li><a href="#"><i className="las la-shopping-bag"></i><span>Shopping</span></a></li>
-                                                <li><a href="#"><i className="las la-film"></i><span>Cinema</span></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div className="field-input">
-                                        <label htmlFor="loca">Where</label>
-                                        <input className="site-banner__search__input open-suggestion" id="loca" type="text" name="where" placeholder="Your city" autoComplete="off" />
-                                        <div className="search-suggestions location-suggestions">
-                                            <ul>
-                                                <li><a href="#"><i className="las la-location-arrow"></i><span>Current location</span></a></li>
-                                                <li><a href="#"><span>San Francisco, CA</span></a></li>
-                                            </ul>
-                                        </div>
+                                        {/* onFocus={handleFocus} onBlur={handleBlur} */}
+                                        <input
+                                            className="site-banner__search__input open-suggestion"
+                                            type="text"
+                                            id='s'
+                                            placeholder='Ex: Country, City, Place'
+                                            autoComplete='off'
+                                            value={selectedText}
+                                            {...register("search")}
+                                            onChange={handleInputChange}
+                                        />
+                                        {isSuggestionsVisible && (
+                                            <div className="search-suggestions name-suggestions">
+                                                <ul>
+                                                    {searches?.map((search) => {
+                                                        return (
+                                                            <li>
+                                                                <Link to={`/place-details/${search.place_id}`}>
+                                                                    <span><i className="las la-place-of-worship"></i>{search.place_name} <span className='float-end'><i className="las la-map-marker"></i>{search.city}</span></span>
+                                                                </Link>
+                                                            </li>)
+                                                    })}
+                                                </ul>
+                                            </div>
+                                        )}
                                     </div>
                                     <div className="field-submit">
                                         <button><i className="las la-search la-24-black"></i></button>
                                     </div>
                                 </form>
-                                <p className="site-banner__meta">
+                                {/* <p className="site-banner__meta">
                                     <span>Popular:</span>
                                     <a title="London" href="city-details-1.html">London</a>
                                     <a title="Paris" href="city-details-1.html">Paris</a>
                                     <a title="Chicago" href="city-details-1.html">Chicago</a>
-                                </p>
+                                </p> */}
                             </div>
                         </div>
                     </div>
@@ -82,7 +147,7 @@ const Home = () => {
                                                 <div className="cities__item hover__box">
                                                     <div className="cities__thumb hover__box__thumb">
                                                         <Link title={city.country_name} to={`/city-details/${city.id}`}>
-                                                            <img src={apiService.ledgerUrl+city.thumb} alt={city.name} />
+                                                            <img src={apiService.ledgerUrl + city.thumb} alt={city.name} />
                                                         </Link>
                                                     </div>
                                                     <h4 className="cities__name">{city.country_name}</h4>

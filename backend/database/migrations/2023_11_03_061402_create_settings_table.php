@@ -15,10 +15,9 @@ class CreateSettingsTable extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id')->nullable();
             $table->string('name');
-            $table->text('val');
-            $table->char('type', 20)->default('string');
+            $table->text('logo');
+            $table->string('version')->nullable();
             $table->enum('status', ['pending', 'activated', 'deactivated', 'deleted'])->default('activated');
             $table->json('details')->nullable();
             $table->timestamps();

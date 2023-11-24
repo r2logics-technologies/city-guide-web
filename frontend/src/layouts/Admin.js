@@ -31,6 +31,7 @@ import Bookings from "views/admin/bookings/Bookings";
 import Reviews from "views/admin/reviews/Reviews";
 import Users from "views/admin/users/Users";
 import Settings from "views/admin/settings/Settings";
+import ErrorPage from "components/error-page/ErrorPage";
 
 var ps;
 
@@ -100,6 +101,8 @@ function AdminLayout(props) {
           <Route path="/users" element={<Users />} />
           {/* Settings */}
           <Route path="/settings" element={<Settings />} />
+          {/* Error Page */}
+          <Route path="/*" element={<ErrorPage />} />
         </Routes>
         <Footer fluid />
       </div>

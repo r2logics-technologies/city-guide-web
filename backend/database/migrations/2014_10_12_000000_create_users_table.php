@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->string('mobile', 20)->nullable();
             $table->string('facebook')->nullable();
             $table->string('instagram')->nullable();
+            $table->text('address')->nullable();
             $table->enum('user_type', ['admin', 'employee', 'customer', 'super_admin',])->default('customer');
             $table->text('fcm_topics')->nullable()->comment('Comma separated values');
             $table->enum('status', ['activated', 'deactivated', 'deleted'])->default('activated');
