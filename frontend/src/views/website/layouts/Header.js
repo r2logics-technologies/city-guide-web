@@ -140,7 +140,7 @@ const Header = () => {
                                 </div>
                                 <div className="right-header__search">
                                     <a title="Search" href="#" className="search-open">
-                                        <i className="las la-search la-24-black"></i>
+                                        {/* <i className="las la-search la-24-black"></i> */}
                                     </a>
                                     <div className="site__search">
                                         <a title="Close" href="#" className="search__close">
