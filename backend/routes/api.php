@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\Admin\PostsController;
 use App\Http\Controllers\Api\Admin\PagesController;
 use App\Http\Controllers\Api\Admin\ReviewsController;
 use App\Http\Controllers\Api\Admin\UsersController;
+use App\Http\Controllers\Api\Admin\SettingsController;
 use App\Http\Controllers\Api\Website\HomeController;
 use App\Http\Controllers\Api\Website\UserController;
 
@@ -121,6 +122,11 @@ Route::group(['prefix' => '/admin', 'middleware' => ['auth:sanctum']], function 
         Route::get('/', [UsersController::class, 'getData']);
         Route::post('/change/type/{user}', [UsersController::class, 'changeUserType']);
         Route::post('/change/status/{user}', [UsersController::class, 'changeStatusData']);
+    });
+    //settings
+    Route::prefix('settings')->group(function () {
+        Route::get('/', [SettingsController::class, 'getData']);
+        Route::post('/update', [SettingsController::class, 'updateData']);
     });
 
 });

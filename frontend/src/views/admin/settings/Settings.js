@@ -1,24 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Card, CardHeader, CardBody, CardTitle, Row, Col } from "reactstrap";
 import toast, { Toaster } from "react-hot-toast";
-import { Modal as antdModal } from "antd";
 import * as BsIcons from "react-icons/bs";
-import { useForm, Controller, useFieldArray } from "react-hook-form";
-import { Select } from "antd";
+import { useForm } from "react-hook-form";
 import api from "utility/api";
-import { Link, useNavigate, useParams } from "react-router-dom";
 import apiService from "utility/apiService";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
 import uploadImg from "assets/img/img-upload.png";
 
-const Option = Select.Option;
-const { confirm } = antdModal;
 
 function Settings() {
-  const navigate = useNavigate();
-  const params = useParams();
-  const postId = params.id;
   const [imgUpload, setImgUpload] = useState(uploadImg);
   const [thumbnailImgUrl, setthumbnailImgUrl] = useState("");
 
@@ -35,7 +25,6 @@ function Settings() {
 
   const {
     register,
-    control,
     handleSubmit,
     setValue,
     formState: { errors },
@@ -43,47 +32,27 @@ function Settings() {
 
   const removeThumImg = () => {
     setthumbnailImgUrl("");
-    setValue("thumb", null);
+    setValue("logo", null);
   };
-  const [categoriesList, setCategoriesList] = useState([]);
-
+ 
   useEffect(() => {
-    fetchCategoriesData();
+   fetchData();
   }, []);
 
-  useEffect(() => {
-    if (postId) fetchPlaceData(postId);
-  }, [postId]);
 
-  const fetchCategoriesData = () => {
-    let url = "/api/admin/posts/categories";
-    api
-      .get(url)
-      .then((res) => {
-        const data = res.data;
-        if (data.status === "success") {
-          setCategoriesList(data.categories);
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  };
-
-  const fetchPlaceData = (id) => {
-    let url = `/api/admin/post/${id}`;
+  const fetchData = () => {
+    let url = `/api/admin/settings`;
     api
       .get(url)
       .then((res) => {
         const data = res.data;
         console.log(data);
         if (data.status === "success") {
-          const post = data.post;
-          setValue("title", post.title);
-          setValue("content", post.content);
-          setValue("post_category_id", post.post_category_id);
-          if (post.thumb != null) {
-            setImgUpload(apiService.ledgerUrl + post.thumb);
+          const setting = data.setting;
+          setValue("name", setting.name);
+          setValue("version", setting.version);
+          if (setting.logo != null) {
+            setImgUpload(apiService.ledgerUrl + setting.logo);
           }
         } else {
           toast(data.message);
@@ -94,21 +63,13 @@ function Settings() {
       });
   };
 
-  const onSubmit = async (data) => {
-    console.log(data);
-    const formData = new FormData();
-    if (postId) {
-      formData.append("edited", postId);
-    }
-    formData.append("title", data.title != null && data.title);
-    formData.append("content", data.content != null && data.content);
-    formData.append(
-      "post_category_id",
-      data.post_category_id != null && data.post_category_id
-    );
-    formData.append("thumb", data.thumb[0] != null && data.thumb[0]);
+  const onSubmit = (data) => {
+    const formData = new FormData();    
+    formData.append("name", data.name != null && data.name);
+    formData.append("version", data.version != null && data.version);
+    formData.append("logo", data.logo != null && data.logo[0]);
 
-    const url = `/api/admin/posts/save/update`;
+    const url = `/api/admin/settings/update`;
     api
       .post(url, formData)
       .then((res) => {
@@ -116,7 +77,6 @@ function Settings() {
         if (data.status === "success") {
           setTimeout(() => {
             toast.success(data.message);
-            navigate("/admin/blog");
           }, 1000);
         } else {
           toast.error(data.message);
@@ -128,16 +88,7 @@ function Settings() {
       });
   };
 
-  // Define your custom toolbar options
-  const toolbarOptions = [
-    [{ header: [1, 2, false] }],
-    ["bold", "italic", "underline", "strike"],
-    ["blockquote", "code-block"],
-    [{ list: "ordered" }, { list: "bullet" }],
-    [{ indent: "-1" }, { indent: "+1" }],
-    [{ align: [] }],
-    [{ script: "sub" }, { script: "super" }],
-  ];
+
 
   return (
     <>
@@ -148,7 +99,7 @@ function Settings() {
             <Card>
               <CardHeader className="border-bottom">
                 <CardTitle tag="h3">
-                  {postId ? "Edit" : "Create"} Post{" "}
+                  Settings <BsIcons.BsGear />
                 </CardTitle>
               </CardHeader>
               <CardBody>
@@ -180,14 +131,14 @@ function Settings() {
                         <input
                           type="file"
                           className="image-input"
-                          {...register("thumb")}
+                          {...register("logo")}
                           accept="image/jpeg, image/jpg, image/png, application/pdf"
                           onChange={selectThumbnailImg}
                         />
                         {!thumbnailImgUrl && (
                           <div>
                             <label className="mt-2">
-                              Select Thumbnail Image
+                              Select App Logo 
                             </label>
                           </div>
                         )}
@@ -195,70 +146,29 @@ function Settings() {
                     </div>
                     <div className="col-md-8">
                       <div className="my-2">
-                        <div className="d-flex justify-content-between">
+                        <div className="d-flex justify-version-between">
                           <small className="text-muted required-field">
-                            Title
-                          </small>
-                          <small className="text-danger">
-                            {errors?.title && "Title is required"}
+                            App Name
                           </small>
                         </div>
                         <input
                           className="form-control"
                           type="text"
-                          {...register("title", { required: true })}
-                          placeholder="What the title of place"
+                          {...register("name")}
+                          placeholder="Enter app name"
                         />
                       </div>
                       <div className="my-2">
                         <div className="d-flex justify-content-between">
                           <small className="text-muted required-field">
-                            Category
-                          </small>
-                          <small className="text-danger">
-                            {errors?.post_category_id && "Category is required"}
+                            App Version
                           </small>
                         </div>
-                        <Controller
-                          name="post_category_id"
-                          control={control}
-                          rules={{ required: true }}
-                          render={({ field }) => (
-                            <Select
-                              className="w-100"
-                              placeholder="Select Category"
-                              {...field}
-                            >
-                              {categoriesList.map((category) => (
-                                <Option key={category.id} value={category.id}>
-                                  {category.name}
-                                </Option>
-                              ))}
-                            </Select>
-                          )}
-                        />
-                      </div>
-                      <div className="my-2">
-                        <div className="d-flex justify-content-between">
-                          <small className="text-muted">Content</small>
-                          <small className="text-danger">
-                            {errors?.content && "Content is required"}
-                          </small>
-                        </div>
-                        <Controller
-                          name="content"
-                          control={control}
-                          rules={{ required: true }}
-                          render={({ field }) => (
-                            <ReactQuill
-                              className="border rounded"
-                              value={field.value}
-                              onChange={(value) => field.onChange(value)}
-                              modules={{
-                                toolbar: toolbarOptions,
-                              }}
-                            />
-                          )}
+                        <input
+                          className="form-control"
+                          type="text"
+                          {...register("version")}
+                          placeholder="Enter app version"
                         />
                       </div>
                     </div>
@@ -268,14 +178,8 @@ function Settings() {
                       className="btn btn-outline-primary rounded-pill"
                       type="submit"
                     >
-                      Submit
+                      Update Setting
                     </button>
-                    <Link
-                      to="/admin/blog"
-                      className="btn btn-outline-danger rounded-pill"
-                    >
-                      Cancel
-                    </Link>
                   </div>
                 </form>
               </CardBody>

@@ -10,13 +10,13 @@ import Header from 'views/website/layouts/Header';
 import Footer from 'views/website/layouts/Footer';
 import About from 'views/website/pages/About';
 import Contact from 'views/website/pages/Contact';
-import Login from 'views/auth/Login';
 import CityDetails from 'views/website/pages/CityDetails';
 import PlaceDetails from 'views/website/pages/PlaceDetails';
 import PlaceSearch from 'views/website/pages/PlaceSearch';
 import AllPlaces from 'views/website/pages/AllPlaces';
 import PrivateRoute from 'components/routes/Private';
 import Index from 'views/website/customer/index';
+import ErrorPage from "components/error-page/ErrorPage";
 
 const WebSite = () => {
   return (
@@ -33,6 +33,8 @@ const WebSite = () => {
         <Route path="/customer" element={<PrivateRoute />}>
           <Route path='/customer/*' element={<Index />} />
         </Route>
+        {/* Error Page */}
+        <Route path="/*" element={<ErrorPage />} />
       </Routes>
       <Footer />
     </div>
