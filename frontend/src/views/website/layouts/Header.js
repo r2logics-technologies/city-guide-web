@@ -1,9 +1,14 @@
 import { logo } from 'assets/website/img'
 import React, { useState } from 'react'
-import { Link, BrowserRouter as Router, Route } from 'react-router-dom'
+import { useAuth } from "context/auth";
+import toast, { Toaster } from "react-hot-toast";
+import { Link, BrowserRouter as Router, Route, useNavigate } from 'react-router-dom'
+import { Modal } from "antd";
+const { confirm } = Modal;
 
 const Header = () => {
     const [isPopupOpen, setPopupOpen] = useState(false);
+    const [auth, setAuth] = useAuth();
 
     const handleMenuIconClick = () => {
         setPopupOpen(!isPopupOpen);
@@ -25,6 +30,33 @@ const Header = () => {
 
     const handlePopupBackgroundClick = () => {
         setPopupOpen(false);
+    };
+
+    const showConfirm = () => {
+        confirm({
+            title: "Are you sure?",
+            content: "You Want to Logout the Panel",
+            onOk() {
+                setTimeout(() => {
+                    handleLogout();
+                }, 2000);
+            },
+            onCancel() { },
+        });
+    };
+    const navigate = useNavigate();
+    const handleLogout = () => {
+        sessionStorage.removeItem("access_token");
+        sessionStorage.removeItem("user-details");
+        setAuth({
+            ...auth,
+            user: null,
+            token: "",
+        });
+        setTimeout(() => {
+            toast.success("Logout Successfully.");
+        }, 1000);
+        navigate("/login");
     };
 
     return (
@@ -86,9 +118,14 @@ const Header = () => {
                                         </li>
                                     </ul>
                                 </nav>
-                                <div className="right-header__login">
-                                    <Link to={'/login'}>Login</Link>
-                                </div>
+                                {auth.token ? (
+                                    <div className="right-header__login">
+                                        <Link onClick={showConfirm}>Logout</Link>
+                                    </div>) : (
+                                    <div className="right-header__login">
+                                        <Link to={'/login'}>Login</Link>
+                                    </div>
+                                )}
                                 <div className="popup popup-form">
                                     <a title="Close" href="#" className="popup__close">
                                         <i className="las la-times la-24-black"></i>
