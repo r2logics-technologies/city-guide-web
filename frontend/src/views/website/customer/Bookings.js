@@ -112,6 +112,25 @@ const Bookings = () => {
                     </div>
                 </div>
             </div>
+
+            <div className="modal fade show" style={{ ...(isSuccess && { display: "block" }) }} id="bookingDetailsModal" tabindex="-1" aria-labelledby="bookingDetailsModalLabel" aria-hidden="true">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title" id="bookingDetailsModalLabel">Booking Details</h5>
+                        </div>
+                        <div className="modal-body">
+                            <h6>Booking Date : {booking.booking_date}</h6>
+                            <h6>Booking Time : {booking.booking_time}</h6>
+                            <h6>Total Adults : {booking.total_adults}</h6>
+                            <h6>Total Childs : {booking.total_childs}</h6>
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-secondary" onClick={() => CloseModal(true)}>Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }

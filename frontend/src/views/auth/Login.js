@@ -41,9 +41,15 @@ function Login() {
             user: data.user,
           });
           setLoading(false);
-          navigate(
-            (location.state != "/" && location.state) || "/admin/dashboard"
-          );
+          if (data.user.user_type === 'admin') {  
+            navigate(
+              (location.state != "/" && location.state) || "/admin/dashboard"
+            );
+          } else {
+            navigate(
+              (location.state != "/" && location.state) || "/customer/dashboard"
+            );
+          }
         } else {
           toast.error("Something went wrong! Please check credentials");
         }
