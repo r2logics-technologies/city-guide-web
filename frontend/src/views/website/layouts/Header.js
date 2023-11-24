@@ -27,7 +27,7 @@ const Header = () => {
                                         <div className="popup__menu popup__box">
                                             <ul className="menu-arrow">
                                                 <li>
-                                                    <a href="#" title="Demos">All Places</a>
+                                                    <Link to={'/places'} title="Places">All Places</Link>
                                                 </li>
                                                 <li>
                                                     <Link to={'/about-us'}>About Us</Link>
@@ -52,7 +52,7 @@ const Header = () => {
                             <nav className="main-menu">
                                 <ul>
                                     <li>
-                                        <a href="#" title="Demos">All Places</a>
+                                        <Link to={'/places'} title="Places">All Places</Link>
                                     </li>
                                     <li>
                                         <Link to={'/about-us'}>About Us</Link>

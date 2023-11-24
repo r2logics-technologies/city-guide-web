@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api\Website;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\CityResource;
 use App\Http\Resources\Website\PlaceResource;
+use App\Http\Resources\Website\AllPlacesResource;
+use App\Http\Resources\Website\SearchResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -13,6 +15,9 @@ use App\Models\Place;
 use App\Models\Wishlist;
 use App\Models\Booking;
 use App\Models\PlaceReview;
+use App\Models\Category;
+use App\Models\PlaceType;
+use App\Models\Amenities;
 use DB;
 
 class HomeController extends Controller
@@ -37,27 +42,37 @@ class HomeController extends Controller
     }
 
     public function searchData(Request $req){
+        $categories = Category::allowed()->get();
+        $placetypes = PlaceType::with('get_category')->allowed()->get();
+        $amenities = Amenities::allowed()->get();
         $searches = DB::table('countries')
         ->join('cities', 'cities.country_id', '=', 'countries.id')
         ->join('places', 'places.country_id', '=', 'countries.id')
         ->where('countries.name', 'like', '%'.$req->search.'%')
         ->orWhere('cities.name', 'like', '%'.$req->search.'%')
         ->orWhere('places.name', 'like', '%'.$req->search.'%')
-        ->select('places.name as place_name','countries.name as country_name')
+        ->select('places.name as place_name','places.id as place_id','countries.name as country_name')
         ->get();
 
         if ($searches && count($searches) > 0) {
             return response([
                 'status' => 'success',
+                'total_place' => count($searches),
                 'message' => '',
                 'status_code' => 200,
-                'searches' => $searches,
+                'categories' => $categories,
+                'placetypes' => $placetypes,
+                'amenities' => $amenities,
+                'searches' => SearchResource::collection($searches),
             ]);
         }
         return response([
             'status' => 'warning',
             'status_code' => 500,
             'message' => 'No searches found.',
+            'categories' => null,
+            'placetypes' => null,
+            'amenities' => null,
             'searches' => null,
         ]);
 
@@ -122,6 +137,36 @@ class HomeController extends Controller
             'status' => 'warning',
             'status_code' => 500,
             'message' => 'No place found.',
+            'place' => null,
+        ]);
+    }
+
+    public function allPlaces()
+    {
+        $categories = Category::allowed()->get();
+        $placetypes = PlaceType::with('get_category')->allowed()->get();
+        $amenities = Amenities::allowed()->get();
+        $places = Place::with(['get_category','get_country','get_city','get_type'])->withCount('place_reviews')->get();
+
+        if ($places) {
+            return response([
+                'status' => 'success',
+                'message' => '',
+                'status_code' => 200,
+                'total_place' => count($places),
+                'categories' => $categories,
+                'placetypes' => $placetypes,
+                'amenities' => $amenities,
+                'places' => AllPlacesResource::collection($places),
+            ]);
+        }
+        return response([
+            'status' => 'warning',
+            'status_code' => 500,
+            'message' => 'No place found.',
+            'categories' => null,
+            'placetypes' => null,
+            'amenities' => null,
             'place' => null,
         ]);
     }
