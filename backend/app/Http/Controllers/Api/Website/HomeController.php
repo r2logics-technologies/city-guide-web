@@ -15,6 +15,9 @@ use App\Models\Place;
 use App\Models\Wishlist;
 use App\Models\Booking;
 use App\Models\PlaceReview;
+use App\Models\Category;
+use App\Models\PlaceType;
+use App\Models\Amenities;
 use DB;
 
 class HomeController extends Controller
@@ -39,6 +42,9 @@ class HomeController extends Controller
     }
 
     public function searchData(Request $req){
+        $categories = Category::allowed()->get();
+        $placetypes = PlaceType::with('get_category')->allowed()->get();
+        $amenities = Amenities::allowed()->get();
         $searches = DB::table('countries')
         ->join('cities', 'cities.country_id', '=', 'countries.id')
         ->join('places', 'places.country_id', '=', 'countries.id')
@@ -54,6 +60,9 @@ class HomeController extends Controller
                 'total_place' => count($searches),
                 'message' => '',
                 'status_code' => 200,
+                'categories' => $categories,
+                'placetypes' => $placetypes,
+                'amenities' => $amenities,
                 'searches' => SearchResource::collection($searches),
             ]);
         }
@@ -61,6 +70,9 @@ class HomeController extends Controller
             'status' => 'warning',
             'status_code' => 500,
             'message' => 'No searches found.',
+            'categories' => null,
+            'placetypes' => null,
+            'amenities' => null,
             'searches' => null,
         ]);
 
@@ -131,6 +143,9 @@ class HomeController extends Controller
 
     public function allPlaces()
     {
+        $categories = Category::allowed()->get();
+        $placetypes = PlaceType::with('get_category')->allowed()->get();
+        $amenities = Amenities::allowed()->get();
         $places = Place::with(['get_category','get_country','get_city','get_type'])->withCount('place_reviews')->get();
 
         if ($places) {
@@ -139,6 +154,9 @@ class HomeController extends Controller
                 'message' => '',
                 'status_code' => 200,
                 'total_place' => count($places),
+                'categories' => $categories,
+                'placetypes' => $placetypes,
+                'amenities' => $amenities,
                 'places' => AllPlacesResource::collection($places),
             ]);
         }
@@ -146,6 +164,9 @@ class HomeController extends Controller
             'status' => 'warning',
             'status_code' => 500,
             'message' => 'No place found.',
+            'categories' => null,
+            'placetypes' => null,
+            'amenities' => null,
             'place' => null,
         ]);
     }

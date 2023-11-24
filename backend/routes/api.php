@@ -96,11 +96,11 @@ Route::group(['prefix' => '/website'], function () {
 
 //User
 Route::group(['prefix' => '/user', 'middleware' => ['auth:sanctum']], function () {
-    Route::get('/', [UserController::class, 'getProfile']);
-    Route::post('/update-profile', [UserController::class, 'updateProfile']);
-    Route::post('/change-password', [UserController::class, 'changePassword']);
-    Route::get('/remove-wishlist/{wishlist}', [UserController::class, 'wishlistRemove']);
-    Route::get('/booking-details/{booking}', [UserController::class, 'bookingDetails']);
-    Route::get('/booking-status/{booking}', [UserController::class, 'changeBookingStatus']);
-    Route::get('/remove-booking/{booking}', [UserController::class, 'bookingRemove']);
+    Route::get('/', [AuthController::class, 'getProfile']);
+    Route::post('/update-profile', [AuthController::class, 'updateProfile']);
+    Route::post('/change-password', [AuthController::class, 'changePassword']);
+    Route::get('/remove-wishlist/{wishlist}', [AuthController::class, 'wishlistRemove']);
+    Route::get('/booking-details/{booking}', [AuthController::class, 'bookingDetails']);
+    Route::get('/booking-status/{booking}', [AuthController::class, 'changeBookingStatus']);
+    Route::get('/remove-booking/{booking}', [AuthController::class, 'bookingRemove']);
 });

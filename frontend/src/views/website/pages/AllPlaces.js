@@ -6,8 +6,14 @@ import apiService from 'utility/apiService';
 
 const AllPlaces = () => {
   const navigate = useNavigate();
+  const [categories, setCategories] = useState([]);
+  const [placetypes, setPlacetypes] = useState([]);
+  // const [amenities, setAmenities] = useState([]);
   const [places, setSearch] = useState([]);
   const [total_place, setTotalPlace] = useState([]);
+  const [pleaces, setPlaces] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedTypes, setSelectedTypes] = useState([]);
 
   useEffect(() => {
     const url = `/api/website/places`;
@@ -16,7 +22,11 @@ const AllPlaces = () => {
       .then((res) => {
         const data = res.data;
         if (data.status === "success") {
+          setCategories(data.categories);
+          setPlacetypes(data.placetypes);
+          // setAmenities(data.amenities);
           setSearch(data.places);
+          setPlaces(data.places);
           setTotalPlace(data.total_place);
         } else {
         }
@@ -26,6 +36,33 @@ const AllPlaces = () => {
         console.log("Something went wrong!");
       });
   }, []);
+
+  const onChangeCategory = (categoryId) => {
+    const index = selectedCategories?.findIndex(item => item === categoryId);
+    let newSelectedCategories = [...selectedCategories];
+  
+    if (index !== -1) {
+      newSelectedCategories.splice(index, 1);
+    } else {
+      newSelectedCategories.push(categoryId);
+    }
+  
+    setSelectedCategories(newSelectedCategories);
+  };
+
+  const onChangeType = (typeId) => {
+    const index = selectedTypes?.findIndex(item => item === typeId);
+    let newselectedTypes = [...selectedTypes];
+  
+    if (index !== -1) {
+      newselectedTypes.splice(index, 1);
+    } else {
+      newselectedTypes.push(typeId);
+    }
+  
+    setSelectedTypes(newselectedTypes);
+  };
+  
 
   const Wishlist = (itemId) => {
     AddWishlist(itemId);
@@ -51,7 +88,18 @@ const AllPlaces = () => {
         }
       });
   };
-  return (
+
+  useEffect(() => {
+    let data = pleaces;
+    if (selectedCategories.length > 0 || selectedTypes.length > 0) {
+      let filteredData = data.filter(item => selectedCategories.includes(item.category_id) || selectedTypes.includes(item.type_id));
+      setSearch(filteredData);
+    } else {
+      setSearch(data);
+    }
+  
+  }, [selectedCategories, selectedTypes]);
+   return (
     <div>
       <div className="archive-city layout-02">
         <Toaster />
@@ -67,48 +115,16 @@ const AllPlaces = () => {
                 <h3>Categories</h3>
                 <div className="filter-list">
                   <div className="filter-group">
-                    <div className="field-check">
-                      <label for="restaurant">
-                        <input type="checkbox" id="restaurant" value="" />
-                        Restaurant
+                  {categories?.map((category) => {
+                    return (
+                    <div key={category.id} className="field-check">
+                      <label for="restaurant" htmlFor={`category_${category.id}`}>
+                        <input type="checkbox" id={`category_${category.id}`} onChange={() => onChangeCategory(category.id)} value={category.id}/>
+                        {category.name}
                         <span className="checkmark"><i className="la la-check"></i></span>
                       </label>
-                    </div>
-                    <div className="field-check">
-                      <label for="shopping">
-                        <input type="checkbox" id="shopping" value="" />
-                        Shopping
-                        <span className="checkmark"><i className="la la-check"></i></span>
-                      </label>
-                    </div>
-                    <div className="field-check">
-                      <label for="nightlife">
-                        <input type="checkbox" id="nightlife" value="" />
-                        Nightlife
-                        <span className="checkmark"><i className="la la-check"></i></span>
-                      </label>
-                    </div>
-                    <div className="field-check">
-                      <label for="hostel">
-                        <input type="checkbox" id="hostel" value="" />
-                        Hostel
-                        <span className="checkmark"><i className="la la-check"></i></span>
-                      </label>
-                    </div>
-                    <div className="field-check">
-                      <label for="luxury">
-                        <input type="checkbox" id="luxury" value="" />
-                        Luxury
-                        <span className="checkmark"><i className="la la-check"></i></span>
-                      </label>
-                    </div>
-                    <div className="field-check">
-                      <label for="market">
-                        <input type="checkbox" id="market" value="" />
-                        Market
-                        <span className="checkmark"><i className="la la-check"></i></span>
-                      </label>
-                    </div>
+                    </div>)
+                  })}
                   </div>
                 </div>
               </div>
@@ -116,58 +132,36 @@ const AllPlaces = () => {
                 <h3>Place Type</h3>
                 <div className="filter-list">
                   <div className="filter-group">
+                  {placetypes?.map((placetype) => {
+                    return (
                     <div className="field-check">
-                      <label for="coffe_shop">
-                        <input type="checkbox" id="coffe_shop" value="" />
-                        Coffe Shop
+                      <label htmlFor={`placetype_${placetype.id}`}>
+                        <input type="checkbox" id={`placetype_${placetype.id}`} onChange={() => onChangeType(placetype.id)} value={placetype.id} />
+                        {placetype.name}
                         <span className="checkmark"><i className="la la-check"></i></span>
                       </label>
-                    </div>
-                    <div className="field-check">
-                      <label for="clothing_shop">
-                        <input type="checkbox" id="clothing_shop" value="" />
-                        Clothing Shop
-                        <span className="checkmark"><i className="la la-check"></i></span>
-                      </label>
-                    </div>
-                    <div className="field-check">
-                      <label for="spa">
-                        <input type="checkbox" id="spa" value="" />
-                        Spa
-                        <span className="checkmark"><i className="la la-check"></i></span>
-                      </label>
-                    </div>
+                    </div>)
+                  })}
                   </div>
                 </div>
               </div>
-              <div className="filter-box">
+              {/* <div className="filter-box">
                 <h3>Amenities</h3>
                 <div className="filter-list">
                   <div className="filter-group">
-                    <div className="field-check">
-                      <label for="amen_res">
-                        <input type="checkbox" id="amen_res" value="" />
-                        Restaurant
+                  {amenities?.map((amenitie) => {
+                    return (
+                    <div className="field-check" key={amenitie.id}>
+                      <label htmlFor={`amen_${amenitie.id}`}>
+                        <input type="checkbox" id={`amen_${amenitie.id}`} value={amenitie.id} />
+                        {amenitie.name}
                         <span className="checkmark"><i className="la la-check"></i></span>
                       </label>
-                    </div>
-                    <div className="field-check">
-                      <label for="amen_coffee">
-                        <input type="checkbox" id="amen_coffee" value="" />
-                        Coffee Shop
-                        <span className="checkmark"><i className="la la-check"></i></span>
-                      </label>
-                    </div>
-                    <div className="field-check">
-                      <label for="museum">
-                        <input type="checkbox" id="museum" value="" />
-                        Museum
-                        <span className="checkmark"><i className="la la-check"></i></span>
-                      </label>
-                    </div>
+                    </div>)
+                  })}
                   </div>
                 </div>
-              </div>
+              </div> */}
               <div className="form-button align-center">
                 <a href="#" className="btn">Apply</a>
               </div>
@@ -183,7 +177,7 @@ const AllPlaces = () => {
             </div>
             <div className="top-area top-area-filter">
               <div className="filter-left">
-                <span className="result-count"><span className="count">{total_place}</span> results</span>
+                {/* <span className="result-count"><span className="count">{total_place}</span> results</span> */}
               </div>
             </div>
             <div className="area-places layout-3col">

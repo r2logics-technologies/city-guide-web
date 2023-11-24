@@ -15,6 +15,8 @@ import CityDetails from 'views/website/pages/CityDetails';
 import PlaceDetails from 'views/website/pages/PlaceDetails';
 import PlaceSearch from 'views/website/pages/PlaceSearch';
 import AllPlaces from 'views/website/pages/AllPlaces';
+import PrivateRoute from 'components/routes/Private';
+import Index from 'views/website/customer/index';
 
 const WebSite = () => {
   return (
@@ -28,6 +30,9 @@ const WebSite = () => {
         <Route path='/place-details/:id' element={<PlaceDetails />} />
         <Route path='/about-us' element={<About />} />
         <Route path='/contact-us' element={<Contact />} />
+        <Route path="/customer" element={<PrivateRoute />}>
+          <Route path='/customer/*' element={<Index />} />
+        </Route>
       </Routes>
       <Footer />
     </div>
