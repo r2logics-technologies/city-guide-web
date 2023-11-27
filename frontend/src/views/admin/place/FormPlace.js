@@ -6,13 +6,14 @@ import * as BsIcons from "react-icons/bs";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { Select } from "antd";
 import api from "utility/api";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import apiService from "utility/apiService";
 
 const Option = Select.Option;
 const { confirm } = antdModal;
 
 function FormPlace() {
+  const navigate = useNavigate();
   const params = useParams();
   const placeId = params.id;
   const [thumbnailImgUrl, setthumbnailImgUrl] = useState("");
@@ -90,7 +91,7 @@ function FormPlace() {
   }, []);
 
   useEffect(() => {
-    if(placeId)fetchPlaceData(placeId);
+    if (placeId) fetchPlaceData(placeId);
   }, [placeId]);
 
   const fetchCountriesData = () => {
@@ -176,6 +177,8 @@ function FormPlace() {
           setValue("price_range", place.price_range);
           setValue("description", place.description);
           setValue("address", place.address);
+          setValue("lat", place.lat);
+          setValue("lng", place.lng);
           setValue("email", place.email);
           setValue("phone_number", place.phone_number);
           setValue("website", place.website);
@@ -225,6 +228,8 @@ function FormPlace() {
       data.description != null && data.description
     );
     formData.append("address", data.address != null && data.address);
+    formData.append("lat", data.lat != null && data.lat);
+    formData.append("lng", data.lng != null && data.lng);
     formData.append("email", data.email != null && data.email);
     formData.append(
       "phone_number",
@@ -246,9 +251,14 @@ function FormPlace() {
     formData.append("city_id", data.city_id != null && data.city_id);
 
     // Fix for amenities field
-    if (data.amenities != null) {
+    if (data.amenities > 0) {
       const amenitiesArray = data.amenities.map((id) => ({ id: id }));
       formData.append("amenities", JSON.stringify(amenitiesArray));
+    } else {
+      formData.append(
+        "amenities",
+        data.amenities != null && JSON.stringify({ id: data.amenities })
+      );
     }
 
     // Fix for placeopen and placesocial fields
@@ -270,6 +280,7 @@ function FormPlace() {
         if (data.status === "success") {
           setTimeout(() => {
             toast.success(data.message);
+            navigate("/admin/place");
           }, 1000);
         } else {
           toast.error(data.message);
@@ -484,18 +495,81 @@ function FormPlace() {
                       <textarea
                         className="form-control"
                         {...register("address")}
-                        rows={1}
+                        rows={2}
+                      />
+                    </div>
+                    <div className="my-2 col-md-6">
+                      <small className="text-muted required-field">
+                        Latitude
+                      </small>
+                      {errors.lat?.type === "required" && (
+                        <>
+                          {" "}
+                          <small className="text-danger">
+                            Latitude is required
+                          </small>
+                        </>
+                      )}
+                      {errors.lat?.type === "pattern" && (
+                        <>
+                          {" "}
+                          <small className="text-danger">
+                            Invalid latitude format
+                          </small>
+                        </>
+                      )}
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="ex. 23.8571654"
+                        autoComplete="off"
+                        {...register("lat", {
+                          pattern: /^-?([0-8]?[0-9]?[0-9]\.\d+|90\.0+)$/,
+                          required: true,
+                        })}
+                      />
+                    </div>
+                    <div className="my-2 col-md-6">
+                      <small className="text-muted required-field">
+                        Longitude
+                      </small>
+                      {errors.lng?.type === "required" && (
+                        <>
+                          {" "}
+                          <small className="text-danger">
+                            Longitude is required
+                          </small>
+                        </>
+                      )}
+                      {errors.lng?.type === "pattern" && (
+                        <>
+                          {" "}
+                          <small className="text-danger">
+                            Invalid longitude format
+                          </small>
+                        </>
+                      )}
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="ex. 77.2548755"
+                        autoComplete="off"
+                        {...register("lng", {
+                          pattern: /^-?([0-8]?[0-9]?[0-9]\.\d+|90\.0+)$/,
+                          required: true,
+                        })}
                       />
                     </div>
                     <div className="col-12">
                       <p className="fs-4 mt-2 mb-0 text-muted">Contact info</p>
                     </div>
 
-                    <div className="my-2 col-md-4">
+                    <div className="my-2 col-md-6">
                       <div className="d-flex justify-content-between">
                         <small className="text-muted required-field">
                           Email
                         </small>
+
                         <small className="text-danger">
                           {errors?.email && "Email is required"}
                         </small>
@@ -507,23 +581,39 @@ function FormPlace() {
                         placeholder="Enter Email"
                       />
                     </div>
-                    <div className="my-2 col-md-4">
+                    <div className="my-2 col-md-6">
                       <div className="d-flex justify-content-between">
                         <small className="text-muted required-field">
-                          Phone Number
+                          Mobile Number
                         </small>
-                        <small className="text-danger">
-                          {errors?.phone_number && "Phone Number is required"}
-                        </small>
+                        {errors.phone_number?.type === "required" && (
+                          <>
+                            {" "}
+                            <small className="text-danger">
+                              Mobile Number is required
+                            </small>
+                          </>
+                        )}
+                        {errors.phone_number?.type === "pattern" && (
+                          <>
+                            {" "}
+                            <small className="text-danger">
+                              Invalid Mobile Number format
+                            </small>
+                          </>
+                        )}
                       </div>
                       <input
                         className="form-control"
-                        type="number"
-                        {...register("phone_number", { required: true })}
+                        type="text"
+                        {...register("phone_number", {
+                          pattern: /^[0-9]{10}$/,
+                          required: true,
+                        })}
                         placeholder="Enter Phone Number"
                       />
                     </div>
-                    <div className="my-2 col-md-4">
+                    <div className="my-2 col-md-12">
                       <div className="d-flex justify-content-between">
                         <small className="text-muted required-field">
                           Website
@@ -534,7 +624,7 @@ function FormPlace() {
                       </div>
                       <input
                         className="form-control"
-                        type="number"
+                        type="text"
                         {...register("website", { required: true })}
                         placeholder="Enter Website"
                       />
@@ -774,7 +864,7 @@ function FormPlace() {
                       Submit
                     </button>
                     <Link
-                      to="/admin/all-place"
+                      to="/admin/place"
                       className="btn btn-outline-danger rounded-pill"
                     >
                       Cancel
