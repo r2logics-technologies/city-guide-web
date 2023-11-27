@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import { Outlet } from "react-router-dom";
-import axios from "axios";
+import { Outlet, useNavigate } from "react-router-dom";
 import Spinner from "../spinner/Spinner";
 import { useAuth } from "context/auth";
 import api from "utility/api";
@@ -8,6 +7,7 @@ import api from "utility/api";
 export default function PrivateRoute() {
   const [ok, setOk] = useState(false);
   const [auth, setAuth] = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const authCheck = () => {
@@ -16,6 +16,12 @@ export default function PrivateRoute() {
         .then((res) => {
           if (res.data.status === "success") {
             setOk(true);
+            if (auth.user && auth.user.user_type === "admin") {
+              navigate('/admin/dashboard'); 
+            } else {
+              navigate('/customer/dashboard'); 
+            }
+            
           } else {
             setOk(false);
             sessionStorage.removeItem("access_token");
