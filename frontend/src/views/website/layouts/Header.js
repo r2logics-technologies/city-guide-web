@@ -120,7 +120,8 @@ const Header = () => {
                                 </nav>
                                 {auth.token ? (
                                     <div className="right-header__login">
-                                        <Link onClick={showConfirm}>Logout</Link>
+                                        <Link to={'customer/dashboard'}>My Account</Link>
+                                        <Link onClick={showConfirm} style={{marginLeft: '20px'}}>Logout</Link>
                                     </div>) : (
                                     <div className="right-header__login">
                                         <Link to={'/login'}>Login</Link>

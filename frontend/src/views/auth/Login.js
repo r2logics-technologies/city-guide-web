@@ -5,7 +5,7 @@ import toast, { Toaster } from "react-hot-toast";
 //css
 import "./style.css";
 import { useAuth } from "context/auth";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import api from "utility/api";
 import loginImg from "../../assets/img/login.svg";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -109,6 +109,7 @@ function Login() {
                 />
               )}
             </button>
+            <p>Don't have an account? <Link to={'/register'}>Register</Link></p>
           </form>
         </div>
       </div>

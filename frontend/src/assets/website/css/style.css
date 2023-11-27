@@ -106,7 +106,8 @@
 
 .main-menu li a {
 	font-weight: 500;
-	font-family: 'Jost';
+	/* font-family: 'Jost'; */
+	color: #8d8d8d;
 }
 
 .main-menu li i {
@@ -463,7 +464,8 @@ a.site__menu__icon {
 
 .right-header>div a {
 	font-weight: 500;
-	font-family: 'Jost';
+	/* font-family: 'Jost'; */
+	color: #8d8d8d;
 }
 
 .right-header>div i {
