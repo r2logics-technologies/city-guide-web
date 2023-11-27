@@ -250,15 +250,15 @@ function FormPlace() {
     formData.append("country_id", data.country_id != null && data.country_id);
     formData.append("city_id", data.city_id != null && data.city_id);
 
-    // Fix for amenities field
-    if (data.amenities > 0) {
-      const amenitiesArray = data.amenities.map((id) => ({ id: id }));
+    if (data.amenities != null) {
+      const amenitiesArray = Array.isArray(data.amenities)
+        ? data.amenities.map((id) => ({ id: id }))
+        : [{ id: data.amenities }];
+
       formData.append("amenities", JSON.stringify(amenitiesArray));
     } else {
-      formData.append(
-        "amenities",
-        data.amenities != null && JSON.stringify({ id: data.amenities })
-      );
+      // Handle the case when amenities is null
+      formData.append("amenities", null);
     }
 
     // Fix for placeopen and placesocial fields
