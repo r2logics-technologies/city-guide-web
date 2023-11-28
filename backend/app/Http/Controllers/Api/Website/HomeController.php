@@ -17,6 +17,7 @@ use App\Models\Booking;
 use App\Models\PlaceReview;
 use App\Models\Category;
 use App\Models\PlaceType;
+use App\Models\Contact;
 use App\Models\Amenities;
 use DB;
 
@@ -278,5 +279,23 @@ class HomeController extends Controller
             'status_code' => 500,
             'message' => 'Not found any place',
         ]);
+    }
+
+    public function Contact(Request $req){
+        $data = $req->all();
+        $contact = Contact::create($data);
+        if ($contact) {
+            return response([
+                'status' => 'success',
+                'message' => 'Message send successfully',
+                'status_code' => 200,
+            ]);
+        }else{
+            return response([
+                'status' => 'warning',
+                'status_code' => 500,
+                'message' => 'something went wrong...',
+            ]);
+        }
     }
 }

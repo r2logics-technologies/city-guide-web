@@ -5644,7 +5644,7 @@ a.place__comments__reply i {
 .site-contact:before {
 	content: '';
 	position: absolute;
-	background-color: #f9f9f9;
+	/* background-color: #f9f9f9; */
 	width: 50%;
 	top: 0;
 	bottom: 0;
@@ -5743,7 +5743,7 @@ a.place__comments__reply i {
 	border: 0;
 	padding: 0;
 	border-bottom: 2px solid #2d2d2d;
-	margin-bottom: 20px;
+	margin-bottom: 0;
 	font-style: normal;
 	resize: none;
 	background-color: inherit;
@@ -5782,7 +5782,7 @@ a.place__comments__reply i {
 	border: 0;
 	padding: 0;
 	border-bottom: 2px solid #2d2d2d;
-	margin-bottom: 20px;
+	margin-bottom: 0;
 	font-style: normal;
 	background-color: inherit;
 }
