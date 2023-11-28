@@ -69,6 +69,12 @@ class AuthController extends Controller
 
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $user = Auth::user();
+            if ($user->status == 'deactivated' || $user->status == 'deleted') {
+                return response([
+                    'status' => 'error',
+                    'message' => 'Sorry this credential deactivated or deleted.',
+                ]);
+            }
             // Create a token with a 24 hour expiration
             $token = $user->createToken('myapptoken', ['expires' => now()->addHours(24)])->plainTextToken;
             if ($token) {
