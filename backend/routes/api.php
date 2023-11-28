@@ -134,6 +134,7 @@ Route::group(['prefix' => '/admin', 'middleware' => ['auth:sanctum']], function 
 //Website
 Route::group(['prefix' => '/website'], function () {
     Route::get('/', [HomeController::class, 'getData']);
+    Route::post('/contact', [HomeController::class, 'Contact']);
     Route::post('/search', [HomeController::class, 'searchData']);
     Route::get('/city/{city}', [HomeController::class, 'cityDetails']);
     Route::get('/wishlist/{place}', [HomeController::class, 'wishlist'])->middleware(['auth:sanctum']);

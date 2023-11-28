@@ -1,10 +1,47 @@
+import React from 'react';
+import api from 'utility/api';
+import toast, { Toaster } from "react-hot-toast";
+import { useForm } from "react-hook-form";
 import { contact_bg } from 'assets/website/img'
-import React from 'react'
 
 const Contact = () => {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = async (data) => {
+    const url = `/api/website/contact`;
+    const formData = new FormData();
+    formData.append("first_name", data.first_name != null && data.first_name);
+    formData.append("last_name", data.last_name != null && data.last_name);
+    formData.append("email", data.email != null && data.email);
+    formData.append("message", data.message != null && data.message);
+    api
+      .post(url, formData)
+      .then((res) => {
+        const data = res.data;
+        if (data.status === "success") {
+          setTimeout(() => {
+            toast.success(data.message);
+          }, 1000);
+          reset();
+        } else {
+          toast.error(data.message);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        toast.error("Something went wrong!");
+      });
+  };
+
   return (
     <div>
-      <div class="page-title page-title--small align-left" style={{backgroundImage: `url(${contact_bg})`}}>
+      <Toaster />
+      <div class="page-title page-title--small align-left" style={{ backgroundImage: `url(${contact_bg})` }}>
         <div class="container">
           <div class="page-title__content">
             <h1 class="page-title__name">Contact Us</h1>
@@ -35,23 +72,29 @@ const Contact = () => {
             <div class="col-md-6">
               <div class="contact-form">
                 <h2>Get in touch with us</h2>
-                <form action="#" method="POST" class="form-underline">
+                <form onSubmit={handleSubmit(onSubmit)} class="form-underline">
                   <div class="field-inline">
                     <div class="field-input">
-                      <input type="text" name="first_name" value="" placeholder="First Name" />
+                      <input type="text" {...register("first_name", { required: true })} name="first_name" placeholder="First Name" />
+                      <small className="text-danger">
+                        {errors?.first_name && "First name is required"}
+                      </small>
                     </div>
                     <div class="field-input">
-                      <input type="text" name="last_name" value="" placeholder="Last Name" />
+                      <input type="text" name="last_name" placeholder="Last Name" />
                     </div>
                   </div>
                   <div class="field-input">
-                    <input type="email" name="email" value="" placeholder="Email" />
-                  </div>
-                  <div class="field-input">
-                    <input type="tel" name="tel" value="" placeholder="Phone Number" />
+                    <input type="email" {...register("email", { required: true })} name="email" placeholder="Email" />
+                    <small className="text-danger">
+                      {errors?.email && "Email is required"}
+                    </small>
                   </div>
                   <div class="field-textarea">
-                    <textarea name="message" placeholder="Message"></textarea>
+                    <textarea name="message" {...register("message", { required: true })} placeholder="Message"></textarea>
+                    <small className="text-danger">
+                      {errors?.message && "Message is required"}
+                    </small>
                   </div>
                   <div class="field-submit">
                     <input type="submit" value="Send Message" class="btn" />
