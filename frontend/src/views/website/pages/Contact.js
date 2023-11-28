@@ -81,7 +81,7 @@ const Contact = () => {
                       </small>
                     </div>
                     <div class="field-input">
-                      <input type="text" name="last_name" placeholder="Last Name" />
+                      <input type="text" {...register("last_name")} name="last_name" placeholder="Last Name" />
                     </div>
                   </div>
                   <div class="field-input">
