@@ -52,6 +52,7 @@ function Login() {
           }
         }else if(data.status === "error"){
           toast.error(data.message);
+          setLoading(false);
         }
          else {
           toast.error("Something went wrong! Please check credentials");
