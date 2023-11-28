@@ -63,11 +63,11 @@ class User extends Authenticatable
 
     public function get_bookings()
     {
-        return $this->hasMany(Booking::class, 'user_id', 'id')->where('status', 'activated');
+        return $this->hasMany(Booking::class, 'user_id', 'id')->where('status', '!=', 'deleted');
     }
 
     public function get_wishlists()
     {
-        return $this->hasMany(Wishlist::class, 'user_id', 'id')->where('status', 'activated');
+        return $this->hasMany(Wishlist::class, 'user_id', 'id')->where('status', '!=', 'deleted');
     }
 }

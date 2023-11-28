@@ -8,6 +8,7 @@ import { useAuth } from "context/auth";
 import { useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import { paris_lager } from 'assets/website/img';
+import MapComponent from './MapComponent';
 
 const PlaceDetails = () => {
     const navigate = useNavigate();
@@ -242,6 +243,7 @@ const PlaceDetails = () => {
                                             <div class="embed-responsive embed-responsive-16by9 embed-responsive-full">
                                                 <iframe title="How to Japanese Hotel" width="100%" height="450" src={place.video} frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>                        </div>
                                         </div>
+                                        {/* <MapComponent  latitude={35.6926} longitude={139.6912} zoom={23} locationName={'Japan'}/> */}
                                     </div>
                                 </div>
                                 <div className="place__box place__box--reviews">

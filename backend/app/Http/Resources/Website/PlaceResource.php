@@ -37,7 +37,7 @@ class PlaceResource extends JsonResource
             'placeopens' => $this->place_open,
             'placesocials' => $this->place_social,
             'total_reviews' => $this->place_reviews_count,
-            'avg_reviews' => $this->place_reviews->avg('rating'),
+            'avg_reviews' => round($this->place_reviews->avg('rating'), 1),
             'reviews' => ReviewResource::collection($this->place_reviews),
             'status' => $this->status,
         ];
