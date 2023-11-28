@@ -22,6 +22,7 @@ class BookingResource extends JsonResource
             'booking_time' => $this->time,
             'total_adults' => $this->numbber_of_adult,
             'total_childs' => $this->numbber_of_children,
+            'status' => $this->status,
             'message' => $this->message,
         ];
     }

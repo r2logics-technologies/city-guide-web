@@ -24,7 +24,7 @@ class AllPlacesResource extends JsonResource
             'type_id' => $this->get_type->id,
             'type' => $this->get_type->name,
             'total_review' => $this->place_reviews_count,
-            'avg_reviews' => $this->place_reviews->avg('rating'),
+            'avg_reviews' => round($this->place_reviews->avg('rating'), 1),
             'country' => $this->get_country->name,
             'city_id' => $this->get_city->id,
             'city' => $this->get_city->name,

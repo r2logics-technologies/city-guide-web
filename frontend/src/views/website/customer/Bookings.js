@@ -102,7 +102,7 @@ const Bookings = () => {
                                                 </div>
                                                 <div className='d-flex justify-content-between'>
                                                     <button class="btn btn-success" onClick={() => BookingDeatils(place.id)}>Deatils</button>
-                                                    <button class="btn btn-danger" onClick={() => RemoveBooking(place.id)}>Cancel</button>
+                                                    {place.status != 'activated' ? (<button class="btn btn-danger" onClick={() => RemoveBooking(place.id)}>Cancel</button>) : (<span className='text-success mt-3'>Accepted</span>)}
                                                 </div>
                                             </div>
                                         </div>
