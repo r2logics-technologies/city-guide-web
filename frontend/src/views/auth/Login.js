@@ -50,7 +50,10 @@ function Login() {
               (location.state != "/" && location.state) || "/customer/dashboard"
             );
           }
-        } else {
+        }else if(data.status === "error"){
+          toast.error(data.message);
+        }
+         else {
           toast.error("Something went wrong! Please check credentials");
         }
       })
