@@ -27,8 +27,9 @@ class Post extends Model
 
     public function category()
     {
-        return $this->belongsTo(PostCategory::class, 'post_category_id');
+        return $this->hasOne(PostCategory::class, 'id', 'post_category_id');
     }
+
     public function deleteThumb()
     {
        Storage::delete($this->thumb);

@@ -137,6 +137,8 @@ Route::group(['prefix' => '/website'], function () {
     Route::post('/contact', [HomeController::class, 'Contact']);
     Route::post('/search', [HomeController::class, 'searchData']);
     Route::get('/city/{city}', [HomeController::class, 'cityDetails']);
+    Route::get('/blog/{blog}', [HomeController::class, 'blogDetails']);
+    Route::get('/blogs', [HomeController::class, 'getBlogs']);
     Route::get('/wishlist/{place}', [HomeController::class, 'wishlist'])->middleware(['auth:sanctum']);
     Route::get('/places', [HomeController::class, 'allPlaces']);
     Route::get('/place/{place}', [HomeController::class, 'placeDetails']);

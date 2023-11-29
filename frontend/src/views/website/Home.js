@@ -6,6 +6,7 @@ import { bg_1, bg_app, app_store, google_play, thumb_1, thumb_5, thumb_8 } from 
 import { Link, useNavigate } from 'react-router-dom';
 const Home = () => {
     const [cities, setCities] = useState([]);
+    const [blogs, setBlogs] = useState([]);
     const [isSuggestionsVisible, setSuggestionsVisible] = useState(false);
     const [selectedText, setSelectedText] = useState('');
     const [searches, setSearch] = useState([]);
@@ -74,6 +75,7 @@ const Home = () => {
                 const data = res.data;
                 if (data.status === "success") {
                     setCities(data.cities);
+                    setBlogs(data.blogs);
                 } else {
                     console.log('error', data.message);
                 }
@@ -277,55 +279,28 @@ const Home = () => {
                         <div className="container">
                             <h2 className="news__title title title--more offset-item">
                                 Related stories
-                                <a title="View more" href="#">
+                                <Link title="View more" to={'/blogs'}>
                                     View more
                                     <i className="la la-angle-right"></i>
-                                </a>
+                                </Link>
                             </h2>
                             <div className="news__content offset-item">
                                 <div className="row">
-                                    <div className="col-md-4">
+                                {blogs?.map((blog) => {
+                                    return (<div className="col-md-4">
                                         <article className="post hover__box">
                                             <div className="post__thumb hover__box__thumb">
-                                                <a title="The 8 Most Affordable Michelin Restaurants in Paris" href="blog-detail.html"><img src={thumb_1} alt="The 8 Most Affordable Michelin Restaurants in Paris" /></a>
+                                                <Link title={blog.title} to={'blog-details/'+blog.id}><img src={apiService.ledgerUrl+blog.thumb} alt={blog.title} /></Link>
                                             </div>
                                             <div className="post__info">
                                                 <ul className="post__category">
-                                                    <li><a title="Paris" href="02_city-details_1.html">Paris</a></li>
-                                                    <li><a title="Food" href="02_city-details_1.html">Food</a></li>
+                                                    <li><Link title="Food" to={'blog-details/'+blog.id}>{blog.category_name}</Link></li>
                                                 </ul>
-                                                <h3 className="post__title"><a title="The 8 Most Affordable Michelin Restaurants in Paris" href="blog-detail.html">The 8 Most Affordable Michelin Restaurants in Paris</a></h3>
+                                                <h3 className="post__title"><Link title={blog.title} to={'blog-details/'+blog.id}>{blog.title}</Link></h3>
                                             </div>
                                         </article>
-                                    </div>
-                                    <div className="col-md-4">
-                                        <article className="post hover__box">
-                                            <div className="post__thumb hover__box__thumb">
-                                                <a title="The 7 Best Restaurants to Try Kobe Beef in London" href="blog-detail.html"><img src={thumb_5} alt="The 7 Best Restaurants to Try Kobe Beef in London" /></a>
-                                            </div>
-                                            <div className="post__info">
-                                                <ul className="post__category">
-                                                    <li><a title="London" href="02_city-details_1.html">London</a></li>
-                                                    <li><a title="Art & Decor" href="02_city-details_1.html">Art & Decor</a></li>
-                                                </ul>
-                                                <h3 className="post__title"><a title="The 7 Best Restaurants to Try Kobe Beef in London" href="blog-detail.html">The 7 Best Restaurants to Try Kobe Beef in London</a></h3>
-                                            </div>
-                                        </article>
-                                    </div>
-                                    <div className="col-md-4">
-                                        <article className="post hover__box">
-                                            <div className="post__thumb hover__box__thumb">
-                                                <a title="The 8 Most Affordable Michelin Restaurants in Paris" href="blog-detail.html"><img src={thumb_8} alt="The 8 Most Affordable Michelin Restaurants in Paris" /></a>
-                                            </div>
-                                            <div className="post__info">
-                                                <ul className="post__category">
-                                                    <li><a title="Paris" href="02_city-details_1.html">Paris</a></li>
-                                                    <li><a title="Stay" href="02_city-details_1.html">Stay</a></li>
-                                                </ul>
-                                                <h3 className="post__title"><a title="The 8 Most Affordable Michelin Restaurants in Paris" href="blog-detail.html">The 9 Best Cheap Hotels in New York City</a></h3>
-                                            </div>
-                                        </article>
-                                    </div>
+                                    </div>)
+                                })}
                                 </div>
                             </div>
                         </div>
