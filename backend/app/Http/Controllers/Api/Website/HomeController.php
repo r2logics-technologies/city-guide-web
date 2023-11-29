@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Website;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\CityResource;
 use App\Http\Resources\Website\PlaceResource;
+use App\Http\Resources\Website\BlogsResource;
 use App\Http\Resources\Website\AllPlacesResource;
 use App\Http\Resources\Website\SearchResource;
 use Illuminate\Support\Facades\Auth;
@@ -16,6 +17,8 @@ use App\Models\Wishlist;
 use App\Models\Booking;
 use App\Models\PlaceReview;
 use App\Models\Category;
+use App\Models\PostCategory;
+use App\Models\Post;
 use App\Models\PlaceType;
 use App\Models\Contact;
 use App\Models\Amenities;
@@ -26,19 +29,22 @@ class HomeController extends Controller
     public function getData()
     {
         $cities = City::withCount('get_place')->allowed()->get();
-        if ($cities && count($cities) > 0) {
+        $blogs = Post::with('category')->allowed()->latest()->take(3)->get();
+        if ($cities && count($cities) > 0 || $blogs && count($blogs) > 0) {
             return response([
                 'status' => 'success',
                 'message' => '',
                 'status_code' => 200,
                 'cities' => CityResource::collection($cities),
+                'blogs' => BlogsResource::collection($blogs),
             ]);
         }
         return response([
             'status' => 'warning',
             'status_code' => 500,
-            'message' => 'No cities found.',
+            'message' => 'No data found.',
             'cities' => null,
+            'blogs' => null,
         ]);
     }
 
@@ -189,6 +195,49 @@ class HomeController extends Controller
             'status_code' => 500,
             'message' => 'No place found.',
             'place' => null,
+        ]);
+    }
+
+    public function getBlogs()
+    {
+        $categories = PostCategory::allowed()->get();
+        $blogs = Post::with('category')->allowed()->get();
+
+        if ($blogs) {
+            return response([
+                'status' => 'success',
+                'message' => '',
+                'status_code' => 200,
+                'categories' => $categories,
+                'blogs' => BlogsResource::collection($blogs),
+            ]);
+        }
+        return response([
+            'status' => 'warning',
+            'status_code' => 500,
+            'message' => 'No blogs found.',
+            'categories' => null,
+            'blogs' => null,
+        ]);
+    }
+
+    public function blogDetails($id)
+    {
+        $blog = Post::with('category')->find($id);
+
+        if ($blog) {
+            return response([
+                'status' => 'success',
+                'message' => '',
+                'status_code' => 200,
+                'blog' => new BlogsResource($blog),
+            ]);
+        }
+        return response([
+            'status' => 'warning',
+            'status_code' => 500,
+            'message' => 'No blog found.',
+            'blog' => null,
         ]);
     }
 

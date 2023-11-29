@@ -9070,14 +9070,14 @@ a.place__comments__reply i {
 	cursor: pointer;
 }
 
-.filter-box h3:before {
+/* .filter-box h3:before {
 	content: '\f107';
 	position: absolute;
 	right: 0;
 	font-size: 12px;
 	font-weight: 900;
 	font-family: 'Line Awesome Free';
-}
+} */
 
 .filter-box h3.active:before {
 	content: '\f106';

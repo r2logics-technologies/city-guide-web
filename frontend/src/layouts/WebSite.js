@@ -17,6 +17,8 @@ import AllPlaces from 'views/website/pages/AllPlaces';
 import PrivateRoute from 'components/routes/Private';
 import Index from 'views/website/customer/index';
 import ErrorPage from "components/error-page/ErrorPage";
+import BlogDetails from "views/website/pages/BlogDetails";
+import AllBlogs from "views/website/pages/AllBlogs";
 
 const WebSite = () => {
   return (
@@ -28,6 +30,8 @@ const WebSite = () => {
         <Route path='/search' element={<PlaceSearch />} />
         <Route path='/city-details/:id' element={<CityDetails />} />
         <Route path='/place-details/:id' element={<PlaceDetails />} />
+        <Route path='/blogs' element={<AllBlogs />} />
+        <Route path='/blog-details/:id' element={<BlogDetails />} />
         <Route path='/about-us' element={<About />} />
         <Route path='/contact-us' element={<Contact />} />
         <Route path="/customer" element={<PrivateRoute />}>
