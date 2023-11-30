@@ -1,5 +1,6 @@
 import { app_store , google_play,logo} from 'assets/website/img'
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const Footer = () => {
   return (
@@ -8,7 +9,7 @@ const Footer = () => {
 			<div className="container">
 				<div className="footer__top">
 					<div className="row">
-						<div className="col-lg-5">
+						<div className="col-lg-7">
 							<div className="footer__top__info">
 								<a title="Logo" href="01_index_1.html" className="footer__top__info__logo"><img src={logo} alt="Golo" /></a>
 								<p className="footer__top__info__desc">Discover amazing things to do everywhere you go.</p>
@@ -21,22 +22,10 @@ const Footer = () => {
 						<div className="col-lg-2">
 							<aside className="footer__top__nav">
 								<h3>Company</h3>
-								<ul>
-									<li><a title="About Us" href="06_about-us.html">About Us</a></li>
-									<li><a title="Blog" href="07_blog-right-sidebar.html">Blog</a></li>
-									<li><a title="Faqs" href="15_faqs.html">Faqs</a></li>
-									<li><a title="Contact" href="09_contact-us.html">Contact</a></li>
-								</ul>
-							</aside>
-						</div>
-						<div className="col-lg-2">
-							<aside className="footer__top__nav">
-								<h3>Support</h3>
-								<ul>
-									<li><a title="Get in Touch" href="#">Get in Touch</a></li>
-									<li><a title="Help Center" href="#">Help Center</a></li>
-									<li><a title="Live chat" href="#">Live chat</a></li>
-									<li><a title="How it works" href="#">How it works</a></li>
+								<ul className='p-0'>
+									<li><Link title="About Us" to={'/about-us'}>About Us</Link></li>
+									<li><Link title="Blog" to={'/blogs'}>Blogs</Link></li>
+									<li><Link title="Contact" to={'contact-us'}>Contact</Link></li>
 								</ul>
 							</aside>
 						</div>
