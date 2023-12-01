@@ -1,4 +1,5 @@
 import * as BiIcons from "react-icons/bi";
+import * as CiIcons from "react-icons/ci";
 
 var routes = [
   {
@@ -8,7 +9,7 @@ var routes = [
   },
   {
     name: "Place",
-    icon: <BiIcons.BiLocationPlus className="side-bar-icon" />,
+    icon: <CiIcons.CiLocationOn className="side-bar-icon" />,
     subMenu: [
       {
         path: "/countries",
@@ -38,7 +39,7 @@ var routes = [
       {
         path: "/place",
         name: "All Place",
-        icon: <BiIcons.BiLocationPlus className="side-bar-icon" />,
+        icon: <CiIcons.CiLocationOn className="side-bar-icon" />,
       },
     ],
   },

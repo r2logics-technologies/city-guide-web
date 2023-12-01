@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\Admin\DashboardController;
 use App\Http\Controllers\Api\Admin\CountryController;
 use App\Http\Controllers\Api\Admin\CityController;
 use App\Http\Controllers\Api\Admin\CategoryController;
@@ -42,6 +43,9 @@ Route::post('/auth/login', [AuthController::class, 'login']);
 Route::group(['prefix' => '/admin', 'middleware' => ['auth:sanctum']], function () {
     //Login Check
     Route::get('/login-check', [AuthController::class, 'loginCheck']);
+
+    //Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'getData']);
 
     //Country
     Route::prefix('countries')->group(function () {

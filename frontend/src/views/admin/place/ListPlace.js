@@ -8,7 +8,10 @@ import api from "utility/api";
 import toast, { Toaster } from "react-hot-toast";
 import { Modal as antdModal } from "antd";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import apiService from "utility/apiService";
+import NoImg from "assets/img/no-data.gif";
 const { confirm } = antdModal;
+
 
 function ListPlace() {
   const navigate = useNavigate();
@@ -16,8 +19,32 @@ function ListPlace() {
   const [data, setData] = useState([]);
   const [header, setHeader] = useState([
     {
+      Header: "Thumb",
+      accessor: "thumb",
+      disableSortBy: true,
+      Cell: ({ row }) => (
+        <>
+          {row.original.thumb != null ? (
+            <img
+              style={{ height: "50px", width: "80px" }}
+              src={apiService.ledgerUrl + row.original.thumb}
+            />
+          ) : (
+            <>
+              <img style={{ height: "50px", width: "80px" }} src={NoImg} />
+            </>
+          )}
+        </>
+      ),
+    },
+    {
       Header: "Name",
       accessor: "name",
+      sortType: "alphanumeric",
+    },
+    {
+      Header: "City",
+      accessor: "city_name",
       sortType: "alphanumeric",
     },
     {

@@ -68,8 +68,8 @@ function Login() {
     <div className="container-fluid login-page">
       <Toaster />
       <div className="card-glass row p-5 w-75 m-auto mt-6">
-        <div className="col-md-6 d-none d-md-block border-end">
-          <img className="img-fluid" src={loginImg} />
+        <div className="col-md-6 d-none d-md-block d-flex border-end">
+          <img className="img-fluid center-image" src={loginImg} />
         </div>
         <div className="col-md-6">
           <h1 className="text-center fw-bolder mb-5 text-orange text-griffy">

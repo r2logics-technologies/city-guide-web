@@ -20,6 +20,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { Modal as antdModal } from "antd";
 import { useForm } from "react-hook-form";
 import apiService from "utility/apiService";
+import NoImg from "assets/img/no-data.gif";
 const { confirm } = antdModal;
 
 function Categories() {
@@ -54,8 +55,32 @@ function Categories() {
   const [data, setData] = useState([]);
   const [header, setHeader] = useState([
     {
+      Header: "Icon",
+      accessor: "icon_map_marker",
+      disableSortBy: true,
+      Cell: ({ row }) => (
+        <>
+          {row.original.icon_map_marker != null ? (
+            <img
+              style={{ height: "50px", width: "80px" }}
+              src={apiService.ledgerUrl + row.original.icon_map_marker}
+            />
+          ) : (
+            <>
+              <img style={{ height: "50px", width: "80px" }} src={NoImg} />
+            </>
+          )}
+        </>
+      ),
+    },
+    {
       Header: "Name",
       accessor: "name",
+      sortType: "alphanumeric",
+    },
+    {
+      Header: "Priority",
+      accessor: "priority",
       sortType: "alphanumeric",
     },
     {
