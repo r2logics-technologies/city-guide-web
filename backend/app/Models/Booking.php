@@ -23,10 +23,8 @@ class Booking extends Model
         'type',
         'status',
     ];
-    public function scopeAllowed($query)
-    {
-        return $query->where('status', '!=', 'deleted');
-    }
+
+
     public function get_place()
     {
         return $this->hasOne(Place::class, 'id', 'place_id');

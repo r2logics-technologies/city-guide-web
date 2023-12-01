@@ -21,6 +21,7 @@ import { useForm, Controller } from "react-hook-form";
 import { Select } from "antd";
 import uploadImg from "../../../assets/img/img-upload.png";
 import apiService from "utility/apiService";
+import NoImg from "assets/img/no-data.gif";
 const Option = Select.Option;
 const { confirm } = antdModal;
 
@@ -58,6 +59,25 @@ function Cities() {
   const [data, setData] = useState([]);
   const [countries, setCountries] = useState([]);
   const [header, setHeader] = useState([
+    {
+      Header: "Image",
+      accessor: "thumb",
+      disableSortBy: true,
+      Cell: ({ row }) => (
+        <>
+          {row.original.thumb != null ? (
+            <img
+              style={{ height: "50px", width: "80px" }}
+              src={apiService.ledgerUrl + row.original.thumb}
+            />
+          ) : (
+            <>
+              <img style={{ height: "50px", width: "80px" }} src={NoImg} />
+            </>
+          )}
+        </>
+      ),
+    },
     {
       Header: "City Name",
       accessor: "name",
