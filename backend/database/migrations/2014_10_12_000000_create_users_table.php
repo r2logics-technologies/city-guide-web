@@ -8,6 +8,7 @@ class CreateUsersTable extends Migration
 {
     /**
      * Run the migrations.
+     * php artisan migrate --path='./database/migrations/2019_12_31_115457_create_coworking_personal_memberships_table.php'
      *
      * @return void
      */
