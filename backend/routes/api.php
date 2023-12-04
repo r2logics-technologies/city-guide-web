@@ -18,6 +18,9 @@ use App\Http\Controllers\Api\Admin\SettingsController;
 use App\Http\Controllers\Api\Website\HomeController;
 use App\Http\Controllers\Api\Website\UserController;
 
+use App\Http\Controllers\Api\Mobile\AuthUserController;
+use App\Http\Controllers\Api\Mobile\HomePageController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -155,4 +158,16 @@ Route::group(['prefix' => '/user', 'middleware' => ['auth:sanctum']], function (
     Route::get('/booking-details/{booking}', [AuthController::class, 'bookingDetails']);
     Route::get('/booking-status/{booking}', [AuthController::class, 'changeBookingStatus']);
     Route::get('/remove-booking/{booking}', [AuthController::class, 'bookingRemove']);
+});
+
+//Mobile Api
+//register
+Route::post('/mobile/register', [AuthUserController::class, 'register']);
+//login
+Route::post('/mobile/login', [AuthUserController::class, 'login']);
+
+Route::group(['prefix' => '/mobile'], function () {
+    Route::get('/', [HomePageController::class, 'getData']);
+    Route::get('/city/{city}', [HomePageController::class, 'cityDetails']);
+    Route::get('/place/{place}', [HomePageController::class, 'placeDetails']);
 });
