@@ -20,7 +20,9 @@ import toast, { Toaster } from "react-hot-toast";
 import { Modal as antdModal } from "antd";
 import { useForm } from "react-hook-form";
 import apiService from "utility/apiService";
+import NoImg from "assets/img/no-data.gif";
 const { confirm } = antdModal;
+
 
 function Amenities() {
   const [imageUrl, setImageUrl] = useState("");
@@ -53,6 +55,25 @@ function Amenities() {
 
   const [data, setData] = useState([]);
   const [header, setHeader] = useState([
+    {
+      Header: "Image",
+      accessor: "icon",
+      disableSortBy: true,
+      Cell: ({ row }) => (
+        <>
+          {row.original.icon != null ? (
+            <img
+              style={{ height: "50px", width: "80px" }}
+              src={apiService.ledgerUrl + row.original.icon}
+            />
+          ) : (
+            <>
+              <img style={{ height: "50px", width: "80px" }} src={NoImg} />
+            </>
+          )}
+        </>
+      ),
+    },
     {
       Header: "Name",
       accessor: "name",
