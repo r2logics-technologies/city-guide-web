@@ -8,6 +8,7 @@ import { Select } from "antd";
 import api from "utility/api";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import apiService from "utility/apiService";
+import uploadImg from "../../../assets/img/img-upload.png";
 
 const Option = Select.Option;
 const { confirm } = antdModal;
@@ -768,15 +769,15 @@ function FormPlace() {
                           />
                           <img
                             src={thumbnailImgUrl}
-                            className="img-fluid img-thumbnail"
+                            className="img-fluid rounded"
                             style={{ height: "120px", maxWidth: "100%" }}
                           />
                         </>
                       ) : (
                         <>
                           <img
-                            src="https://ionicframework.com/docs/img/demos/thumbnail.svg"
-                            className="img-fluid img-thumbnail"
+                            src={uploadImg}
+                            className="img-fluid rounded"
                             style={{ height: "120px", maxWidth: "100%" }}
                           />
                         </>

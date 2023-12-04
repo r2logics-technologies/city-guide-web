@@ -11,7 +11,7 @@ class BookingController extends Controller
 {
     public function getData()
     {
-        $bookings = Booking::allowed()->get();
+        $bookings = Booking::get();
         if ($bookings && count($bookings) > 0) {
             return response([
                 'status' => 'success',
