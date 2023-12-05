@@ -16,10 +16,13 @@ use App\Http\Controllers\Api\Admin\PagesController;
 use App\Http\Controllers\Api\Admin\ReviewsController;
 use App\Http\Controllers\Api\Admin\UsersController;
 use App\Http\Controllers\Api\Admin\SettingsController;
+// Web Controller
 use App\Http\Controllers\Api\Website\HomeController;
 use App\Http\Controllers\Api\Website\UserController;
 
+// Mobile Controller
 use App\Http\Controllers\Api\Mobile\AuthUserController;
+use App\Http\Controllers\Api\Mobile\CustomerController;
 use App\Http\Controllers\Api\Mobile\HomePageController;
 
 /*
@@ -135,7 +138,6 @@ Route::group(['prefix' => '/admin', 'middleware' => ['auth:sanctum']], function 
         Route::get('/', [SettingsController::class, 'getData']);
         Route::post('/update', [SettingsController::class, 'updateData']);
     });
-
 });
 
 //Website
@@ -165,13 +167,15 @@ Route::group(['prefix' => '/user', 'middleware' => ['auth:sanctum']], function (
 });
 
 //Mobile Api
-//register
-Route::post('/mobile/register', [AuthUserController::class, 'register']);
-//login
-Route::post('/mobile/login', [AuthUserController::class, 'login']);
-
-Route::group(['prefix' => '/mobile'], function () {
-    Route::get('/', [HomePageController::class, 'getData']);
+Route::prefix('mobile')->group(function () {
+    Route::post('/register', [AuthUserController::class, 'register']);
+    Route::post('/login', [AuthUserController::class, 'login']);
+    Route::post('/login-check', [AuthUserController::class, 'loginCheck']);
+});
+Route::group(['prefix' => '/mobile', 'middleware' => ['auth:sanctum']],function () {
+    Route::get('/logout', [AuthUserController::class, 'logout']);
+    Route::post('/profile/update', [CustomerController::class, 'profileUpdate']);
+    Route::get('/dashboard', [HomePageController::class, 'getData']);
     Route::get('/city/{city}', [HomePageController::class, 'cityDetails']);
     Route::get('/place/{place}', [HomePageController::class, 'placeDetails']);
 });

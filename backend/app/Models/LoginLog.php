@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class DeviseLog extends Model
+class LoginLog extends Model
 {
-    protected $table = 'devise_logs';
     use HasFactory;
     protected $fillable = [
-        'user_id',
-        'device_type',
+        'mobile',
         'device_id',
-        'fcm_token'
+        'device_type',
+        'remark',
+        'status'
     ];
 }
