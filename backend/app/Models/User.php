@@ -70,4 +70,31 @@ class User extends Authenticatable
     {
         return $this->hasMany(Wishlist::class, 'user_id', 'id')->where('status', '!=', 'deleted');
     }
+
+    public function scopeInactive($query)
+    {
+        return $query->where('status', '!=', 'activated');
+    }
+
+    public function scopeRole($query, $type)
+    {
+        return $query->where('user_type', $type);
+    }
+
+    public function deviceLogs()
+    {
+        return $this->hasMany(DeviceLog::class);
+    }
+    public function scopeCustomers($query)
+    {
+        return $query->where('user_type', '=', 'customer');
+    }
+
+
+
+    public function scopeActive($query)
+    {
+        return $query->where('status', 'activated');
+    }
+
 }
