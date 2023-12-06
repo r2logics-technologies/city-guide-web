@@ -34,10 +34,10 @@ class BookingController extends Controller
         $message = "";
         if ($request->status == 'deleted') {
             $message = "Deleted";
-        } else if ($request->status == 'activated') {
-            $message = "Activated";
+        } else if ($request->status == 'accepted') {
+            $message = "Accepted";
         } else {
-            $message = "Deactivated";
+            $message = "Rejected";
         }
         $updated =  $booking->update(['status' => $request->status]);
 

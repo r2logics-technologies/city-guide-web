@@ -67,7 +67,7 @@ function Bookings() {
                 <AiIcons.AiOutlineCheck
                   className="text-success cr-pointer fs-4"
                   onClick={() =>
-                    handleChangeStatus(row.original.id, "activated")
+                    handleChangeStatus(row.original.id, "accepted")
                   }
                 />
               </div>
@@ -75,7 +75,7 @@ function Bookings() {
                 <AiIcons.AiOutlineClose
                   className="text-danger cr-pointer fs-4"
                   onClick={() =>
-                    handleChangeStatus(row.original.id, "deactivated")
+                    handleChangeStatus(row.original.id, "rejected")
                   }
                 />
               </div>
@@ -107,7 +107,7 @@ function Bookings() {
           setTimeout(() => {
             toast.success(
               `Successfully ${
-                status == "activated" ? "accepted." : status == "deleted" ? "deleted." : "cancelled."
+                status == "accepted" ? "accepted." : status == "deleted" ? "deleted." : "cancelled."
               }.`
             );
             fetchData();

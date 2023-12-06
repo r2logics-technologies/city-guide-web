@@ -37,7 +37,7 @@ class WishlistResource extends JsonResource
             'address' => $this->get_place->address,
             'total_reviews' => count($this->get_place->place_reviews),
             'avg_reviews' => $this->get_place->place_reviews->avg('rating'),
-            'status' => $this->get_place->status,
+            'status' => $this->status,
         ];
     }
 }
