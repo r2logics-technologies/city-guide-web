@@ -15,7 +15,7 @@ const AllPlaces = () => {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedTypes, setSelectedTypes] = useState([]);
 
-  useEffect(() => {
+  const fetchData = () => {
     const url = `/api/website/places`;
     api
       .get(url)
@@ -35,34 +35,38 @@ const AllPlaces = () => {
         console.error(err);
         console.log("Something went wrong!");
       });
+  };
+
+  useEffect(() => {
+    fetchData();
   }, []);
 
   const onChangeCategory = (categoryId) => {
     const index = selectedCategories?.findIndex(item => item === categoryId);
     let newSelectedCategories = [...selectedCategories];
-  
+
     if (index !== -1) {
       newSelectedCategories.splice(index, 1);
     } else {
       newSelectedCategories.push(categoryId);
     }
-  
+
     setSelectedCategories(newSelectedCategories);
   };
 
   const onChangeType = (typeId) => {
     const index = selectedTypes?.findIndex(item => item === typeId);
     let newselectedTypes = [...selectedTypes];
-  
+
     if (index !== -1) {
       newselectedTypes.splice(index, 1);
     } else {
       newselectedTypes.push(typeId);
     }
-  
+
     setSelectedTypes(newselectedTypes);
   };
-  
+
 
   const Wishlist = (itemId) => {
     AddWishlist(itemId);
@@ -74,6 +78,7 @@ const AllPlaces = () => {
       .then((res) => {
         const data = res.data;
         if (data.status === "success") {
+          fetchData();
           setTimeout(() => {
             toast.success(data.message);
           }, 1000);
@@ -89,6 +94,26 @@ const AllPlaces = () => {
       });
   };
 
+  const RemoveWishlist = (id) => {
+    console.log('w id', id);
+    api
+      .get(`/api/user/remove-wishlist/${id}`)
+      .then((res) => {
+        const data = res.data;
+        if (data.status === "success") {
+          fetchData();
+          setTimeout(() => {
+            toast.success(data.message);
+          }, 1000);
+        } else {
+          console.log('error')
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
   useEffect(() => {
     let data = pleaces;
     if (selectedCategories.length > 0 || selectedTypes.length > 0) {
@@ -97,9 +122,9 @@ const AllPlaces = () => {
     } else {
       setSearch(data);
     }
-  
+
   }, [selectedCategories, selectedTypes]);
-   return (
+  return (
     <div>
       <div className="archive-city layout-02">
         <Toaster />
@@ -115,16 +140,16 @@ const AllPlaces = () => {
                 <h3>Categories</h3>
                 <div className="filter-list">
                   <div className="filter-group">
-                  {categories?.map((category) => {
-                    return (
-                    <div key={category.id} className="field-check">
-                      <label for="restaurant" htmlFor={`category_${category.id}`}>
-                        <input type="checkbox" id={`category_${category.id}`} onChange={() => onChangeCategory(category.id)} value={category.id}/>
-                        {category.name}
-                        <span className="checkmark"><i className="la la-check"></i></span>
-                      </label>
-                    </div>)
-                  })}
+                    {categories?.map((category) => {
+                      return (
+                        <div key={category.id} className="field-check">
+                          <label for="restaurant" htmlFor={`category_${category.id}`}>
+                            <input type="checkbox" id={`category_${category.id}`} onChange={() => onChangeCategory(category.id)} value={category.id} />
+                            {category.name}
+                            <span className="checkmark"><i className="la la-check"></i></span>
+                          </label>
+                        </div>)
+                    })}
                   </div>
                 </div>
               </div>
@@ -132,16 +157,16 @@ const AllPlaces = () => {
                 <h3>Place Type</h3>
                 <div className="filter-list">
                   <div className="filter-group">
-                  {placetypes?.map((placetype) => {
-                    return (
-                    <div className="field-check">
-                      <label htmlFor={`placetype_${placetype.id}`}>
-                        <input type="checkbox" id={`placetype_${placetype.id}`} onChange={() => onChangeType(placetype.id)} value={placetype.id} />
-                        {placetype.name}
-                        <span className="checkmark"><i className="la la-check"></i></span>
-                      </label>
-                    </div>)
-                  })}
+                    {placetypes?.map((placetype) => {
+                      return (
+                        <div className="field-check">
+                          <label htmlFor={`placetype_${placetype.id}`}>
+                            <input type="checkbox" id={`placetype_${placetype.id}`} onChange={() => onChangeType(placetype.id)} value={placetype.id} />
+                            {placetype.name}
+                            <span className="checkmark"><i className="la la-check"></i></span>
+                          </label>
+                        </div>)
+                    })}
                   </div>
                 </div>
               </div>
@@ -187,11 +212,20 @@ const AllPlaces = () => {
                     <div className="place-inner">
                       <div className="place-thumb">
                         <Link className="entry-thumb" to={`/place-details/${place.place_id}`}><img src={apiService.ledgerUrl + place.place_image} alt="" /></Link>
-                        <a href="#" className="golo-add-to-wishlist btn-add-to-wishlist " data-place-id="185" onClick={() => Wishlist(place.place_id)}>
-                          <span className="icon-heart">
-                            <i className="la la-bookmark large"></i>
-                          </span>
-                        </a>
+
+                        {place.in_wishlist ? (
+                          <a href="#" className="golo-add-to-wishlist btn-add-to-wishlist " data-place-id="185" onClick={() => RemoveWishlist(place.place_id)}>
+                            <span className="icon-heart">
+                              <i className="la la-heart large"></i>
+                            </span>
+                          </a>
+                        ) : (
+                          <a href="#" className="golo-add-to-wishlist btn-add-to-wishlist " data-place-id="185" onClick={() => Wishlist(place.place_id)}>
+                            <span className="icon-heart">
+                              <i className="la la-bookmark large"></i>
+                            </span>
+                          </a>
+                        )}
                       </div>
                       <div className="entry-detail">
                         <div className="entry-head">

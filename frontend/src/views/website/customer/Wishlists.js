@@ -79,7 +79,7 @@ const Wishlists = () => {
                                                     {place.is_booking ? (
                                                         <Link to={`/customer/bookings`} class="btn btn-success">View Booking</Link>
                                                     ) : (<Link to={`/place-details/${place.place_id}`} class="btn btn-success">Book Now</Link>)}
-                                                    <button class="btn btn-danger" onClick={() => RemoveWishlist(place.id)}>Remove</button>
+                                                    <button class="btn btn-danger" onClick={() => RemoveWishlist(place.place_id)}>Remove</button>
                                                 </div>
                                             </div>
                                         </div>

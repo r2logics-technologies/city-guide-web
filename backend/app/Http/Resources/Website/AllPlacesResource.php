@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Website;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Models\Wishlist;
 
 class AllPlacesResource extends JsonResource
 {
@@ -14,6 +15,13 @@ class AllPlacesResource extends JsonResource
      */
     public function toArray($request)
     {
+        $auth = request()->user('api');
+        if ($auth) {
+            $in_wishlist = Wishlist::where('user_id', $auth->id)->where('place_id', $this->id)->where('status', 'activated')->first();
+        } else {
+            $in_wishlist = null;
+        }
+
         return [
             'place_id' => $this->id,
             'place_name' => $this->name,
@@ -29,6 +37,8 @@ class AllPlacesResource extends JsonResource
             'city_id' => $this->get_city->id,
             'city' => $this->get_city->name,
             'address' => $this->address,
+            'auth' => $auth,
+            'in_wishlist' => $in_wishlist !== null ? true : false,
         ];
     }
 }

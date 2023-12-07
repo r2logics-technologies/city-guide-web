@@ -28,7 +28,7 @@ class WishlistResource extends JsonResource
             'country' => $this->get_place->get_country->name,
             'city' => $this->get_place->get_city->name,
             'category' => $this->get_place->get_category->name,
-            'place_id' => $this->get_place->get_type->id,
+            'place_id' => $this->get_place->id,
             'place_type' => $this->get_place->get_type->name,
             'name' => $this->get_place->name,
             'thumb' => $this->get_place->thumb,

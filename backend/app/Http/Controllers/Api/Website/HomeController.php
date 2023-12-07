@@ -110,7 +110,7 @@ class HomeController extends Controller
         $auth = Auth::user()->id;
         $place = Place::with(['get_category','get_country','get_city','get_type','place_amenities','place_open','place_social'])->find($id);
 
-        $find_wishlist = Wishlist::where('place_id', $place->id)->where('user_id', $auth)->first();
+        $find_wishlist = Wishlist::where('place_id', $place->id)->where('user_id', $auth)->where('status', 'activated')->first();
         if ($find_wishlist) {
             return response([
                 'status' => 'warning',
