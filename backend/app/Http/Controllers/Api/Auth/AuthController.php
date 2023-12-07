@@ -199,7 +199,7 @@ class AuthController extends Controller
     }
 
     public function wishlistRemove($id) {
-        $find_wishlist = Wishlist::find($id);
+        $find_wishlist = Wishlist::where('place_id', $id)->first();
         if (!$find_wishlist) {
             return response([
                 'status' => 'warning',
