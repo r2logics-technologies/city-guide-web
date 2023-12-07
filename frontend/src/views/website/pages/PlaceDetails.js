@@ -57,6 +57,7 @@ const PlaceDetails = () => {
             .then((res) => {
                 const data = res.data;
                 if (data.status === "success") {
+                    fetchData();
                     setTimeout(() => {
                         toast.success(data.message);
                     }, 1000);
@@ -71,6 +72,26 @@ const PlaceDetails = () => {
                 }
             });
     };
+
+    const RemoveWishlist = (id) => {
+        console.log('w id', id);
+        api
+          .get(`/api/user/remove-wishlist/${id}`)
+          .then((res) => {
+            const data = res.data;
+            if (data.status === "success") {
+              fetchData();
+              setTimeout(() => {
+                toast.success(data.message);
+              }, 1000);
+            } else {
+              console.log('error')
+            }
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      };
 
     const auth_user = auth.user;
 
@@ -144,9 +165,15 @@ const PlaceDetails = () => {
                         <div className="place-slider__item bd"><a title="Place Slider Image" href="#"><img src={apiService.ledgerUrl + place.thumb} alt={place.name} /></a></div>
                     </div>
                     <div className="place-share">
-                        <a title="Save" href="#" className="add-wishlist" onClick={() => Wishlist(place.id)}>
-                            <i className="la la-bookmark large"></i>
-                        </a>
+                        {place.in_wishlist ? (
+                            <a title="Save" href="#" className="add-wishlist" onClick={() => RemoveWishlist(place.id)}>
+                                <i className="la la-heart large"></i>
+                            </a>
+                        ) : (
+                            <a title="Save" href="#" className="add-wishlist" onClick={() => Wishlist(place.id)}>
+                                <i className="la la-bookmark large"></i>
+                            </a>
+                        )}
                     </div>
                 </div>
                 <div className="container">
@@ -161,15 +188,15 @@ const PlaceDetails = () => {
                                 <div className="place__box place__box--npd">
                                     <h1>{place.name}</h1>
                                     <div className="place__meta">
-                                            {place.avg_reviews > 0 &&
-                                        <div className="place__reviews reviews">
-                                            <span className="place__reviews__number reviews__number">
-                                                {place.avg_reviews}
-                                                <i className="la la-star"></i>
-                                            </span>
-                                            <span className="place__places-item__count reviews_count">({place.total_reviews} reviews)</span>
-                                        </div>
-                                            }
+                                        {place.avg_reviews > 0 &&
+                                            <div className="place__reviews reviews">
+                                                <span className="place__reviews__number reviews__number">
+                                                    {place.avg_reviews}
+                                                    <i className="la la-star"></i>
+                                                </span>
+                                                <span className="place__places-item__count reviews_count">({place.total_reviews} reviews)</span>
+                                            </div>
+                                        }
                                         <div className="place__currency">$ {place.price_range}</div>
                                         <div className="place__category">
                                             <a title="Restaurant" href="#">{place.place_type}</a>

@@ -199,7 +199,8 @@ class AuthController extends Controller
     }
 
     public function wishlistRemove($id) {
-        $find_wishlist = Wishlist::where('place_id', $id)->first();
+        $auth = request()->user('api');
+        $find_wishlist = Wishlist::where('place_id', $id)->where('user_id', $auth->id)->where('status', 'activated')->first();
         if (!$find_wishlist) {
             return response([
                 'status' => 'warning',
