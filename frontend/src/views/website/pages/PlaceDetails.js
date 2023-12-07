@@ -223,6 +223,7 @@ const PlaceDetails = () => {
                                         <i className="la la-map-marker"></i>
                                         {place.address}
                                         <a href={'http://maps.google.com/?q= ' + place.address} target='_blank' title="Direction">(Direction)</a>
+                                        <iframe src={place.details} width="600" height="450" style={{border: 0}} allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                                     </div>
                                 </div>
                                 <div className="place__box">

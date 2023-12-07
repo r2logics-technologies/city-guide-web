@@ -36,6 +36,7 @@ class PlaceResource extends JsonResource
             'description' => $this->description,
             'price_range' => $this->price_range,
             'address' => $this->address,
+            'details' => $this->details,
             'lat' => $this->lat,
             'lng' => $this->lng,
             'email' => $this->email,
