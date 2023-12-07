@@ -178,6 +178,7 @@ function FormPlace() {
           setValue("price_range", place.price_range);
           setValue("description", place.description);
           setValue("address", place.address);
+          setValue("details", place.details);
           setValue("lat", place.lat);
           setValue("lng", place.lng);
           setValue("email", place.email);
@@ -229,6 +230,7 @@ function FormPlace() {
       data.description != null && data.description
     );
     formData.append("address", data.address != null && data.address);
+    formData.append("details", data.details != null && data.details);
     formData.append("lat", data.lat != null && data.lat);
     formData.append("lng", data.lng != null && data.lng);
     formData.append("email", data.email != null && data.email);
@@ -496,6 +498,18 @@ function FormPlace() {
                       <textarea
                         className="form-control"
                         {...register("address")}
+                        rows={2}
+                      />
+                    </div>
+                    <div className="my-2 col-12">
+                      <div className="d-flex justify-content-between">
+                        <small className="text-muted">
+                          Map Address
+                        </small>
+                      </div>
+                      <textarea
+                        className="form-control"
+                        {...register("details")}
                         rows={2}
                       />
                     </div>

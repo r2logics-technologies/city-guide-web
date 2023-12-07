@@ -31,6 +31,7 @@ class Place extends Model
         'video',
         'booking_type',
         'link_bookingcom',
+        'details',
         'status',
     ];
 
