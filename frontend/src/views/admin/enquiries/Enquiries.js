@@ -124,7 +124,7 @@ function Enquiries() {
       content: `You Want to ${msg}`,
       onOk() {
         setTimeout(() => {
-          statusChange(id, status);
+          statusChange(id, status, msg);
         }, 2000);
       },
       onCancel() {},
