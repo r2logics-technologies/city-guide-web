@@ -19,6 +19,7 @@ class Place extends Model
         'name',
         'slug',
         'description',
+        'currency_id',
         'price_range',
         'address',
         'lat',
@@ -63,6 +64,11 @@ class Place extends Model
     public function get_type()
     {
         return $this->hasOne(PlaceType::class, 'id', 'place_type');
+    }
+
+    public function get_currency()
+    {
+        return $this->hasOne(Currency::class, 'id', 'currency_id');
     }
 
     /**
