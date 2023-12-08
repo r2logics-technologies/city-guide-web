@@ -96,7 +96,7 @@ function Enquiries() {
       });
   };
 
-  const statusChange = (id, status) => {
+  const statusChange = (id, status, msg) => {
     api
       .post(`/api/admin/pages/contacts/status/${id}`, { status: status })
       .then((res) => {
@@ -104,7 +104,7 @@ function Enquiries() {
         if (data.status === "success") {
             fetchData();
           setTimeout(() => {
-            toast.success(`Successfully ${status}.`);
+            toast.success(`Successfully ${msg}.`);
           }, 1000);
         } else {
           setTimeout(() => {
