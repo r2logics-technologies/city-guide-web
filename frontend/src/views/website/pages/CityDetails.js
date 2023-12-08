@@ -3,7 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import api from 'utility/api';
 import apiService from 'utility/apiService';
 import toast, { Toaster } from "react-hot-toast";
-import { paris_lager,d_02,d_07,new_work,tokyo,barca,singapo } from 'assets/website/img'
+import { paris_lager, d_02, d_07, new_work, tokyo, barca, singapo } from 'assets/website/img'
 
 const CityDetails = (props) => {
     const navigate = useNavigate();
@@ -11,7 +11,7 @@ const CityDetails = (props) => {
     const [city, setCity] = useState([]);
     // const [wishlist, setWishlist] = useState([]);
     const fetchData = () => {
-        let url = "/api/website/city/"+id;
+        let url = "/api/website/city/" + id;
         api
             .get(url)
             .then((res) => {
@@ -34,22 +34,43 @@ const CityDetails = (props) => {
 
     const AddWishlist = (id) => {
         api
-          .get(`/api/website/wishlist/${id}`)
+            .get(`/api/website/wishlist/${id}`)
+            .then((res) => {
+                const data = res.data;
+                if (data.status === "success") {
+                    fetchData();
+                    setTimeout(() => {
+                        toast.success(data.message);
+                    }, 1000);
+                } else {
+                    console.log('error')
+                }
+            })
+            .catch((err) => {
+                console.error(err);
+                if (err.response.status == 401) {
+                    navigate("/login", { replace: true });
+                }
+            });
+    };
+
+    const RemoveWishlist = (id) => {
+        console.log('w id', id);
+        api
+          .get(`/api/user/remove-wishlist/${id}`)
           .then((res) => {
             const data = res.data;
             if (data.status === "success") {
-                setTimeout(() => {
-                    toast.success(data.message);
-                }, 1000);
+              fetchData();
+              setTimeout(() => {
+                toast.success(data.message);
+              }, 1000);
             } else {
               console.log('error')
             }
           })
           .catch((err) => {
             console.error(err);
-            if (err.response.status == 401) {
-                navigate("/login", { replace: true });
-            }
           });
       };
 
@@ -59,7 +80,7 @@ const CityDetails = (props) => {
     return (
         <div>
             <Toaster />
-            <div className="page-title" style={{ backgroundImage: `url(${apiService.ledgerUrl+city.banner})` }}>
+            <div className="page-title" style={{ backgroundImage: `url(${apiService.ledgerUrl + city.banner})` }}>
                 <div className="container">
                     <div className="page-title__content">
                         <h4 className="page-title__capita">{city.country_name}</h4>
@@ -103,37 +124,40 @@ const CityDetails = (props) => {
                                 </h2>
                                 <div className="city-slider">
                                     <div className="row city-slider__grid">
-                                    {city.places?.map((place) => {
-                                        return (
-                                        <div className="col-md-3 places-item hover__box">
-                                            <div className="places-item__thumb hover__box__thumb">
-                                            <Link title={place.name} to={`/place-details/${place.id}`}>
-                                                <img src={apiService.ledgerUrl+place.thumb} alt="" />
-                                            </Link>
-                                            </div>
-                                            <a title="Add Wishlist" href="#" onClick={() => Wishlist(place.id)} className="place-item__addwishlist">
-                                                <i className="la la-bookmark la-24"></i>
-                                            </a>
-                                            <div className="places-item__info">
-                                                <div className="places-item__category">
-                                                    <a title="Restaurants" href="#">{place.get_category.name}</a>
-                                                </div>
-                                                <h3>
-                                                    <Link title={place.name} to={`/place-details/${place.id}`}>
-                                                        {place.name}
-                                                    </Link>
-                                                </h3>
-                                                <div className="places-item__meta">
-                                                    <div className="places-item__reviews">
-                                                        <span className="places-item__number">
-                                                            <span className="places-item__count">(no reviews)</span>
-                                                        </span>
+                                        {city.places?.map((place) => {
+                                            return (
+                                                <div className="col-md-3 places-item hover__box">
+                                                    <div className="places-item__thumb hover__box__thumb">
+                                                        <Link title={place.place_name} to={`/place-details/${place.place_id}`}>
+                                                            <img src={apiService.ledgerUrl + place.place_image} alt="" />
+                                                        </Link>
                                                     </div>
-                                                    <div className="places-item__currency">${place.price_range}</div>
-                                                </div>
-                                            </div>
-                                        </div>)
-                                    })}
+                                                    {place.in_wishlist ? (<a title="Add Wishlist" href="#" onClick={() => RemoveWishlist(place.place_id)} className="place-item__addwishlist">
+                                                        <i className="la la-heart la-24"></i>
+                                                    </a>) : (<a title="Add Wishlist" href="#" onClick={() => Wishlist(place.place_id)} className="place-item__addwishlist">
+                                                        <i className="la la-bookmark la-24"></i>
+                                                    </a>)}
+
+                                                    <div className="places-item__info">
+                                                        <div className="places-item__category">
+                                                            <a title="Restaurants" href="#">{place.category}</a>
+                                                        </div>
+                                                        <h3>
+                                                            <Link title={place.name} to={`/place-details/${place.place_id}`}>
+                                                                {place.place_name}
+                                                            </Link>
+                                                        </h3>
+                                                        <div className="places-item__meta">
+                                                            <div className="places-item__reviews">
+                                                                <span className="places-item__number">
+                                                                    <span className="places-item__count">(no reviews)</span>
+                                                                </span>
+                                                            </div>
+                                                            <div className="places-item__currency">${place.place_price}</div>
+                                                        </div>
+                                                    </div>
+                                                </div>)
+                                        })}
                                     </div>
                                 </div>
                             </div>

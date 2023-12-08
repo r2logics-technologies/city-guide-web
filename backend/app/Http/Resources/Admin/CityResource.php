@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Admin;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Website\AllPlacesResource;
 
 class CityResource extends JsonResource
 {
@@ -23,7 +24,7 @@ class CityResource extends JsonResource
             'banner' => $this->banner,
             'description' => $this->description,
             'total_place' => $this->get_place_count,
-            'places' => $this->get_place,
+            'places' => AllPlacesResource::collection($this->get_place),
             'status' => $this->status,
         ];
     }
