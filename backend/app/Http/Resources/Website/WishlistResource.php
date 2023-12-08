@@ -33,6 +33,8 @@ class WishlistResource extends JsonResource
             'name' => $this->get_place->name,
             'thumb' => $this->get_place->thumb,
             'description' => $this->get_place->description,
+            'currency_type' => $this->get_place->get_currency->title,
+            'currency_icon' => $this->get_place->get_currency->currency_icon,
             'price_range' => $this->get_place->price_range,
             'address' => $this->get_place->address,
             'total_reviews' => count($this->get_place->place_reviews),

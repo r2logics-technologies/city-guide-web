@@ -197,7 +197,7 @@ const PlaceDetails = () => {
                                                 <span className="place__places-item__count reviews_count">({place.total_reviews} reviews)</span>
                                             </div>
                                         }
-                                        <div className="place__currency">$ {place.price_range}</div>
+                                        <div className="place__currency"><i className={'la '+place.currency_icon}></i>{place.price_range}</div>
                                         <div className="place__category">
                                             <a title="Restaurant" href="#">{place.place_type}</a>
                                         </div>
@@ -223,7 +223,7 @@ const PlaceDetails = () => {
                                         <i className="la la-map-marker"></i>
                                         {place.address}
                                         <a href={'http://maps.google.com/?q= ' + place.address} target='_blank' title="Direction">(Direction)</a>
-                                        <iframe src={place.details} width="600" height="450" style={{border: 0}} allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                                        <iframe src={place.details} width="100%" height="450" style={{border: 0}} allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                                     </div>
                                 </div>
                                 <div className="place__box">

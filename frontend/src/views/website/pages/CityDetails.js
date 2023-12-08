@@ -153,7 +153,7 @@ const CityDetails = (props) => {
                                                                     <span className="places-item__count">(no reviews)</span>
                                                                 </span>
                                                             </div>
-                                                            <div className="places-item__currency">${place.place_price}</div>
+                                                            <div className="places-item__currency"><i className={'la '+place.currency_icon}></i>{place.place_price}</div>
                                                         </div>
                                                     </div>
                                                 </div>)

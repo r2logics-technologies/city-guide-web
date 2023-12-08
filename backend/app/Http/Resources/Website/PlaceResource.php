@@ -29,6 +29,8 @@ class PlaceResource extends JsonResource
             'city' => $this->get_city->name,
             'category' => $this->get_category->name,
             'place_type' => $this->get_type->name,
+            'currency_type' => $this->get_currency->title,
+            'currency_icon' => $this->get_currency->currency_icon,
             'name' => $this->name,
             'thumb' => $this->thumb,
             'video' => $this->video,

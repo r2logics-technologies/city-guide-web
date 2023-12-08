@@ -60,6 +60,7 @@ function FormPlace() {
     setValue("thumb", null);
   };
   const [countriesList, setCountriesList] = useState([]);
+  const [currencies, setCurrencies] = useState([]);
   const [citiesList, setCitiesList] = useState([]);
   const [categoriesList, setCategoriesList] = useState([]);
   const [placeTypesList, setPlaceTypesList] = useState([]);
@@ -85,6 +86,7 @@ function FormPlace() {
 
   useEffect(() => {
     fetchCountriesData();
+    fetchCurrenciesData();
     fetchCitiesData();
     fetchCategoriesData();
     fetchPlaceTypesData();
@@ -103,6 +105,20 @@ function FormPlace() {
         const data = res.data;
         if (data.status === "success") {
           setCountriesList(data.countries);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+  const fetchCurrenciesData = () => {
+    let url = "/api/admin/currencies";
+    api
+      .get(url)
+      .then((res) => {
+        const data = res.data;
+        if (data.status === "success") {
+          setCurrencies(data.currencies);
         }
       })
       .catch((err) => {
@@ -175,6 +191,7 @@ function FormPlace() {
         if (data.status === "success") {
           const place = data.place;
           setValue("name", place.name);
+          setValue("currency_id", place.currency_id);
           setValue("price_range", place.price_range);
           setValue("description", place.description);
           setValue("address", place.address);
@@ -221,6 +238,10 @@ function FormPlace() {
     }
     formData.append("name", data.name != null && data.name);
     formData.append("thumb", data.thumb[0] != null && data.thumb[0]);
+    formData.append(
+      "currency_id",
+      data.currency_id != null && data.currency_id
+    );
     formData.append(
       "price_range",
       data.price_range != null && data.price_range
@@ -312,7 +333,7 @@ function FormPlace() {
                     <div className="col-12">
                       <p className="fs-4 mb-0 text-muted">Genral</p>
                     </div>
-                    <div className="my-2 col-md-8">
+                    <div className="my-2 col-md-6">
                       <div className="d-flex justify-content-between">
                         <small className="text-muted required-field">
                           Place Name
@@ -328,7 +349,35 @@ function FormPlace() {
                         placeholder="What the name of place"
                       />
                     </div>
-                    <div className="my-2 col-md-4">
+                    <div className="my-2 col-md-3">
+                      <div className="d-flex justify-content-between">
+                        <small className="text-muted required-field">
+                          Currency
+                        </small>
+                        <small className="text-danger">
+                          {errors?.currency_id && "Currency is required"}
+                        </small>
+                      </div>
+                      <Controller
+                        name="currency_id"
+                        control={control}
+                        rules={{ required: true }}
+                        render={({ field }) => (
+                          <Select
+                            className="w-100"
+                            placeholder="Select Currency"
+                            {...field}
+                          >
+                            {currencies.map((currency) => (
+                              <Option key={currency.id} value={currency.id}>
+                                {currency.title}
+                              </Option>
+                            ))}
+                          </Select>
+                        )}
+                      />
+                    </div>
+                    <div className="my-2 col-md-3">
                       <div className="d-flex justify-content-between">
                         <small className="text-muted required-field">
                           Price Range

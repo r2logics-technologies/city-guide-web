@@ -87,7 +87,7 @@ class HomeController extends Controller
 
     public function cityDetails($id)
     {
-        $city = City::with('get_place.get_category')->find($id);
+        $city = City::with(['get_place.get_category', 'get_place.get_currency'])->find($id);
 
         if ($city) {
             return response([

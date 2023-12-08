@@ -85,26 +85,26 @@ function Users() {
         </>
       ),
     },
-    {
-      Header: "Is Admin",
-      accessor: "user_type",
-      disableSortBy: true,
-      Cell: ({ row }) => (
-        <>
-          {row.original.user_type == "admin" ? (
-            <BsIcons.BsToggle2On
-              className="text-success cr-pointer fs-2"
-              onClick={() => handleChangeType(row.original.id, "customer")}
-            />
-          ) : (
-            <BsIcons.BsToggle2Off
-              className="text-danger cr-pointer fs-2"
-              onClick={() => handleChangeType(row.original.id, "admin")}
-            />
-          )}
-        </>
-      ),
-    },
+    // {
+    //   Header: "Is Admin",
+    //   accessor: "user_type",
+    //   disableSortBy: true,
+    //   Cell: ({ row }) => (
+    //     <>
+    //       {row.original.user_type == "admin" ? (
+    //         <BsIcons.BsToggle2On
+    //           className="text-success cr-pointer fs-2"
+    //           onClick={() => handleChangeType(row.original.id, "customer")}
+    //         />
+    //       ) : (
+    //         <BsIcons.BsToggle2Off
+    //           className="text-danger cr-pointer fs-2"
+    //           onClick={() => handleChangeType(row.original.id, "admin")}
+    //         />
+    //       )}
+    //     </>
+    //   ),
+    // },
     {
       Header: "Created At",
       accessor: "created_at",

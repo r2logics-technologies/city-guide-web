@@ -32,6 +32,7 @@ import Reviews from "views/admin/reviews/Reviews";
 import Users from "views/admin/users/Users";
 import Settings from "views/admin/settings/Settings";
 import ErrorPage from "components/error-page/ErrorPage";
+import Currencies from "views/admin/currency/Currencies";
 
 var ps;
 
@@ -79,6 +80,7 @@ function AdminLayout(props) {
           <Route path="/profile" element={<Profile />} />
           {/* Place  */}
           <Route path="/countries" element={<Countries />} />
+          <Route path="/currencies" element={<Currencies />} />
           <Route path="/cities" element={<Cities />} />
           <Route path="/categories" element={<Categories />} />          
           <Route path="/amenities" element={<Amenities />} />

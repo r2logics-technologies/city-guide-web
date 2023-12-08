@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Admin\DashboardController;
 use App\Http\Controllers\Api\Admin\CountryController;
+use App\Http\Controllers\Api\Admin\CurrencyController;
 use App\Http\Controllers\Api\Admin\CityController;
 use App\Http\Controllers\Api\Admin\CategoryController;
 use App\Http\Controllers\Api\Admin\PlaceTypeController;
@@ -58,6 +59,13 @@ Route::group(['prefix' => '/admin', 'middleware' => ['auth:sanctum']], function 
         Route::get('/', [CountryController::class, 'getData']);
         Route::post('/save/update', [CountryController::class, 'submitData']);
         Route::post('/change/status/{country}', [CountryController::class, 'changeStatusData']);
+    });
+
+    //Currencies
+    Route::prefix('currencies')->group(function () {
+        Route::get('/', [CurrencyController::class, 'getData']);
+        Route::post('/save/update', [CurrencyController::class, 'submitData']);
+        Route::post('/change/status/{currency}', [CurrencyController::class, 'changeStatusData']);
     });
 
     //City

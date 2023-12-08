@@ -26,6 +26,8 @@ class AllPlacesResource extends JsonResource
             'place_id' => $this->id,
             'place_name' => $this->name,
             'place_image' => $this->thumb,
+            'currency_type' => $this->get_currency->title,
+            'currency_icon' => $this->get_currency->currency_icon,
             'place_price' => $this->price_range,
             'category_id' => $this->get_category->id,
             'category' => $this->get_category->name,

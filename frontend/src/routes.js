@@ -17,6 +17,11 @@ var routes = [
         icon: <BiIcons.BiGlobeAlt className="side-bar-icon" />,
       },
       {
+        path: "/currencies",
+        name: "Currencies",
+        icon: <BiIcons.BiCreditCard className="side-bar-icon" />,
+      },
+      {
         path: "/cities",
         name: "Cities",
         icon: <BiIcons.BiSolidCity className="side-bar-icon" />,

@@ -73,7 +73,7 @@ const Wishlists = () => {
                                             </div>
                                             <div class="cta-section">
                                                 <div>
-                                                    {place.avg_reviews > 0 ? (<span><span style={{ color: "#23d3d3" }}><i class="la la-star"></i> {place.avg_reviews}</span> ({place.total_reviews} Reviews)</span>) : (<span>No Reviews</span>)}<span className='float-end'>${place.price_range}</span>
+                                                    {place.avg_reviews > 0 ? (<span><span style={{ color: "#23d3d3" }}><i class="la la-star"></i> {place.avg_reviews}</span> ({place.total_reviews} Reviews)</span>) : (<span>No Reviews</span>)}<span className='float-end'><i className={'la '+place.currency_icon}></i>{place.price_range}</span>
                                                 </div>
                                                 <div className='d-flex justify-content-between'>
                                                     {place.is_booking ? (
