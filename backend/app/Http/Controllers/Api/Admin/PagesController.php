@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\PageResource;
+use App\Http\Resources\Admin\ContactResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Page;
+use App\Models\Contact;
 
 class PagesController extends Controller
 {
@@ -114,6 +116,48 @@ class PagesController extends Controller
         if ($updated) {
             $page =  Page::find($page->id);
             return response(['status' => 'success', 'message' => $message, 'page' => new PageResource($page)], 200);
+        }
+
+        return response([
+            'status' => 'warning',
+            'status_code' => 500,
+            'message' => 'something want wrong. unable to ' . $message,
+        ]);
+    }
+
+    public function getContact(Request $req){
+        $contacts = Contact::allowed()->get();
+        if ($contacts && count($contacts) > 0) {
+            return response([
+                'status' => 'success',
+                'message' => '',
+                'status_code' => 200,
+                'contacts' => ContactResource::collection($contacts),
+            ]);
+        }
+        return response([
+            'status' => 'warning',
+            'status_code' => 500,
+            'message' => 'No contacts found.',
+            'contacts' => null,
+        ]);
+    }
+
+    public function changeContactStatus(Request $request, Contact $contact)
+    {
+        $message = "";
+        if ($request->status == 'deleted') {
+            $message = "Deleted";
+        } else if ($request->status == 'activated') {
+            $message = "Activated";
+        } else {
+            $message = "Mark as Read";
+        }
+        $updated =  $contact->update(['status' => $request->status]);
+
+        if ($updated) {
+            $contact =  Contact::find($contact->id);
+            return response(['status' => 'success', 'message' => $message, 'contact' => new ContactResource($contact)], 200);
         }
 
         return response([

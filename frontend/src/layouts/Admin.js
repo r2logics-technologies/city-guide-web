@@ -33,6 +33,7 @@ import Users from "views/admin/users/Users";
 import Settings from "views/admin/settings/Settings";
 import ErrorPage from "components/error-page/ErrorPage";
 import Currencies from "views/admin/currency/Currencies";
+import Enquiries from "views/admin/enquiries/Enquiries";
 
 var ps;
 
@@ -101,6 +102,8 @@ function AdminLayout(props) {
           <Route path="/reviews" element={<Reviews />} />
           {/* Users */}
           <Route path="/users" element={<Users />} />
+          {/* Enquiries */}
+          <Route path="/enquiries" element={<Enquiries />} />
           {/* Settings */}
           <Route path="/settings" element={<Settings />} />
           {/* Error Page */}

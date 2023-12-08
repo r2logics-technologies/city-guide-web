@@ -16,4 +16,9 @@ class Contact extends Model
         'message',
         'status',
     ];
+
+    public function scopeAllowed($query)
+    {
+        return $query->where('status', '!=', 'deleted');
+    }
 }

@@ -85,6 +85,11 @@ var routes = [
     icon: <BiIcons.BiSolidUserDetail className="side-bar-icon" />,
   },
   {
+    path: "/enquiries",
+    name: "Enquiries",
+    icon: <BiIcons.BiEnvelope className="side-bar-icon" />,
+  },
+  {
     path: "/settings",
     name: "Settings",
     icon: <BiIcons.BiCog className="side-bar-icon" />,
