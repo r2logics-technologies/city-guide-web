@@ -237,10 +237,6 @@ function Bookings() {
                 <th>Status:</th>
                 <td>{booking?.status}</td>
               </tr>
-              <tr>
-                <th>Message:</th>
-                <td>{booking?.message}</td>
-              </tr>
             </table>
           </div>
         </ModalBody>
