@@ -121,6 +121,8 @@ Route::group(['prefix' => '/admin', 'middleware' => ['auth:sanctum']], function 
     //Pages
     Route::prefix('pages')->group(function () {
         Route::get('/', [PagesController::class, 'getData']);
+        Route::get('/contacts', [PagesController::class, 'getContact']);
+        Route::post('/contacts/status/{contact}', [PagesController::class, 'changeContactStatus']);
         Route::post('/save/update', [PagesController::class, 'submitData']);
         Route::post('/change/status/{page}', [PagesController::class, 'changeStatusData']);
     });
