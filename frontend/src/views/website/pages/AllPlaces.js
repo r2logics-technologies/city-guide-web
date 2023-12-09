@@ -247,7 +247,7 @@ const AllPlaces = () => {
                             <span className="count-reviews">({place.total_review} Reviews)</span>
                           </div>
                           <div className="place-price">
-                            <span>${place.place_price}</span>
+                            <span>{place.currency_icon}{place.place_price}</span>
                           </div>
                         </div>
                       </div>

@@ -197,7 +197,7 @@ const PlaceDetails = () => {
                                                 <span className="place__places-item__count reviews_count">({place.total_reviews} reviews)</span>
                                             </div>
                                         }
-                                        <div className="place__currency"><i className={'la '+place.currency_icon}></i>{place.price_range}</div>
+                                        <div className="place__currency">{place.currency_icon}{place.price_range}</div>
                                         <div className="place__category">
                                             <a title="Restaurant" href="#">{place.place_type}</a>
                                         </div>

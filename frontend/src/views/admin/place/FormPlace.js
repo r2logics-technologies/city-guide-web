@@ -93,10 +93,7 @@ function FormPlace() {
     fetchAmenitiesData();
   }, []);
 
-  useEffect(() => {
-    if (placeId) fetchPlaceData(placeId);
-  }, [placeId]);
-
+ 
   const fetchCountriesData = () => {
     let url = "/api/admin/countries";
     api
@@ -181,6 +178,11 @@ function FormPlace() {
         console.error(err);
       });
   };
+
+  useEffect(() => {
+    if (placeId) fetchPlaceData(placeId);
+  }, [placeId]);
+
   const fetchPlaceData = (id) => {
     let url = `/api/admin/place/${id}`;
     api
