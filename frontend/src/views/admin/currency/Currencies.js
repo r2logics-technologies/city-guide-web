@@ -55,6 +55,11 @@ function Currencies() {
       sortType: "alphanumeric",
     },
     {
+      Header: "Symbol",
+      accessor: "currency_icon",
+      sortType: "alphanumeric",
+    },
+    {
       Header: "Status",
       accessor: "status",
       disableSortBy: true,

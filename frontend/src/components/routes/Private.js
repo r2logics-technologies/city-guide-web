@@ -16,11 +16,9 @@ export default function PrivateRoute() {
         .then((res) => {
           if (res.data.status === "success") {
             setOk(true);
-            if (auth.user && auth.user.user_type === "admin") {
-              navigate('/admin/dashboard'); 
-            } else {
-              navigate('/customer/dashboard'); 
-            }
+            if (auth && auth.user && auth.user.user_type !== "admin") {
+              navigate('/');
+            }            
             
           } else {
             setOk(false);

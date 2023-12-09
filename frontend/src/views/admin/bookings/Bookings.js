@@ -61,7 +61,7 @@ function Bookings() {
               onClick={() => handleDetail(row)}
             />
           </div>
-          {row.original.status == "pending" ? (
+          {row.original.status === "pending" ? (
             <>
               <div className="d-flex justify-content-start gap-3">
                 <AiIcons.AiOutlineCheck
@@ -81,12 +81,14 @@ function Bookings() {
               </div>
             </>
           ) : (
-            <div className="d-flex justify-content-start gap-3">
-              <AiIcons.AiOutlineDelete
-                className="text-danger cr-pointer fs-4"
-                onClick={() => handleChangeStatus(row.original.id, "deleted")}
-              />
-            </div>
+            row.original.status !== "deleted" && (
+              <div className="d-flex justify-content-start gap-3">
+                <AiIcons.AiOutlineDelete
+                  className="text-danger cr-pointer fs-4"
+                  onClick={() => handleChangeStatus(row.original.id, "deleted")}
+                />
+              </div>
+            )
           )}
         </div>
       ),
@@ -107,7 +109,11 @@ function Bookings() {
           setTimeout(() => {
             toast.success(
               `Successfully ${
-                status == "accepted" ? "accepted." : status == "deleted" ? "deleted." : "cancelled."
+                status == "accepted"
+                  ? "accepted."
+                  : status == "deleted"
+                  ? "deleted."
+                  : "cancelled."
               }.`
             );
             fetchData();
@@ -128,7 +134,11 @@ function Bookings() {
     confirm({
       title: "Are you sure?",
       content: `You want to ${
-        status == "activated" ? "accept this booking." : status == "deleted" ? "delete this booking." : "cancel this booking."
+        status == "activated"
+          ? "accept this booking."
+          : status == "deleted"
+          ? "delete this booking."
+          : "cancel this booking."
       }`,
       onOk() {
         setTimeout(() => {
@@ -220,7 +230,6 @@ function Bookings() {
                 <td>{booking?.childs}</td>
               </tr>
 
-              
               <tr>
                 <th>Booking Date:</th>
                 <td>{booking?.booking_date}</td>
