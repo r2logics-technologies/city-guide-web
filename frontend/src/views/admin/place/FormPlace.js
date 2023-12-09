@@ -203,11 +203,14 @@ function FormPlace() {
           setValue("video", place.video);
           setValue("booking_type", place.booking_type);
           setValue("link_bookingcom", place.link_bookingcom);
-          setValue("category", place.category);
-          setValue("place_type", place.place_type);
-          setValue("country_id", place.country_id);
-          setValue("city_id", place.city_id);
-          setValue("currency_id", place.currency_id);
+          setTimeout(() => {
+            setValue("category", place.category);
+            setValue("place_type", place.place_type);
+            setValue("country_id", place.country_id);
+            setValue("city_id", place.city_id);
+            setValue("currency_id", place.currency_id);
+          }, 1500);
+
           if (place.amenities && place.amenities.length > 0) {
             setValue(
               "amenities",
@@ -553,9 +556,7 @@ function FormPlace() {
                     </div>
                     <div className="my-2 col-12">
                       <div className="d-flex justify-content-between">
-                        <small className="text-muted">
-                          Map Address
-                        </small>
+                        <small className="text-muted">Map Address</small>
                       </div>
                       <textarea
                         className="form-control"
