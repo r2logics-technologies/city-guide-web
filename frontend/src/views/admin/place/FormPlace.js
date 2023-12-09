@@ -191,7 +191,6 @@ function FormPlace() {
         if (data.status === "success") {
           const place = data.place;
           setValue("name", place.name);
-          setValue("currency_id", place.currency_id);
           setValue("price_range", place.price_range);
           setValue("description", place.description);
           setValue("address", place.address);
@@ -208,6 +207,7 @@ function FormPlace() {
           setValue("place_type", place.place_type);
           setValue("country_id", place.country_id);
           setValue("city_id", place.city_id);
+          setValue("currency_id", place.currency_id);
           if (place.amenities && place.amenities.length > 0) {
             setValue(
               "amenities",
@@ -220,6 +220,7 @@ function FormPlace() {
           if (place.placeopens && place.placeopens.length > 0) {
             setValue("placeopen", place.placeopens);
           }
+
           setthumbnailImgUrl(apiService.ledgerUrl + place.thumb);
         } else {
           toast(data.message);
