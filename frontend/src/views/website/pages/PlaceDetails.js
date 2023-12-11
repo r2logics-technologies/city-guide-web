@@ -76,22 +76,22 @@ const PlaceDetails = () => {
     const RemoveWishlist = (id) => {
         console.log('w id', id);
         api
-          .get(`/api/user/remove-wishlist/${id}`)
-          .then((res) => {
-            const data = res.data;
-            if (data.status === "success") {
-              fetchData();
-              setTimeout(() => {
-                toast.success(data.message);
-              }, 1000);
-            } else {
-              console.log('error')
-            }
-          })
-          .catch((err) => {
-            console.error(err);
-          });
-      };
+            .get(`/api/user/remove-wishlist/${id}`)
+            .then((res) => {
+                const data = res.data;
+                if (data.status === "success") {
+                    fetchData();
+                    setTimeout(() => {
+                        toast.success(data.message);
+                    }, 1000);
+                } else {
+                    console.log('error')
+                }
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+    };
 
     const auth_user = auth.user;
 
@@ -205,13 +205,17 @@ const PlaceDetails = () => {
                                 </div>
                                 <div className="place__box place__box-hightlight">
                                     <div className="hightlight-grid">
-                                        {place.amenities?.map((amenitie) => {
-                                            return (
-                                                <div className="place__amenities">
-                                                    <img src={apiService.ledgerUrl + amenitie.icon} alt="Free wifi" />
-                                                    <span>{amenitie.name}</span>
-                                                </div>)
-                                        })}
+                                        <div className='row'>
+                                            {place.amenities?.map((amenitie) => {
+                                                return (
+                                                    <div className='col-md-2'>
+                                                        <div className="place__amenities mb-4">
+                                                            <img src={apiService.ledgerUrl + amenitie.icon} alt="Free wifi" />
+                                                            <span>{amenitie.name}</span>
+                                                        </div>
+                                                    </div>)
+                                            })}
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="place__box place__box-overview">
@@ -223,7 +227,7 @@ const PlaceDetails = () => {
                                         <i className="la la-map-marker"></i>
                                         {place.address}
                                         <a href={'http://maps.google.com/?q= ' + place.address} target='_blank' title="Direction">(Direction)</a>
-                                        <iframe src={place.details} width="100%" height="450" style={{border: 0}} allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                                        <iframe src={place.details} width="100%" height="450" style={{ border: 0 }} allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                                     </div>
                                 </div>
                                 <div className="place__box">
