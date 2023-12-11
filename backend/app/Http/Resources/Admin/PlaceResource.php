@@ -23,9 +23,9 @@ class PlaceResource extends JsonResource
 
         return [
             'id' => $this->id,
-            'country_id' => $this->country_id,
-            'currency_id' => $this->currency_id,
-            'city_id' => $this->city_id,
+            'country_id' => intval($this->country_id),
+            'currency_id' => intval($this->currency_id),
+            'city_id' => intval($this->city_id),
             'city_name' => $this->get_city->name,
             'category' => intval($this->category),
             'category_name' => $this->get_category->name,

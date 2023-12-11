@@ -202,7 +202,7 @@ function FormPlace() {
           setValue("phone_number", place.phone_number);
           setValue("website", place.website);
           setValue("video", place.video);
-          setValue("booking_type", place.booking_type);
+          setValue("booking_type", place.booking_type); 
           setValue("link_bookingcom", place.link_bookingcom);
           setValue("country_id", place.country_id);
           setValue("city_id", place.city_id);
