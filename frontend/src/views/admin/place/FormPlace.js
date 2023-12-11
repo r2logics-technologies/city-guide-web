@@ -93,7 +93,6 @@ function FormPlace() {
     fetchAmenitiesData();
   }, []);
 
- 
   const fetchCountriesData = () => {
     let url = "/api/admin/countries";
     api
@@ -205,13 +204,11 @@ function FormPlace() {
           setValue("video", place.video);
           setValue("booking_type", place.booking_type);
           setValue("link_bookingcom", place.link_bookingcom);
-          setTimeout(() => {
-            setValue("category", place.category);
-            setValue("place_type", place.place_type);
-            setValue("country_id", place.country_id);
-            setValue("city_id", place.city_id);
-            setValue("currency_id", place.currency_id);
-          }, 1500);
+          setValue("country_id", place.country_id);
+          setValue("city_id", place.city_id);
+          setValue("currency_id", place.currency_id);
+          setValue("category", place.category);
+          setValue("place_type", place.place_type);
 
           if (place.amenities && place.amenities.length > 0) {
             setValue(

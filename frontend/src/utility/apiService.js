@@ -1,6 +1,6 @@
 const apiService = {
     envName: 'main',
-    ledgerUrl: 'https://cityguide.dpsgunga.in',
+    ledgerUrl: 'http://127.0.0.1:8000',
 };
 
 export default apiService;
