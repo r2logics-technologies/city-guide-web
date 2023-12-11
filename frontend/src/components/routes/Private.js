@@ -15,11 +15,7 @@ export default function PrivateRoute() {
         .get("/api/admin/login-check")
         .then((res) => {
           if (res.data.status === "success") {
-            setOk(true);
-            if (auth && auth.user && auth.user.user_type !== "admin") {
-              navigate('/');
-            }            
-            
+            setOk(true);          
           } else {
             setOk(false);
             sessionStorage.removeItem("access_token");

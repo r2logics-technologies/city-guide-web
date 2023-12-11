@@ -5,7 +5,7 @@ import toast, { Toaster } from "react-hot-toast";
 //css
 import "./style.css";
 import { useAuth } from "context/auth";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import api from "utility/api";
 import loginImg from "../../assets/img/login.svg";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -20,7 +20,6 @@ function Login() {
     formState: { errors },
   } = useForm();
   const navigate = useNavigate();
-  const location = useLocation();
 
   const onSubmit = async (data) => {
     setLoading(true);
@@ -42,13 +41,9 @@ function Login() {
           });
           setLoading(false);
           if (data.user.user_type === 'admin') {  
-            navigate(
-              (location.state != "/" && location.state) || "/admin/dashboard"
-            );
+            navigate("/admin/dashboard");
           } else {
-            navigate(
-              (location.state != "/" && location.state) || "/customer/dashboard"
-            );
+            navigate("/customer/dashboard");
           }
         }else if(data.status === "error"){
           toast.error(data.message);

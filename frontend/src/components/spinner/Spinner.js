@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import loading from "../../assets/img/loading.gif";
+import loading from "../../assets/img/loading.svg";
 
 const Spinner = ({ path = "/login" }) => {
   const [count, setCount] = useState(5);
