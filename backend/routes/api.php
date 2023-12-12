@@ -19,7 +19,7 @@ use App\Http\Controllers\Api\Admin\UsersController;
 use App\Http\Controllers\Api\Admin\SettingsController;
 // Web Controller
 use App\Http\Controllers\Api\Website\HomeController;
-use App\Http\Controllers\Api\Website\UserController;
+use App\Http\Controllers\Api\Website\PaymentController;
 
 // Mobile Controller
 use App\Http\Controllers\Api\Mobile\AuthUserController;
@@ -189,3 +189,6 @@ Route::group(['prefix' => '/mobile', 'middleware' => ['auth:sanctum']],function 
     Route::get('/city/{city}', [HomePageController::class, 'cityDetails']);
     Route::get('/place/{place}', [HomePageController::class, 'placeDetails']);
 });
+
+Route::post('/razorpay-payment', [PaymentController::class,'createPayment'])->name('razorpay.payment');
+Route::post('/razorpay-verify', [PaymentController::class,'verifyPayment'])->name('razorpay.verify');
