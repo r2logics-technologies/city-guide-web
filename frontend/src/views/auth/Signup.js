@@ -74,7 +74,7 @@ const Signup = () => {
                     className="my-4"
                     type="text"
                     {...register("name", { required: true })}
-                    id="form1Example1"
+                    id='typeText'
                     label="Name"
                 />
               
@@ -85,7 +85,7 @@ const Signup = () => {
                     className="my-4"
                     type="email"
                     {...register("email", { required: true })}
-                    id="form1Example1"
+                    id='typeEmail'
                     label="Email address"
                 />
 
@@ -93,10 +93,10 @@ const Signup = () => {
                     {errors?.mobile && "Mobile No. is required"}
                 </small>
                 <MDBInput
-                    className="my-4"
-                    type="text"
+                    className="my-4 "
+                    type='tel'
                     {...register("mobile", { required: true })}
-                    id="form1Example1"
+                    id='typePhone'
                     label="Mobile No."
                 />
 
@@ -107,7 +107,7 @@ const Signup = () => {
                     className="my-4"
                     type="password"
                     {...register("password", { required: true })}
-                    id="form1Example2"
+                    id='typePassword'
                     label="Password"
                 />
 
@@ -121,7 +121,7 @@ const Signup = () => {
                     className="my-4"
                     type="password"
                     {...register("confirm_password", { required: true })}
-                    id="form1Example2"
+                    id='typePassword'
                     label="Confirm Password"
                 />
 

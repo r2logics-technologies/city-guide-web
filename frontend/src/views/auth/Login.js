@@ -78,7 +78,7 @@ function Login() {
               className="my-4"
               type="email"
               {...register("email", { required: true })}
-              id="form1Example1"
+              id='typeEmail'
               label="Email address"
             />
             <small className="float-end text-danger">
@@ -88,7 +88,7 @@ function Login() {
               className="my-4"
               type="password"
               {...register("password", { required: true })}
-              id="form1Example2"
+              id='typePassword'
               label="Password"
             />
 
