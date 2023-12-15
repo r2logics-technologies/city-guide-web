@@ -14,7 +14,7 @@ body {
 }
 
 .card-glass {
-  background:  rgba(69, 90, 100, 0.35);
+  background: rgba(69, 90, 100, 0.35);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
@@ -85,9 +85,39 @@ body {
   font-size: x-large !important;
 }
 .active {
-  background: #cce3de !important;
-  color: #0a9396 !important;
+  background: #F4F3EF !important;
+  color: #777777 !important;
 }
-.btn{
+.btn {
   border: 1px solid #888 !important;
+}
+.card {
+  border-radius: 1rem !important;
+  border-bottom: 1px solid #e5e5e5 !important;
+}
+.text-inherit {
+  color:inherit !important;
+}
+.bg-theme {
+  background:#10BEBE !important;
+}
+.text-corel {
+  color:#10BEBE !important;
+}
+.btn-page{
+  border-radius: 1rem;
+  font-size: 1rem;
+  border: 1px solid #888 !important;
+  cursor: pointer;
+}
+.disabled {
+  pointer-events: none !important;
+  background: #ccc !important;
+  color: #888 !important;
+}
+.border-bottom {
+  border-bottom: solid #10BEBE !important;
+}
+.ps-menu-button{
+  height: 43px !important;
 }

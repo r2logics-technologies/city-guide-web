@@ -52,35 +52,25 @@ const Table = ({ data, header }) => {
         <div className="col d-flex gap-3 align-items-center">
           <div className={pageCount < 2 ? "d-none" : ""}>
             <b
-              className="btn btn-outline-dark border-0 rounded-pill"
-              onClick={() => gotoPage(0)}
-              disabled={!canPreviousPage}
-            >
-              {"<<"}
-            </b>
-            <b
-              className="btn btn-outline-dark border-0 rounded-pill"
+              className={`btn-page px-3 py-1 mx-1 ${
+                canPreviousPage  ? 'shadow' : "disabled"
+              }`}
               onClick={() => previousPage()}
-              disabled={!canPreviousPage}
+              title="previous"
             >
               {"<"}
             </b>
             <b
-              className="btn btn-outline-dark border-0 rounded-pill"
+              className={`btn-page px-3 py-1 mx-1 ${
+                canNextPage ? 'shadow' : "disabled"
+              }`}
               onClick={() => nextPage()}
-              disabled={!canNextPage}
+              title="next"
             >
               {">"}
             </b>
-            <b
-              className="btn btn-outline-dark border-0 rounded-pill"
-              onClick={() => gotoPage(pageCount - 1)}
-              disabled={!canNextPage}
-            >
-              {">>"}
-            </b>
-            <span>
-              Page{" "}
+            <span className="ms-4">
+              Page - {" "}
               <strong>
                 {pageIndex + 1} of {pageCount}
               </strong>
@@ -98,8 +88,12 @@ const Table = ({ data, header }) => {
         </div>
       </div>
       <div className="table-responsive my-2">
-        <table {...getTableProps()} className="table" height={150}>
-          <thead className="table-light">
+        <table
+          {...getTableProps()}
+          className="table table-hover table-sm"
+          height={150}
+        >
+          <thead className="bg-theme">
             {headerGroups.map((headerGroup) => (
               <tr {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map((column) => (

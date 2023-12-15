@@ -143,7 +143,7 @@ function Enquiries() {
           <Col md="12">
             <Card>
               <CardHeader className="d-flex justify-content-between align-items-center">
-                <CardTitle tag="h4">Enquiries List </CardTitle>
+                <CardTitle tag="h4" className="border-bottom">Enquiries List </CardTitle>
               </CardHeader>
               <CardBody>
                 <Table data={data} header={header} />

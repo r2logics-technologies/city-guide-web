@@ -325,8 +325,8 @@ function FormPlace() {
         <Row>
           <Col md="12">
             <Card>
-              <CardHeader className="border-bottom">
-                <CardTitle tag="h3">
+              <CardHeader className="d-flex justify-content-between align-items-center">
+                <CardTitle tag="h4" className="border-bottom">
                   {placeId ? "Edit" : "Create"} Place{" "}
                 </CardTitle>
               </CardHeader>

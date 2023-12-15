@@ -184,7 +184,7 @@ function Bookings() {
           <Col md="12">
             <Card>
               <CardHeader className="d-flex justify-content-between align-items-center">
-                <CardTitle tag="h4">Bookings List </CardTitle>
+                <CardTitle tag="h4" className="border-bottom">Bookings List </CardTitle>
               </CardHeader>
               <CardBody>
                 <Table data={data} header={header} />
