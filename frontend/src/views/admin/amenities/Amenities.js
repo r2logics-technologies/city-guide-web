@@ -223,7 +223,7 @@ function Amenities() {
           <Col md="12">
             <Card>
               <CardHeader className="d-flex justify-content-between align-items-center">
-                <CardTitle tag="h4">Amenities List </CardTitle>
+                <CardTitle tag="h4" className="border-bottom">Amenities List </CardTitle>
                 <BsIcons.BsPlusCircle
                   title="add amenities"
                   onClick={handleShowForm}

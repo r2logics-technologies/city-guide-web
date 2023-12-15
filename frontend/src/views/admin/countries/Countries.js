@@ -218,7 +218,7 @@ function Countries() {
           <Col md="12">
             <Card>
               <CardHeader className="d-flex justify-content-between align-items-center">
-                <CardTitle tag="h4">Country List </CardTitle>
+                <CardTitle tag="h4" className="border-bottom">Country List </CardTitle>
                 <BsIcons.BsPlusCircle
                   title="add country"
                   onClick={handleShowForm}

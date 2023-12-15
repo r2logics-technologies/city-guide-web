@@ -60,7 +60,7 @@ function Sidebar(props) {
 
   return (
     <div
-      className="sidebar"
+      className="sidebar text-corel"
       data-color={props.bgColor}
       data-active-color={props.activeColor}
     >
@@ -70,13 +70,13 @@ function Sidebar(props) {
             <img src={logo} alt="react-logo" />
           </div>
         </Link>
-        <Link to="/admin/dashboard" className="simple-text logo-normal">
+        <Link to="/admin/dashboard" className="simple-text text-inherit logo-normal">
           City Guide Admin
         </Link>
       </div>
       <div className="sidebar-wrapper" ref={sidebar}>
-        <ProSidebarProvider>
-          <Menu iconShape="square">
+        <ProSidebarProvider >
+          <Menu transitionDuration={1000} >
             {props.routes.map((item, key) => {
               return item.subMenu ? (
                 <SubMenu key={key} label={item.name} icon={item.icon}>

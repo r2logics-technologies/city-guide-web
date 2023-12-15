@@ -147,7 +147,7 @@ function FormBlog() {
           <Col md="12">
             <Card>
               <CardHeader className="border-bottom">
-                <CardTitle tag="h3">
+                <CardTitle tag="h4" className="border-bottom">
                   {postId ? "Edit" : "Create"} Post{" "}
                 </CardTitle>
               </CardHeader>

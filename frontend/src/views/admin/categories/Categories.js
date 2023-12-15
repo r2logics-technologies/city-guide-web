@@ -229,7 +229,7 @@ function Categories() {
           <Col md="12">
             <Card>
               <CardHeader className="d-flex justify-content-between align-items-center">
-                <CardTitle tag="h4">Categories List </CardTitle>
+                <CardTitle tag="h4" className="border-bottom">Categories List </CardTitle>
                 <BsIcons.BsPlusCircle
                   title="add Categories"
                   onClick={handleShowForm}

@@ -38,7 +38,7 @@ import Enquiries from "views/admin/enquiries/Enquiries";
 var ps;
 
 function AdminLayout(props) {
-  const [backgroundColor, setBackgroundColor] = React.useState("white");
+  const [backgroundColor, setBackgroundColor] = React.useState("dark");
   const [activeColor, setActiveColor] = React.useState("success");
   const mainPanel = React.useRef();
   const location = useLocation();

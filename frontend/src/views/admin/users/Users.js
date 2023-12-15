@@ -221,7 +221,7 @@ function Users() {
           <Col md="12">
             <Card>
               <CardHeader className="d-flex justify-content-between align-items-center">
-                <CardTitle tag="h4">Users List </CardTitle>
+                <CardTitle tag="h4" className="border-bottom">Users List </CardTitle>
               </CardHeader>
               <CardBody>
                 <Table data={data} header={header} />

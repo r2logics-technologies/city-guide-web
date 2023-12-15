@@ -177,7 +177,7 @@ function BlogCategories() {
           <Col md="12">
             <Card>
               <CardHeader className="d-flex justify-content-between align-items-center">
-                <CardTitle tag="h4">Blog Categories List </CardTitle>
+                <CardTitle tag="h4" className="border-bottom">Blog Categories List </CardTitle>
                 <BsIcons.BsPlusCircle
                   title="Add Category"
                   onClick={handleShowForm}

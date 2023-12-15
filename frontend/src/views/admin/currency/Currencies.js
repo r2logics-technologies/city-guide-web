@@ -210,7 +210,7 @@ function Currencies() {
           <Col md="12">
             <Card>
               <CardHeader className="d-flex justify-content-between align-items-center">
-                <CardTitle tag="h4">Currencies List </CardTitle>
+                <CardTitle tag="h4" className="border-bottom">Currencies List </CardTitle>
                 <BsIcons.BsPlusCircle
                   title="add place type"
                   onClick={handleShowForm}
