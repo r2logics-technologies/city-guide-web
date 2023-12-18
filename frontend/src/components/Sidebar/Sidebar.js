@@ -4,7 +4,7 @@ import { Nav } from "reactstrap";
 // javascript plugin used to create scrollbars on windows
 import PerfectScrollbar from "perfect-scrollbar";
 
-import logo from "../../assets/img/admin.png";
+import logo from "../../assets/img/apple-icon.png";
 import { ProSidebarProvider, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 
 var ps;
@@ -64,10 +64,10 @@ function Sidebar(props) {
       data-color={props.bgColor}
       data-active-color={props.activeColor}
     >
-      <div className="logo">
-        <Link to="/admin/dashboard" className="simple-text logo-mini">
+      <div className="logo d-flex align-items-center justify-content-start">
+        <Link to="/admin/dashboard" className="simple-text logo-mini" >
           <div className="logo-img">
-            <img src={logo} alt="react-logo" />
+            <img src={logo} style={{width:'1.3rem'}} alt="react-logo" />
           </div>
         </Link>
         <Link to="/admin/dashboard" className="simple-text text-inherit logo-normal">

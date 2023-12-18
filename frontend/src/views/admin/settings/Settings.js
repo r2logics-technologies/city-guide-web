@@ -97,7 +97,7 @@ function Settings() {
         <Row>
           <Col md="12">
             <Card>
-              <CardHeader className="border-bottom">
+              <CardHeader>
                 <CardTitle tag="h4" className="border-bottom">
                   Settings <BsIcons.BsGear />
                 </CardTitle>
