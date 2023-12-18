@@ -6,7 +6,6 @@ import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { Select } from "antd";
 import api from "utility/api";
 import apiService from "utility/apiService";
-import { useAuth } from "context/auth";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
 import { Modal, ModalHeader, ModalBody } from "reactstrap";
@@ -21,7 +20,6 @@ function Profile() {
   const [showForm, setShowForm] = useState();
 
   const [defaultUser, setDefaultUser] = useState(avatarImg);
-  const [auth, setAuth] = useAuth();
 
   const {
     register: register1,
@@ -58,18 +56,30 @@ function Profile() {
 
   useEffect(() => {
     fetchProfileData();
-  }, [auth]);
+  }, []);
 
   const fetchProfileData = () => {
-    if (auth.user?.avatar) {
-      setDefaultUser(apiService.ledgerUrl + auth.user?.avatar);
-    }
-    setValue1("avatar", auth.user?.avatar);
-    setValue1("name", auth.user?.name);
-    setValue1("email", auth.user?.email);
-    setValue1("mobile", auth.user?.mobile);
-    setValue1("facebook", auth.user?.facebook);
-    setValue1("instagram", auth.user?.instagram);
+    api
+      .get("/api/user")
+      .then((res) => {
+        const data = res.data;
+        if (data.status === "success") {
+          if (data.profile?.avatar) {
+            setDefaultUser(apiService.ledgerUrl + data.profile?.avatar);
+          }
+          setValue1("avatar", data.profile?.avatar);
+          setValue1("name", data.profile?.name);
+          setValue1("email", data.profile?.email);
+          setValue1("mobile", data.profile?.mobile);
+          setValue1("facebook", data.profile?.facebook);
+          setValue1("instagram", data.profile?.instagram);
+        } else {
+          console.log("error", data.message);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   const onSubmit = (data) => {
@@ -155,7 +165,9 @@ function Profile() {
                   {avatarUrl ? (
                     <>
                       <BsIcons.BsX
-                        className="img-remove-btn"
+                        className={`img-remove-btn ${
+                          editProfile ? "" : " d-none"
+                        }`}
                         onClick={() => {
                           removeThumImg();
                         }}
