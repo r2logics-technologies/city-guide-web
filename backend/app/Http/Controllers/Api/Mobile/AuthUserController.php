@@ -4,9 +4,13 @@ namespace App\Http\Controllers\Api\Mobile;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Mobile\UserResource;
+use App\Http\Resources\Website\AuthCustomerResource;
+use Illuminate\Support\Facades\Auth;
 use App\Models\DeviceLog;
 use App\Models\LoginLog;
 use App\Models\User;
+use App\Models\Booking;
+use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use PushNotification;
@@ -83,7 +87,6 @@ class AuthUserController extends Controller
         ];
         return response($response, 201);
     }
-
 
     public function login(Request $request)
     {
@@ -179,6 +182,26 @@ class AuthUserController extends Controller
         return response($response, 200);
     }
 
+    public function getDashboard() {
+        $auth = Auth::user();
+        if (!$auth) return response([
+            'status' => 'unauthorized',
+            'message' => 'user not available',
+        ]);
+
+        $user = User::with(['get_bookings','get_wishlists.get_place'])->withCount(['get_bookings', 'get_wishlists'])->find($auth->id);
+        if ($user) {
+            return response([
+                'status' => 'success',
+                'message' => '',
+                'status_code' => 200,
+                'profile' => new AuthCustomerResource($user),
+                'bookings_count' => $user->get_bookings_count,
+                'wishlists_count' => $user->get_wishlists_count,
+            ]);
+        }
+    }
+
     public function logout()
     {
         $user = auth()->user();
@@ -186,6 +209,7 @@ class AuthUserController extends Controller
 
         return response(['message' => 'user logged out', 'status' => 'success'], 200);
     }
+
     public function profileUpdate(Request $request)
     {
         Log::info('Registration  Log:::' . json_encode($request->all()));
