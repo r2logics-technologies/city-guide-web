@@ -179,15 +179,23 @@ Route::group(['prefix' => '/user', 'middleware' => ['auth:sanctum']], function (
 //Mobile Api
 Route::prefix('mobile')->group(function () {
     Route::get('/home', [HomePageController::class, 'getData']);
+    Route::post('/search', [HomeController::class, 'searchData']);
     Route::get('/city/{city}', [HomePageController::class, 'cityDetails']);
     Route::get('/place/{place}', [HomePageController::class, 'placeDetails']);
     Route::post('/register', [AuthUserController::class, 'register']);
     Route::post('/login', [AuthUserController::class, 'login']);
     Route::post('/login-check', [AuthUserController::class, 'loginCheck']);
 });
+
 Route::group(['prefix' => '/mobile', 'middleware' => ['auth:sanctum']],function () {
     Route::get('/dashboard', [AuthUserController::class, 'getDashboard']);
     Route::post('/profile/update', [CustomerController::class, 'profileUpdate']);
+    Route::post('/change-password', [AuthController::class, 'changePassword']);
+    Route::get('/wishlist/{place}', [HomeController::class, 'wishlist']);
+    Route::get('/remove-wishlist/{wishlist}', [AuthController::class, 'wishlistRemove']);
+    Route::post('/book-place/{place}', [HomeController::class, 'placeBook']);
+    Route::get('/booking-details/{booking}', [AuthController::class, 'bookingDetails']);
+    Route::post('/review-place/{place}', [HomeController::class, 'placeReview']);
     Route::get('/logout', [AuthUserController::class, 'logout']);
 });
 
