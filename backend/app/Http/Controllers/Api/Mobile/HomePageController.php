@@ -73,4 +73,22 @@ class HomePageController extends Controller
             'place' => null,
         ]);
     }
+
+    public function allPlaces(Request $req)  {
+        $cities = City::withCount('get_place')->allowed()->get();
+        if ($cities && count($cities) > 0) {
+            return response([
+                'status' => 'success',
+                'message' => '',
+                'status_code' => 200,
+                'cities' => CityResource::collection($cities),
+            ]);
+        }
+        return response([
+            'status' => 'warning',
+            'status_code' => 500,
+            'message' => 'No data found.',
+            'cities' => null,
+        ]);
+    }
 }

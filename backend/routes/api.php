@@ -179,6 +179,7 @@ Route::group(['prefix' => '/user', 'middleware' => ['auth:sanctum']], function (
 //Mobile Api
 Route::prefix('mobile')->group(function () {
     Route::get('/home', [HomePageController::class, 'getData']);
+    Route::get('/all-cities', [HomePageController::class, 'allPlaces']);
     Route::post('/search', [HomeController::class, 'searchData']);
     Route::get('/city/{city}', [HomePageController::class, 'cityDetails']);
     Route::get('/place/{place}', [HomePageController::class, 'placeDetails']);
