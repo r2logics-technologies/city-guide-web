@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api\Mobile;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Mobile\UserResource;
+use App\Http\Resources\Mobile\WishlistResource;
+use App\Http\Resources\Mobile\BookingResource;
 use App\Http\Resources\Website\AuthCustomerResource;
 use Illuminate\Support\Facades\Auth;
 use App\Models\DeviceLog;
@@ -189,15 +191,13 @@ class AuthUserController extends Controller
             'message' => 'user not available',
         ]);
 
-        $user = User::with(['get_bookings','get_wishlists.get_place'])->withCount(['get_bookings', 'get_wishlists'])->find($auth->id);
+        $user = User::find($auth->id);
         if ($user) {
             return response([
                 'status' => 'success',
                 'message' => '',
                 'status_code' => 200,
                 'profile' => new AuthCustomerResource($user),
-                'bookings_count' => $user->get_bookings_count,
-                'wishlists_count' => $user->get_wishlists_count,
             ]);
         }
     }
@@ -315,6 +315,52 @@ class AuthUserController extends Controller
             'status' => 'error',
             'message' => 'error',
             'user' => null,
+        ]);
+    }
+
+    public function getWishlist() {
+        $auth = Auth::user()->id;
+        if (!$auth) return response([
+            'status' => 'unauthorized',
+            'message' => 'user not available',
+        ]);
+        $wishlists = Wishlist::with('get_place.place_reviews')->where('user_id', $auth)->get();
+        if ($wishlists && count($wishlists) > 0) {
+            return response([
+                'status' => 'success',
+                'message' => '',
+                'status_code' => 200,
+                'wishlists' => WishlistResource::collection($wishlists),
+            ]);
+        }
+        return response([
+            'status' => 'warning',
+            'status_code' => 500,
+            'message' => 'No data found.',
+            'wishlists' => null,
+        ]);
+    }
+
+    public function getBookings() {
+        $auth = Auth::user()->id;
+        if (!$auth) return response([
+            'status' => 'unauthorized',
+            'message' => 'user not available',
+        ]);
+        $bookings = Booking::with('get_place.place_reviews')->where('user_id', $auth)->get();
+        if ($bookings && count($bookings) > 0) {
+            return response([
+                'status' => 'success',
+                'message' => '',
+                'status_code' => 200,
+                'bookings' => BookingResource::collection($bookings),
+            ]);
+        }
+        return response([
+            'status' => 'warning',
+            'status_code' => 500,
+            'message' => 'No data found.',
+            'wishlists' => null,
         ]);
     }
 }

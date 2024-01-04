@@ -36,7 +36,7 @@ class HomePageController extends Controller
 
     public function cityDetails($id)
     {
-        $city = City::with('get_place.get_category')->find($id);
+        $city = City::with('get_place.get_category')->withCount('get_place')->find($id);
 
         if ($city) {
             return response([

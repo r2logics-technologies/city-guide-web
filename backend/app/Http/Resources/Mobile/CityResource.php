@@ -23,6 +23,7 @@ class CityResource extends JsonResource
             'banner' => $this->banner,
             'description' => $this->description,
             'total_place' => $this->get_place_count,
+            'places' => new PlaceResource($this->get_place),
             'status' => $this->status,
         ];
     }

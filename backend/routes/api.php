@@ -193,6 +193,8 @@ Route::group(['prefix' => '/mobile', 'middleware' => ['auth:sanctum']],function 
     Route::post('/profile/update', [CustomerController::class, 'profileUpdate']);
     Route::post('/change-password', [AuthController::class, 'changePassword']);
     Route::get('/wishlist/{place}', [HomeController::class, 'wishlist']);
+    Route::get('/get-wishlists', [AuthUserController::class, 'getWishlist']);
+    Route::get('/get-bookings', [AuthUserController::class, 'getBookings']);
     Route::get('/remove-wishlist/{wishlist}', [AuthController::class, 'wishlistRemove']);
     Route::post('/book-place/{place}', [HomeController::class, 'placeBook']);
     Route::get('/booking-details/{booking}', [AuthController::class, 'bookingDetails']);
