@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Models\City;
 use App\Models\Post;
 use App\Models\Place;
+use App\Models\PlaceType;
 
 class HomePageController extends Controller
 {
@@ -37,6 +38,16 @@ class HomePageController extends Controller
     public function cityDetails($id)
     {
         $city = City::with('get_place.get_category')->withCount('get_place')->find($id);
+        $placetypes = PlaceType::with(['all_places' => function ($query) use ($id) {
+            $query->whereIn('city_id', (array)$id);
+        }])->get();
+        $allPlacesCount = $placetypes->pluck('all_places')->flatten()->count();
+
+        if ($allPlacesCount === 0) {
+            $placetypes = null;
+        }else{
+            $placetypes = PlaceTypeResource::collection($placetypes);
+        }
 
         if ($city) {
             return response([
@@ -44,6 +55,7 @@ class HomePageController extends Controller
                 'message' => '',
                 'status_code' => 200,
                 'city' => new CityResource($city),
+                'placetypes' => $placetypes,
             ]);
         }
         return response([
@@ -51,6 +63,7 @@ class HomePageController extends Controller
             'status_code' => 500,
             'message' => 'No city found.',
             'city' => null,
+            'placetypes' => null,
         ]);
     }
 

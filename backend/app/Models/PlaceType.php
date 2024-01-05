@@ -25,4 +25,9 @@ class PlaceType extends Model
     {
         return $this->hasOne(Category::class, 'id', 'category_id');
     }
+
+    public function all_places()
+    {
+        return $this->hasMany(Place::class, 'place_type', 'id');
+    }
 }
