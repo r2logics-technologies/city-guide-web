@@ -6,11 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Mobile\CityResource;
 use App\Http\Resources\Mobile\BlogsResources;
 use App\Http\Resources\Mobile\PlaceResource;
+use App\Http\Resources\Mobile\SearchResource;
+use App\Http\Resources\Mobile\PageResource;
 use Illuminate\Http\Request;
 use App\Models\City;
 use App\Models\Post;
+use App\Models\Page;
 use App\Models\Place;
+use App\Models\Category;
+use App\Models\Amenities;
 use App\Models\PlaceType;
+use DB;
 
 class HomePageController extends Controller
 {
@@ -102,6 +108,68 @@ class HomePageController extends Controller
             'status_code' => 500,
             'message' => 'No data found.',
             'cities' => null,
+        ]);
+    }
+
+    public function searchData(Request $req){
+        // $categories = Category::allowed()->get();
+        // $placetypes = PlaceType::with('get_category')->allowed()->get();
+        // $amenities = Amenities::allowed()->get();
+        $places = DB::table('places')
+        ->join('countries', 'places.country_id', '=', 'countries.id')
+        ->where('places.name', 'like', '%'.$req->search.'%')
+        ->select('places.name as place_name', 'places.id as place_id', 'countries.name as country_name');
+
+        $cities = DB::table('cities')
+            ->join('countries', 'cities.country_id', '=', 'countries.id')
+            ->where('cities.name', 'like', '%'.$req->search.'%')
+            ->select('cities.name as place_name', 'cities.id as place_id', 'countries.name as country_name');
+
+        $countries = DB::table('countries')
+            ->where('countries.name', 'like', '%'.$req->search.'%')
+            ->select('countries.name as place_name', 'countries.id as place_id', 'countries.name as country_name');
+
+        $searches = $places->union($cities)->union($countries)->get();
+
+        if ($searches && count($searches) > 0) {
+            return response([
+                'status' => 'success',
+                'total_place' => count($searches),
+                'message' => '',
+                'status_code' => 200,
+                // 'categories' => $categories,
+                // 'placetypes' => $placetypes,
+                // 'amenities' => $amenities,
+                'searches' => SearchResource::collection($searches),
+            ]);
+        }
+        return response([
+            'status' => 'warning',
+            'status_code' => 500,
+            'message' => 'No searches found.',
+            // 'categories' => null,
+            // 'placetypes' => null,
+            // 'amenities' => null,
+            'searches' => null,
+        ]);
+
+    }
+
+    public function pageData() {
+        $pages = Page::allowed()->get();
+        if ($pages && count($pages) > 0) {
+            return response([
+                'status' => 'success',
+                'message' => '',
+                'status_code' => 200,
+                'pages' => PageResource::collection($pages),
+            ]);
+        }
+        return response([
+            'status' => 'warning',
+            'status_code' => 500,
+            'message' => 'No data found.',
+            'pages' => null,
         ]);
     }
 }

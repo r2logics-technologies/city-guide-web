@@ -180,7 +180,8 @@ Route::group(['prefix' => '/user', 'middleware' => ['auth:sanctum']], function (
 Route::prefix('mobile')->group(function () {
     Route::get('/home', [HomePageController::class, 'getData']);
     Route::get('/all-cities', [HomePageController::class, 'allPlaces']);
-    Route::post('/search', [HomeController::class, 'searchData']);
+    Route::post('/search', [HomePageController::class, 'searchData']);
+    Route::get('/pages', [HomePageController::class, 'pageData']);
     Route::get('/city/{city}', [HomePageController::class, 'cityDetails']);
     Route::get('/place/{place}', [HomePageController::class, 'placeDetails']);
     Route::post('/register', [AuthUserController::class, 'register']);
